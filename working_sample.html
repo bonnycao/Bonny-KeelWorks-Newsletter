@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>KeelWorks Newsletter</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<style>
+@media only screen and (max-width: 640px) {
+  .stack { display:block !important; width:100% !important; max-width:100% !important; }
+}
+
+img { border:0; display:block; }
+body, table, td { margin:0; padding:0; }
+
+/* =========================
+   DEFAULT LIGHT THEME
+========================= */
+
+body {
+  background-color:#f3f4f6;
+  transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.main-container {
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  overflow:hidden;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+h1 {
+  color:#212121;
+  transition: color 0.3s ease;
+}
+
+p {
+  color:#333333;
+  transition: color 0.3s ease;
+}
+
+#dateText {
+  color:#00929c;
+  transition: color 0.3s ease;
+}
+
+/* =========================
+   DARK THEME
+========================= */
+
+body.dark {
+  background-color:#121212;
+}
+
+body.dark .main-container {
+  background:#1e1e1e;
+  border-color:#333333;
+}
+
+body.dark h1,
+body.dark p {
+  color:#e0e0e0 !important;
+}
+
+/* DATE color switch */
+body.dark #dateText {
+  color:#ffffff !important;
+}
+
+/* =========================
+   TOGGLE BUTTON
+========================= */
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: #00929c;
+  color: #ffffff;
+  font-weight: 600;
+  z-index: 999;
+}
+</style>
+</head>
+
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+<tr>
+<td align="center">
+
+<table cellpadding="0" cellspacing="0" border="0" role="presentation"
+class="main-container"
+style="max-width:640px;width:100%;">
+
+<!-- HEADER -->
+<tr>
+<td style="padding:20px 20px;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td id="dateText"
+align="right"
+style="font-weight:800;font-size:18px;">
+JAN '26
+</td>
+</tr>
+
+<tr>
+<td align="left">
+
+<img
+  id="kwLogo"
+  src="images/new-logo-dark.png"
+  data-light="images/new-logo-dark.png"
+  data-dark="images/new-logo-light.png"
+  alt="KeelWorks"
+  width="180"
+  style="max-width:180px;margin-bottom:10px;"
+/>
+
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+<tr>
+<td style="padding:20px;">
+<h1 style="margin:0 0 12px 0;">Say Hello to The Current!</h1>
+<p style="margin:0;">
+Your newsletter content continues here unchanged...
+</p>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+
+<script>
+const logo = document.getElementById("kwLogo");
+
+function applyTheme(isDark) {
+  document.body.classList.toggle("dark", isDark);
+  logo.src = isDark
+    ? logo.getAttribute("data-dark")
+    : logo.getAttribute("data-light");
+}
+
+function toggleTheme() {
+  const isDark = !document.body.classList.contains("dark");
+  applyTheme(isDark);
+}
+
+/* Detect system preference on first load */
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+applyTheme(systemDark);
+</script>
+
+</body>
+</html>

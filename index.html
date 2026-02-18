@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>KeelWorks Dark Mode Logo Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 40px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+h1 { margin-top: 0; }
+h2 { margin-top: 40px; }
+
+code {
+  background: #f0f0f0;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.button-link {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 20px;
+  background: #00929c;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>How to Implement Dark Mode Logo Switching</h1>
+
+<p>This guide explains how to switch logos between light and dark mode in a newsletter or website.</p>
+
+<h2>Step 1 – Choose Default Logo for Light Mode</h2>
+<p>
+Light mode uses a white or light background.
+So we use a dark logo:
+</p>
+<code>images/new-logo-dark.png</code>
+
+<h2>Step 2 – Create Logo for Dark Mode</h2>
+<p>
+Dark mode uses a dark background.
+Dark logos become unreadable, so we use a light version:
+</p>
+<code>images/new-logo-light.png</code>
+
+<h2>Step 3 – Add Dark Theme CSS</h2>
+<p>
+We toggle a class called <code>dark</code> on the body element:
+</p>
+
+<pre>
+body.dark {
+  background-color: #121212;
+}
+
+body.dark #dateText {
+  color: #ffffff;
+}
+</pre>
+
+<h2>Step 4 – Modify the HTML</h2>
+
+<p>Add:</p>
+<ul>
+  <li><code>id="kwLogo"</code> to the image</li>
+  <li><code>data-light</code> and <code>data-dark</code> attributes</li>
+</ul>
+
+<pre>
+&lt;img
+  id="kwLogo"
+  src="images/new-logo-dark.png"
+  data-light="images/new-logo-dark.png"
+  data-dark="images/new-logo-light.png"
+/&gt;
+</pre>
+
+<h2>Step 5 – Add JavaScript</h2>
+
+<p>The JavaScript:</p>
+<ul>
+  <li>Detects dark mode</li>
+  <li>Toggles the class on body</li>
+  <li>Switches the logo source</li>
+</ul>
+
+<pre>
+function applyTheme(isDark) {
+  document.body.classList.toggle("dark", isDark);
+  logo.src = isDark ? logo.dataset.dark : logo.dataset.light;
+}
+</pre>
+
+<h2>Step 6 – Test It</h2>
+<p>
+Click the sample page below and use the toggle button to test the implementation.
+</p>
+
+<a class="button-link" href="working_sample.html">
+  View the Working Sample →
+</a>
+
+</div>
+</body>
+</html>
