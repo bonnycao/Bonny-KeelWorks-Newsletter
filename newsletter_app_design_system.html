@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Newsletter App Design System</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Lato:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        /* Layout */
+        --container-max: 640px;
+        --radius-card: 8px;
+        --radius-image: 6px;
+        --radius-button: 9px;
+        --border: #e5e7eb;
+
+        /* Colors */
+        --bg-page: #f3f4f6;
+        --bg-card: #ffffff;
+        --bg-strip: #f7f7f7;
+        --bg-light: #ebebeb;
+        --bg-offwhite: #f7f7f7;
+        --bg-purple: #D0BCD5;
+        --bg-footer: #666a6f;
+
+        --brand: #00929c;
+        --btn: #825e8b;
+
+        --text-strong: #212121;
+        --text: #333333;
+        --text-muted: #555;
+        --white: #ffffff;
+
+        /* Typography (newsletter match) */
+        --font-body: "Lato", Arial, sans-serif;
+        --font-heading: "Raleway", "Roboto", Arial, sans-serif;
+        --fs-body: 16px;
+        --fs-h: 24px;
+
+        /* Spacing */
+        --space-xs: 6px;
+        --space-s: 10px;
+        --space-m: 12px;
+        --space-l: 20px;
+        --space-xl: 32px;
+        --space-2xl: 48px;
+
+        /* Buttons */
+        --btn-primary-bg: #825e8b;
+        --btn-primary-text: #ffffff;
+        --btn-primary-hover: #6f4f77;
+
+        --btn-secondary-bg: transparent;
+        --btn-secondary-text: #825e8b;
+        --btn-secondary-border: #825e8b;
+        --btn-secondary-hover-bg: rgba(130, 94, 139, 0.12);
+
+        /* Links */
+        --link: #00929c;
+        --link-hover: #007b83;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg-page);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: var(--fs-body);
+        line-height: 1.5;
+      }
+
+      /* App shell */
+      .app {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+      }
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Left nav */
+      .nav {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        background: var(--bg-card);
+        border-right: 1px solid var(--border);
+        padding: 16px;
+      }
+      @media (max-width: 980px) {
+        .nav {
+          position: relative;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+
+      .brandline {
+        display: grid;
+        gap: 8px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 14px;
+      }
+      .brandline h1 {
+        margin: 0;
+        font-size: 16px;
+        color: var(--text-strong);
+        line-height: 1.2;
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+
+      .nav h2 {
+        margin: 14px 0 8px 0;
+        font-size: 12px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+
+      .nav button {
+        width: 100%;
+        text-align: left;
+        padding: 10px 10px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-strong);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: var(--font-body);
+      }
+      .nav button:hover {
+        background: #f7f7f7;
+        border-color: var(--border);
+      }
+      .nav button.active {
+        background: rgba(0, 146, 156, 0.1);
+        border-color: rgba(0, 146, 156, 0.25);
+        color: #0d4e52;
+      }
+
+
+      /* Right content */
+      .content {
+        padding: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .page-title {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .page-title h1 {
+        margin: 0;
+        font-size: 22px;
+        color: var(--text-strong);
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+      .chip2 {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        white-space: nowrap;
+        font-family: var(--font-body);
+      }
+
+      .panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .panel-header {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .panel-header h3 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-strong);
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+      .panel-body {
+        padding: 16px;
+      }
+
+      .note {
+        margin: 0 0 14px 0;
+        padding: 10px 12px;
+        background: var(--bg-strip);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      /* Tokens */
+      .token-list {
+        display: grid;
+        gap: 10px;
+      }
+      .token {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      .token .name {
+        font-weight: 700;
+        color: var(--text-strong);
+        font-size: 13px;
+        font-family: var(--font-heading);
+      }
+      .token .desc {
+        margin-top: 4px;
+        color: var(--text-muted);
+        font-size: 12px;
+        line-height: 1.35;
+        font-family: var(--font-body);
+      }
+      .token .value {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
+        color: var(--text-muted);
+        text-align: right;
+        white-space: nowrap;
+      }
+      .swatch {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+
+      /* Buttons + links */
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: var(--radius-button);
+        padding: 12px 18px;
+        font-size: 14px;
+        line-height: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background-color 120ms ease, border-color 120ms ease,
+          transform 80ms ease;
+        font-family: var(--font-body);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-primary {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+      }
+      .btn-primary:hover {
+        background: var(--btn-primary-hover);
+      }
+      .btn-secondary {
+        background: var(--btn-secondary-bg);
+        color: var(--btn-secondary-text);
+        border-color: var(--btn-secondary-border);
+      }
+      .btn-secondary:hover {
+        background: var(--btn-secondary-hover-bg);
+      }
+
+      .link {
+        color: var(--link);
+        text-decoration: underline;
+        font-weight: 600;
+        transition: color 120ms ease;
+        font-family: var(--font-body);
+      }
+      .link:hover {
+        color: var(--link-hover);
+      }
+
+      /* Preview frame */
+      .email-frame {
+        border-radius: 0;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        /* border-radius: var(--radius-card); */
+        overflow: hidden;
+        width: 100%;
+        max-width: var(--container-max);
+      }
+      .block {
+        padding: var(--space-l);
+      }
+
+      .strip {
+        background: var(--bg-strip);
+        padding: var(--space-xs) 16px;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-family: var(--font-body);
+      }
+      .strip a {
+        color: var(--brand);
+        text-decoration: underline;
+      }
+
+      /* Header (aligned logo + date) */
+      .header {
+        padding: 20px;
+        background: #ffffff;
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .header-top {
+        font-family: "Raleway", Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--brand, #00929c);
+        line-height: 22px;
+        white-space: nowrap;
+      }
+      .logo {
+        width: 180px;
+        max-width: 180px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Lato", Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--brand, #00929c);
+        background: linear-gradient(
+          90deg,
+          rgba(0, 146, 156, 0.25),
+          rgba(0, 0, 0, 0)
+        );
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+        border-radius: 6px;
+      }
+
+      /* Typography blocks */
+      .h1,
+      .h2 {
+        font-family: "Raleway", Arial, sans-serif;
+        font-size: font-size: 24px;
+        font-weight: bolder;
+        line-height: 31px;
+        color: #212121;
+      }
+      .h1 {
+        margin: 0 0 16px 0;
+        font-weight: 700;
+      }
+      .h2 {
+        margin: 0 0 12px 0;
+        font-weight: 600;
+      }
+      .p {
+        margin: 0;
+        font-family: "Lato", Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #212121;
+      }
+      .p + .p {
+        margin: 0 0 12px 0;
+      }
+
+      .p-body {
+        font-size:16px;
+        font-weight: normal;
+        color: #333333;
+        line-height: 24px;
+      }
+
+      .section {
+        font-family: "Lato", Arial, sans-serif;
+          color: #212121;
+          text-align: left;
+          margin: 0 0 16px 0;
+      }
+      .section-h1 {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 31px;
+        color: #212121;
+      }
+      .section-h2 {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+      .hero-img {
+        width: 100%;
+        height: 170px;
+        border-radius: var(--radius-image);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 146, 156, 0.18),
+          rgba(130, 94, 139, 0.18)
+        );
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+        margin-bottom: 12px;
+      }
+
+      .bg-light {
+        background: var(--bg-light);
+      }
+      .bg-offwhite {
+        background: var(--bg-offwhite);
+      }
+      .bg-white {
+        background: var(--bg-card);
+      }
+      .bg-purple {
+        background: var(--bg-purple);
+      }
+
+      .title-strip {
+        padding: var(--space-l) var(--space-l) 10px var(--space-l);
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        padding: 0 var(--space-l) var(--space-l) var(--space-l);
+      }
+      .two-col .left {
+        padding-right: 10px;
+      }
+      .two-col .right {
+        padding-left: 10px;
+        padding-bottom: var(--space-s);
+      }
+      .thumb {
+        width: 100%;
+        height: 120px;
+        border-radius: var(--radius-image);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.07),
+          rgba(0, 146, 156, 0.12)
+        );
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+      }
+
+      @media (max-width: 640px) {
+        .two-col {
+          grid-template-columns: 1fr;
+          padding: var(--space-l);
+        }
+        .two-col .right {
+          order: -1;
+          padding-left: 0;
+        }
+        .two-col .left {
+          padding-right: 0;
+        }
+      }
+
+      .footer {
+        background: var(--bg-footer);
+        color: var(--white);
+        padding: var(--space-l);
+        font-family: var(--font-body);
+      }
+      .footer a {
+        color: var(--white);
+        text-decoration: underline;
+      }
+      .footer .group {
+        margin: 0 0 var(--space-xl) 0;
+      }
+      .social {
+        display: flex;
+        gap: 8px;
+        margin: 0 0 var(--space-2xl) 0;
+      }
+      /* .social .icon {
+        width: 64px;
+        height: 48px;
+      border-radius: 6px;
+         background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);*/
+      }
+
+      .fa-facebook {
+        font-size: 24px;
+      }
+
+      .fa-youtube {
+        font-size: 24px;
+      }
+
+      .fa-linkedin {
+        font-size: 24px;
+      }
+
+      .fa-instagram {
+        font-size: 24px;
+      }
+
+      .preview-wrap {
+        margin-top: 12px;
+      }
+
+      /* Tabs */
+      .tab {
+        display: none;
+      }
+      .tab.active {
+        display: block;
+      }
+      /* --- NAV ICONS (ADD ONLY) --- */
+      .nav-btn{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .nav-ico{
+        width: 16px;
+        height: 16px;
+        flex: 0 0 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+      }
+      .nav-ico svg{
+        width: 16px;
+        height: 16px;
+        display: block;
+      }
+      .nav button:hover .nav-ico{
+        color: var(--text-strong);
+      }
+      .nav button.active .nav-ico{
+        color: #0d4e52;
+      }
+      /* Preview tab: center content only when active */
+      #tab-preview.active {
+        display: flex;              /* overrides .tab.active { display:block } */
+        justify-content: center;
+      }
+
+
+    
+      /* --- DESIGN SYSTEM: COLOR PAGE (ds-*) --- */
+      .ds-bars{
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 12px 0 6px 0;
+      }
+      .ds-bar{
+        height: 44px;
+        border-radius: 0px; /* match newsletter frame vibe */
+        border: 1px solid var(--border);
+        overflow: hidden;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .ds-bar-label{
+        color: #fff;
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 12px;
+        text-align:center;
+        padding: 0 10px;
+        text-shadow: 0 1px 2px rgba(0,0,0,.25);
+        line-height: 1.2;
+      }
+      .ds-mono{
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+        font-weight: 700;
+      }
+      .ds-divider{
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
+      .ds-section{
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin: 12px 0;
+      }
+      .ds-section.ds-compact{ margin: 10px 0; }
+      .ds-section-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        background: var(--bg-strip);
+        border-bottom: 1px solid var(--border);
+      }
+      .ds-section-title{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        font-family: var(--font-heading);
+        font-weight: 800;
+        color: var(--text-strong);
+        font-size: 13px;
+      }
+      .ds-section-meta{
+        color: var(--text-muted);
+        font-size: 12px;
+        white-space: nowrap;
+        font-family: var(--font-body);
+      }
+      .ds-dot{
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,.12);
+        display:inline-block;
+      }
+      .ds-h3{
+        margin: 0 0 8px 0;
+        font-family: var(--font-heading);
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text-strong);
+      }
+      .ds-grid2{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .ds-table{
+        width:100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        font-family: var(--font-body);
+      }
+      .ds-table thead th{
+        text-align:left;
+        padding: 10px 14px;
+        color: var(--text-muted);
+        font-size: 12px;
+        border-bottom: 1px solid var(--border);
+        background: #fff;
+        font-family: var(--font-heading);
+        font-weight: 800;
+      }
+      .ds-table tbody td{
+        padding: 10px 14px;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: top;
+      }
+      .ds-table tbody tr:last-child td{ border-bottom: none; }
+
+      .ds-swatch{
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        display:inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+      .ds-hex{ color: var(--text-muted); font-weight: 600; }
+      .ds-usage{ color: var(--text-muted); line-height: 1.35; }
+
+      
+      /* --- ds-note: same style as ds-info, used for palette guidance notes --- */
+      .ds-note{
+        margin-top: 10px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        background: #eef6ff;
+        border-radius: 12px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .ds-note-ic{
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #2563EB;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 12px;
+        flex: 0 0 auto;
+        line-height: 1;
+        margin-top: 1px;
+      }
+      .ds-note-text{
+        color: #1d4ed8;
+        font-size: 12px;
+        line-height: 1.4;
+        font-family: var(--font-body);
+      }
+      .ds-note-text .ds-mono{ font-weight: 800; }
+
+      /* ds-info icon layout */
+      .ds-info{
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .ds-info-ic{
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #2563EB;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 12px;
+        flex: 0 0 auto;
+        line-height: 1;
+        margin-top: 1px;
+      }
+      .ds-info-body{ flex: 1 1 auto; }
+
+
+      .ds-info{
+        margin-top: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        background: #eef6ff;
+        border-radius: 12px;
+      }
+      .ds-info-title{
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 13px;
+        color: #1d4ed8;
+        margin-bottom: 6px;
+      }
+      .ds-info-list{
+        margin: 0;
+        padding-left: 18px;
+        color: #1d4ed8;
+        font-size: 12px;
+        line-height: 1.4;
+        font-family: var(--font-body);
+      }
+
+      @media (max-width: 980px){
+        .ds-bars{ grid-template-columns: repeat(2, 1fr); }
+        .ds-grid2{ grid-template-columns: 1fr; }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- LEFT NAV -->
+      <aside class="nav">
+        <div class="brandline">
+          <h1>Newsletter App - Design System</h1>
+        </div>
+        <h2>Foundation</h2>
+        <button class="nav-btn active" data-tab="tab-colors">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a9 9 0 0 0 0 18h3a3 3 0 0 0 0-6h-1a2 2 0 0 1 0-4h2a4 4 0 0 0 0-8h-4z"/>
+            <path d="M7.5 10.5h.01"/><path d="M9.5 7.5h.01"/><path d="M14.5 7.5h.01"/><path d="M16.5 10.5h.01"/>
+          </svg>
+        </span>
+        Color
+      </button>
+      <button class="nav-btn" data-tab="tab-typography">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 7V5h16v2"/><path d="M10 19h4"/><path d="M12 5v14"/>
+          </svg>
+        </span>
+        Typography
+      </button>
+      <button class="nav-btn" data-tab="tab-layout">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+          </svg>
+        </span>
+        Layout
+      </button>
+      <button class="nav-btn" data-tab="tab-spacing">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 7l-3 3 3 3"/><path d="M17 7l3 3-3 3"/><path d="M4 10h16"/>
+            <path d="M12 14v7"/><path d="M9 18l3 3 3-3"/>
+          </svg>
+        </span>
+        Spacing
+      </button>
+      <button class="nav-btn" data-tab="tab-buttons-links">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1"/>
+            <path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"/>
+          </svg>
+        </span>
+        Buttons &amp; Links
+      </button>
+        <h2>Components</h2>
+        <button class="nav-btn" data-tab="tab-header">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6h16"/><path d="M4 10h9"/><path d="M17 10h3"/><path d="M4 14h16"/>
+          </svg>
+        </span>
+        Header
+      </button>
+      <button class="nav-btn" data-tab="tab-hero">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M7 13l2-2 3 3 3-4 2 3"/><path d="M8 9h.01"/>
+          </svg>
+        </span>
+        Hero
+      </button>
+      <button class="nav-btn" data-tab="tab-split">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>
+            <path d="M6 8h3"/><path d="M6 12h3"/><path d="M15 10h3"/>
+          </svg>
+        </span>
+        Split Feature
+      </button>
+      <button class="nav-btn" data-tab="tab-text">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6h16"/><path d="M4 10h16"/><path d="M4 14h10"/><path d="M4 18h12"/>
+          </svg>
+        </span>
+        Text-only
+      </button>
+      <button class="nav-btn" data-tab="tab-footer">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 18h16"/><path d="M7 18v-6"/><path d="M12 18v-10"/><path d="M17 18v-4"/><path d="M4 6h16"/>
+          </svg>
+        </span>
+        Footer
+      </button>
+      <!-- Preview button (separated) -->
+      <div style="border-top: 1px solid var(--border); margin: 12px 0;"></div>
+
+      <button class="nav-btn" data-tab="tab-preview">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+            <path d="M3 8h18"></path>
+            <path d="M7 12h4"></path>
+            <path d="M7 16h10"></path>
+          </svg>
+        </span>
+        Preview
+      </button>
+      </aside>
+
+      <!-- RIGHT CONTENT -->
+      <main class="content">
+        <div class="page-title">
+          <h1 id="pageHeading">Color</h1>
+          <div class="chip2">
+            Hover states are “web preview”; many email clients ignore :hover
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h3 id="panelTitle">Foundation • Color</h3>
+            <span class="chip2" id="panelMeta">Tokens</span>
+          </div>
+
+          <div class="panel-body">
+            <!-- COLOR TAB (added WHITE section option) -->
+            <div
+              id="tab-colors"
+              class="tab active"
+              data-heading="Color"
+              data-title="Foundation • Color"
+              data-meta="Tokens"
+            >
+<p class="note">
+  Color foundation for KeelWorks Newsletter App. This page documents brand palettes, neutrals, semantic, and functional colors with tokens and usage.
+</p>
+
+<!-- Primary bars -->
+<div class="ds-bars" aria-label="Primary brand colors">
+  <div class="ds-bar" style="background:#00929C">
+    <div class="ds-bar-label">Cyan • 500 • <span class="ds-mono">#00929C</span> • <span class="ds-mono">brand.primary.500</span></div>
+  </div>
+  <div class="ds-bar" style="background:#825E8B">
+    <div class="ds-bar-label">Purple • 500 • <span class="ds-mono">#825E8B</span> • <span class="ds-mono">brand.secondary.500</span></div>
+  </div>
+  <div class="ds-bar" style="background:#F0BE42">
+    <div class="ds-bar-label">Yellow • 500 • <span class="ds-mono">#F0BE42</span> • <span class="ds-mono">brand.tertiary.500</span></div>
+  </div>
+  <div class="ds-bar" style="background:#B91C1C">
+    <div class="ds-bar-label">Red • 500 • <span class="ds-mono">#B91C1C</span> • <span class="ds-mono">brand.red.500</span></div>
+  </div>
+</div>
+
+<div class="ds-divider"></div>
+
+<!-- Full-width palette tables -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#00929C"></span>Brand • Primary • Cyan</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#004047"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#004047</span></td><td class="ds-mono">brand.primary.900</td><td class="ds-usage">Dark accent sections • Headlines on light backgrounds</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#00545C"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#00545C</span></td><td class="ds-mono">brand.primary.800</td><td class="ds-usage">Strong hover states • Section headers</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#066C74"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#066C74</span></td><td class="ds-mono">brand.primary.700</td><td class="ds-usage">Pressed states • Emphasis borders</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#077A85"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#077A85</span></td><td class="ds-mono">brand.primary.600</td><td class="ds-usage">Hover states • Focus rings</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#00929C"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#00929C</span></td><td class="ds-mono">brand.primary.500</td><td class="ds-usage">Brand identity • Primary buttons • Key accents</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#40AAB2"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#40AAB2</span></td><td class="ds-mono">brand.primary.400</td><td class="ds-usage">Secondary button states • Card accents</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#58B6BE"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#58B6BE</span></td><td class="ds-mono">brand.primary.300</td><td class="ds-usage">Soft backgrounds • Tags</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#D2EEF0"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#D2EEF0</span></td><td class="ds-mono">brand.primary.100</td><td class="ds-usage">Tint fills • Subtle panels</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#825E8B"></span>Brand • Secondary • Plum</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#433347"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#433347</span></td><td class="ds-mono">brand.secondary.900</td><td class="ds-usage">Dark accent sections • Headlines</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#53385A"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#53385A</span></td><td class="ds-mono">brand.secondary.800</td><td class="ds-usage">Emphasis headers • Strong hover</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#684571"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#684571</span></td><td class="ds-mono">brand.secondary.700</td><td class="ds-usage">Pressed states • Selected navigation</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#6F4B78"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#6F4B78</span></td><td class="ds-mono">brand.secondary.600</td><td class="ds-usage">Hover states • Tags</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#825E8B"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#825E8B</span></td><td class="ds-mono">brand.secondary.500</td><td class="ds-usage">Secondary actions • Accents</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#B49ABB"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#B49ABB</span></td><td class="ds-mono">brand.secondary.300</td><td class="ds-usage">Soft backgrounds • Callouts</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#D0BCD5"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#D0BCD5</span></td><td class="ds-mono">brand.secondary.200</td><td class="ds-usage">Surface tint • Card accents</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#E0D3E3"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#E0D3E3</span></td><td class="ds-mono">brand.secondary.100</td><td class="ds-usage">Subtle background • Notification surface</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#F0BE42"></span>Brand • Tertiary • Yellow</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#7A5400"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#7A5400</span></td><td class="ds-mono">brand.tertiary.900</td><td class="ds-usage">Strong emphasis • High-contrast highlights</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#A87400"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#A87400</span></td><td class="ds-mono">brand.tertiary.800</td><td class="ds-usage">Emphasis header • Dark hover</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#C58C00"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#C58C00</span></td><td class="ds-mono">brand.tertiary.700</td><td class="ds-usage">Feature callouts • Accent borders</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#E2A81A"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#E2A81A</span></td><td class="ds-mono">brand.tertiary.600</td><td class="ds-usage">Hover/active • Promotion chips</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#F0BE42"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#F0BE42</span></td><td class="ds-mono">brand.tertiary.500</td><td class="ds-usage">Attention highlights • Accent tags (not warning)</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FFEBA3"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#FFEBA3</span></td><td class="ds-mono">brand.tertiary.200</td><td class="ds-usage">Soft highlight backgrounds • Containers</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FFF0CA"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FFF0CA</span></td><td class="ds-mono">brand.tertiary.100</td><td class="ds-usage">Subtle tint • Notification surface</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="ds-note" role="note" aria-label="Guidance">
+  <span class="ds-note-ic" aria-hidden="true">i</span>
+  <div class="ds-note-text">Brand Yellow is for highlights and marketing accents. Use the Warning palette (below) for semantic warning states.</div>
+</div>
+
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#B91C1C"></span>Brand • Red</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#7F1111"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#7F1111</span></td><td class="ds-mono">brand.red.900</td><td class="ds-usage">Strong promotional emphasis • High-contrast accents</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#991B1B"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#991B1B</span></td><td class="ds-mono">brand.red.800</td><td class="ds-usage">Emphasis headers • Dark hover states</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#A61E1E"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#A61E1E</span></td><td class="ds-mono">brand.red.700</td><td class="ds-usage">Feature callouts • Accent borders</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#B91C1C"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#B91C1C</span></td><td class="ds-mono">brand.red.500</td><td class="ds-usage">Marketing highlights • High attention accents</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#DD2F2C"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#DD2F2C</span></td><td class="ds-mono">brand.red.400</td><td class="ds-usage">Interactive hover states • Visual emphasis elements</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FCE2E2"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FCE2E2</span></td><td class="ds-mono">brand.red.100</td><td class="ds-usage">Subtle tint background • Decorative UI areas</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="ds-note" role="note" aria-label="Guidance">
+  <span class="ds-note-ic" aria-hidden="true">i</span>
+  <div class="ds-note-text">Brand Red is reserved for marketing/brand emphasis. Use <span class="ds-mono">semantic.error.*</span> for error states.</div>
+</div>
+
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#666A6F"></span>Neutral • Gray</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#212121"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#212121</span></td><td class="ds-mono">neutral.gray.900</td><td class="ds-usage">Primary headings • High-contrast body text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#404955"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#404955</span></td><td class="ds-mono">neutral.gray.800</td><td class="ds-usage">Section titles • Strong emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#666A6F"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#666A6F</span></td><td class="ds-mono">neutral.gray.500</td><td class="ds-usage">Default body text • Form labels</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#E5E5E5"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#E5E5E5</span></td><td class="ds-mono">neutral.gray.300</td><td class="ds-usage">Subtle borders • Dividers</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#F1F1F1"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#F1F1F1</span></td><td class="ds-mono">neutral.gray.200</td><td class="ds-usage">Subtle backgrounds • Card surfaces</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#F7F7F7"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#F7F7F7</span></td><td class="ds-mono">neutral.gray.100</td><td class="ds-usage">Page background • Section background</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FFFFFF"></span><span class="ds-mono">0</span> <span class="ds-mono ds-hex">#FFFFFF</span></td><td class="ds-mono">neutral.gray.0</td><td class="ds-usage">Base surface • Inverse text background</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-divider"></div>
+
+<h3 class="ds-h3">Semantic Colors</h3>
+
+<!-- Semantic: Error -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#B91C1C"></span>Error</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#3B0707"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#3B0707</span></td><td class="ds-mono">semantic.error.900</td><td class="ds-usage">Extreme emphasis (rare) • Dark-on-light headings</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#5F0D0D"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#5F0D0D</span></td><td class="ds-mono">semantic.error.800</td><td class="ds-usage">Destructive confirmations • Critical emphasis text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#7F1111"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#7F1111</span></td><td class="ds-mono">semantic.error.700</td><td class="ds-usage">Error labels • Strong emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#991B1B"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#991B1B</span></td><td class="ds-mono">semantic.error.600</td><td class="ds-usage">Error icon/border • Accessible error text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#B91C1C"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#B91C1C</span></td><td class="ds-mono">semantic.error.500</td><td class="ds-usage">Default error state (alerts, borders, icons)</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#DD2F2C"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#DD2F2C</span></td><td class="ds-mono">semantic.error.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FCA5A5"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#FCA5A5</span></td><td class="ds-mono">semantic.error.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FECACA"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#FECACA</span></td><td class="ds-mono">semantic.error.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FCE2E2"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FCE2E2</span></td><td class="ds-mono">semantic.error.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Semantic: Success -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#0C9622"></span>Success</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#052E12"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#052E12</span></td><td class="ds-mono">semantic.success.900</td><td class="ds-usage">Extreme emphasis (rare) • Dark-on-light headings</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#064E1D"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#064E1D</span></td><td class="ds-mono">semantic.success.800</td><td class="ds-usage">Strong confirmation text • Success headers</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#06641A"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#06641A</span></td><td class="ds-mono">semantic.success.700</td><td class="ds-usage">Success labels • Emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#0A7A1C"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#0A7A1C</span></td><td class="ds-mono">semantic.success.600</td><td class="ds-usage">Success icon/border • Accessible success text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#0C9622"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#0C9622</span></td><td class="ds-mono">semantic.success.500</td><td class="ds-usage">Default success state (alerts, borders, icons)</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#4ADE80"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#4ADE80</span></td><td class="ds-mono">semantic.success.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#86EFAC"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#86EFAC</span></td><td class="ds-mono">semantic.success.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#BBF7D0"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#BBF7D0</span></td><td class="ds-mono">semantic.success.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#DCFCE7"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#DCFCE7</span></td><td class="ds-mono">semantic.success.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Semantic: Warning -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#F59E0B"></span>Warning</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#78350F"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#78350F</span></td><td class="ds-mono">semantic.warning.900</td><td class="ds-usage">Extreme emphasis (rare) • Dark-on-light headings</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#92400E"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#92400E</span></td><td class="ds-mono">semantic.warning.800</td><td class="ds-usage">Strong warning text • Headers</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#B45309"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#B45309</span></td><td class="ds-mono">semantic.warning.700</td><td class="ds-usage">Warning labels • Emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#D97706"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#D97706</span></td><td class="ds-mono">semantic.warning.600</td><td class="ds-usage">Warning icon/border • Accessible warning text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#F59E0B"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#F59E0B</span></td><td class="ds-mono">semantic.warning.500</td><td class="ds-usage">Default warning state (alerts, borders, icons)</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FBBF24"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#FBBF24</span></td><td class="ds-mono">semantic.warning.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FCD34D"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#FCD34D</span></td><td class="ds-mono">semantic.warning.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FDE68A"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#FDE68A</span></td><td class="ds-mono">semantic.warning.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#FFF7E6"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FFF7E6</span></td><td class="ds-mono">semantic.warning.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Semantic: Information -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#2563EB"></span>Information</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#1E3A8A"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#1E3A8A</span></td><td class="ds-mono">semantic.info.900</td><td class="ds-usage">High-contrast info headings</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#1E40AF"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#1E40AF</span></td><td class="ds-mono">semantic.info.800</td><td class="ds-usage">Strong info labels • Header emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#1D4ED8"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#1D4ED8</span></td><td class="ds-mono">semantic.info.700</td><td class="ds-usage">Info text emphasis • Buttons on pale info</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#2563EB"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#2563EB</span></td><td class="ds-mono">semantic.info.600</td><td class="ds-usage">Info icon/border • Accessible info text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#3B82F6"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#3B82F6</span></td><td class="ds-mono">semantic.info.500</td><td class="ds-usage">Default info state (alerts, borders, icons)</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#60A5FA"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#60A5FA</span></td><td class="ds-mono">semantic.info.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#93C5FD"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#93C5FD</span></td><td class="ds-mono">semantic.info.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#BFDBFE"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#BFDBFE</span></td><td class="ds-mono">semantic.info.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#DBEAFE"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#DBEAFE</span></td><td class="ds-mono">semantic.info.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds-divider"></div>
+
+<h3 class="ds-h3">Functional Colors</h3>
+
+<!-- Functional: Links (Light Mode) -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#006699"></span>Links • Light Mode</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#006699"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#006699</span></td><td class="ds-mono">functional.link.default</td><td class="ds-usage">Default link text</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#065379"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#065379</span></td><td class="ds-mono">functional.link.hover</td><td class="ds-usage">Hover state</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#004466"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#004466</span></td><td class="ds-mono">functional.link.active</td><td class="ds-usage">Pressed/active state</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#663399"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#663399</span></td><td class="ds-mono">functional.link.visited</td><td class="ds-usage">Visited links</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#999999"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#999999</span></td><td class="ds-mono">functional.link.disabled</td><td class="ds-usage">Disabled links • Inactive navigation</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Functional: Links (Dark Mode) -->
+<div class="ds-section">
+  <div class="ds-section-head">
+    <div class="ds-section-title"><span class="ds-dot" style="background:#4DB8FF"></span>Links • Dark Mode</div>
+    <div class="ds-section-meta">Columns: Color • Token • Usage</div>
+  </div>
+  <table class="ds-table">
+    <thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ds-swatch" style="background:#4DB8FF"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#4DB8FF</span></td><td class="ds-mono">functional.link.default.dark</td><td class="ds-usage">Default link text on dark surfaces</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#80CCFF"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#80CCFF</span></td><td class="ds-mono">functional.link.hover.dark</td><td class="ds-usage">Hover state</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#B38DFF"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#B38DFF</span></td><td class="ds-mono">functional.link.visited.dark</td><td class="ds-usage">Visited links</td></tr>
+      <tr><td><span class="ds-swatch" style="background:#666666"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#666666</span></td><td class="ds-mono">functional.link.disabled.dark</td><td class="ds-usage">Disabled links • Inactive navigation</td></tr>
+    </tbody>
+  </table>
+</div><div class="ds-divider"></div>
+
+<div class="ds-info">
+  <span class="ds-info-ic" aria-hidden="true">i</span>
+  <div class="ds-info-body">
+    <div class="ds-info-title">Why we define color scales from 100–900</div>
+  <ul class="ds-info-list">
+    <li>Consistent light-to-dark progression</li>
+    <li>Easier mapping for design + dev</li>
+    <li>Supports accessibility + theming (including dark mode)</li>
+    <li>Avoids inconsistent labels like “light”, “lighter”, “darkest”</li>
+  </ul>
+  </div>
+</div>
+</body>
+</html>
+
+</div>
+
+
+            <!-- TYPOGRAPHY TAB (updated to match newsletter sample CSS) -->
+            <div
+              id="tab-typography"
+              class="tab"
+              data-heading="Typography"
+              data-title="Foundation • Typography"
+              data-meta="Sample-matched"
+            >
+              <p class="note">
+                Matches the newsletter sample: headings use Raleway/Roboto, body uses Lato. H1/H2 are 24px; paragraphs are 16px.
+              </p>
+
+              <div class="token-list">
+                <div class="token">
+                  <div>
+                    <div class="name"><span class="section-h1">Heading font</span></div>
+                    <div class="desc">h1 (titles, section headers).</div>
+                  </div>
+                  <div class="value">Raleway, Arial, sans-serif</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name"><span class="p-body">Body font</span></div>
+                    <div class="desc">p (paragraphs).</div>
+                  </div>
+                  <div class="value">Lato</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name"> <span class="section-h1">Heading size</div>
+                    <div class="desc">h1/h2</div>
+                  </div>
+                  <div class="value">24px</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name"><span class="p-body">Body size</span></div>
+                    <div class="desc">p (paragraphs).</div>
+                  </div>
+                  <div class="value">16px</div>
+                </div>
+              </div>
+
+              <div class="preview-wrap">
+                <p class="note">Preview: sample heading + paragraph styling.</p>
+                <div class="email-frame">
+                  <div class="block">
+                    <div class="section-h1">Say Hello to The Current!</div>
+                    <p class="p-body">We're thrilled to debut KeelWorks' revamped newsletter for the new year. Here you'll find vibrant images and more story depth.></p>
+                    <p class="p-body">
+                      Links look like <a class="link" href="#" onclick="return false;">this</a> (teal + underlined).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- LAYOUT TAB -->
+            <div
+              id="tab-layout"
+              class="tab"
+              data-heading="Layout"
+              data-title="Foundation • Layout"
+              data-meta="Grid"
+            >
+              <p class="note">
+                Default layout is single-column. Feature sections use a 60/40 two-column split that stacks on mobile.
+              </p>
+
+              <div class="token-list">
+                <div class="token">
+                  <div>
+                    <div class="name">Container</div>
+                    <div class="desc">Main email card.</div>
+                  </div>
+                  <div class="value">Max 640px</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name">Section padding</div>
+                    <div class="desc">Standard block padding.</div>
+                  </div>
+                  <div class="value">20px</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name">Two-column split</div>
+                    <div class="desc">Text 60% / image 40% with 10px gutters.</div>
+                  </div>
+                  <div class="value">60/40 • 10px</div>
+                </div>
+              </div>
+
+              <div class="preview-wrap">
+                <p class="note">Preview: one-column vs two-column.</p>
+                <div class="email-frame">
+                  <div class="bg-white block">
+                    <div class="h2">One-column section</div>
+                    <p class="p">Title + text (and optionally a full-width image).</p>
+                  </div>
+
+                  <div class="bg-light">
+                    <div class="title-strip">
+                      <div class="h2" style="margin-bottom:0;">Two-column section</div>
+                    </div>
+                    <div class="two-col">
+                      <div class="left">
+                        <p class="p">Text column (60%). Use this for feature stories.</p>
+                      </div>
+                      <div class="right">
+                        <div class="thumb"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- SPACING TAB -->
+            <div
+              id="tab-spacing"
+              class="tab"
+              data-heading="Spacing"
+              data-title="Foundation • Spacing"
+              data-meta="Scale"
+            >
+              <p class="note">
+                Spacing scale used throughout: 6, 10, 12, 20, 32, 48.
+              </p>
+
+              <div class="token-list">
+                <div class="token">
+                  <div><div class="name">XS</div><div class="desc">Utility strip padding.</div></div>
+                  <div class="value">6px</div>
+                </div>
+                <div class="token">
+                  <div><div class="name">S</div><div class="desc">Small gaps / gutters.</div></div>
+                  <div class="value">10px</div>
+                </div>
+                <div class="token">
+                  <div><div class="name">M</div><div class="desc">Between paragraphs and image-to-text.</div></div>
+                  <div class="value">12px</div>
+                </div>
+                <div class="token">
+                  <div><div class="name">L</div><div class="desc">Default section padding.</div></div>
+                  <div class="value">20px</div>
+                </div>
+                <div class="token">
+                  <div><div class="name">XL</div><div class="desc">Footer group spacing.</div></div>
+                  <div class="value">32px</div>
+                </div>
+                <div class="token">
+                  <div><div class="name">2XL</div><div class="desc">Footer social spacing.</div></div>
+                  <div class="value">48px</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BUTTONS & LINKS TAB (kept, CTA section removed elsewhere) -->
+            <div
+              id="tab-buttons-links"
+              class="tab"
+              data-heading="Buttons & Links"
+              data-title="Foundation • Buttons & Links"
+              data-meta="States"
+            >
+              <p class="note">
+                Buttons and links are defined together. Hover behavior is for web preview; many email clients won’t show hover.
+              </p>
+
+              <div class="token-list">
+                <div class="token">
+                  <div>
+                    <div class="name">Primary button</div>
+                    <div class="desc">Filled purple, white text.</div>
+                  </div>
+                  <div class="value">hover: darken</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name">Secondary button</div>
+                    <div class="desc">Outlined purple, transparent fill.</div>
+                  </div>
+                  <div class="value">hover: subtle wash</div>
+                </div>
+                <div class="token">
+                  <div>
+                    <div class="name">Link</div>
+                    <div class="desc">Teal and underlined.</div>
+                  </div>
+                  <div class="value">hover: darken teal</div>
+                </div>
+              </div>
+
+              <div class="preview-wrap">
+                <p class="note">Preview: button + link styles.</p>
+
+                <div class="btn-row">
+                  <a class="btn btn-primary" href="#" onclick="return false;">Primary Button</a>
+                  <a class="btn btn-secondary" href="#" onclick="return false;">Secondary Button</a>
+                  <a class="btn btn-primary" href="#" onclick="return false;">
+                  <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                  Primary Button
+                </a>
+                <a class="btn btn-secondary" href="#" onclick="return false;">
+                  <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                  Secondary Button
+                </a>
+                </div>
+
+                <p style="margin: 12px 0 0 0;">
+                  Example links:
+                  <a class="link" href="#" onclick="return false;">View email in browser</a>
+                  &nbsp;•&nbsp;
+                  <a class="link" href="#" onclick="return false;">Privacy policy</a>
+                </p>
+              </div>
+            </div>
+
+
+            <!-- ✅ COMPONENT: HEADER (NOW ONLY INSIDE THIS TAB) -->
+            <div
+              id="tab-header"
+              class="tab"
+              data-heading="Header"
+              data-title="Component • Header"
+              data-meta="Logo + Date"
+            >
+              <p class="note">
+                Header shows “View email in browser” strip + logo placeholder (left) + date (right).
+              </p>
+
+              <div class="email-frame">
+                <div class="strip">
+                  <a href="#" onclick="return false;">View email in browser</a>
+                </div>
+                <div class="header">
+                  <div class="header-row">
+                    <div class="logo">KeelWorks Logo (180px)</div>
+                    <div class="header-top">JAN '26</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ✅ COMPONENT: HERO (FIXED: no self-closing div) -->
+            <div
+              id="tab-hero"
+              class="tab"
+              data-heading="Hero"
+              data-title="Component • Hero"
+              data-meta="Title + Image + Text"
+            >
+              <p class="note">
+                Hero uses H1 (24px), a full-width image (radius 6px), and paragraph.
+              </p>
+
+              <div class="email-frame">
+                <div class="header">
+                  <div class="header-row">
+                    <div class="logo">KeelWorks Logo (180px)</div>
+                    <div class="header-top">JAN '26</div>
+                  </div>
+                </div>
+
+                <div class="block">
+                  <div class="h1">Say Hello to The Current!</div>
+                  <div class="hero-img" aria-label="Hero image placeholder"></div>
+                  <p class="p">
+                    We're thrilled to debut KeelWorks' revamped newsletter for the new year.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SPLIT FEATURE -->
+            <div
+              id="tab-split"
+              class="tab"
+              data-heading="Split Feature"
+              data-title="Component • Split Feature"
+              data-meta="60/40"
+            >
+              <p class="note">
+                Title strip + text left and thumbnail right. Stacks on mobile (image first).
+              </p>
+
+              <div class="email-frame">
+                <div class="bg-light">
+                  <div class="title-strip">
+                    <div class="h2" style="margin-bottom: 0">
+                      Inclusive by Heart: Celebrating the Strength of Our Diversity
+                    </div>
+                  </div>
+                  <div class="two-col">
+                    <div class="left">
+                      <p class="p">
+                        Inclusion and diversity are KeelWorks’ greatest strengths and are intrinsic to our DNA.
+                      </p>
+                    </div>
+                    <div class="right">
+                      <div class="thumb" aria-label="Thumbnail placeholder"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TEXT ONLY -->
+            <div
+              id="tab-text"
+              class="tab"
+              data-heading="Text-only"
+              data-title="Component • Text-only"
+              data-meta="Simple"
+            >
+              <p class="note">H2 + paragraph. Use any section background: white / off-white / light.</p>
+              <div class="email-frame">
+                <div class="bg-white block">
+                  <div class="h2">Worldwide and Worldwise</div>
+                  <p class="p">
+                    KeelWorks’ volunteers span the globe. Today, folks from nearly 30 countries across 5 continents share their time and talents.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- FOOTER -->
+            <div
+              id="tab-footer"
+              class="tab"
+              data-heading="Footer"
+              data-title="Component • Footer"
+              data-meta="Links + Social"
+            >
+              <p class="note">Footer uses dark background with underlined links and 32px social icons.</p>
+              <div class="email-frame">
+                <div class="footer">
+                  <p class="group" style="margin-top: 0">
+                    <a href="#" onclick="return false;">Visit us</a> |
+                    <a href="#" onclick="return false;">Donate</a> |
+                    <a href="#" onclick="return false;">Get involved</a>
+                  </p>
+
+                  <div class="social">
+                    <div class="icon" title="Facebook"><i class="fa-brands fa-facebook" style="font-size:24px"></i></div>
+                    <div class="icon" title="YouTube"><i class="fa-brands fa-youtube"></i></div>
+                    <div class="icon" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></div>
+                    <div class="icon" title="Instagram"><i class="fa-brands fa-instagram"></i></div>
+                  </div>
+
+                  <!-- <div class="social">
+                    <div class="icon" title="Facebook"></div>
+                    <div class="icon" title="YouTube"></div>
+                    <div class="icon" title="LinkedIn"></div>
+                    <div class="icon" title="Instagram"></div>
+                  </div>-->
+
+                  <p class="group">
+                    <a href="#" onclick="return false;">Unsubscribe</a> |
+                    <a href="#" onclick="return false;">Privacy policy</a>
+                  </p>
+
+                  <p style="margin: 0 0 4px 0">© 2026 KeelWorks. All rights reserved.</p>
+                  <p style="margin: 0">2398 West Beach Road, Oak Harbor, WA 98277 USA</p>
+                </div>
+              </div>
+            </div>
+            <!-- PREVIEW TAB -->
+            <div
+              id="tab-preview"
+              class="tab"
+              data-heading="Preview"
+              data-title="Email Template"
+              data-meta="Max 640px"
+            >
+
+              <div class="email-frame">
+                <!-- View in browser strip -->
+                <div class="strip">
+                  <a href="#" onclick="return false;">View email in browser</a>
+                </div>
+
+                <!-- Header -->
+                <div class="header">
+                  <div class="header-row">
+                    <div class="logo">KeelWorks Logo (180px)</div>
+                    <div class="header-top">JAN '26</div>
+                  </div>
+                </div>
+
+                <!-- Hero -->
+                <div class="block">
+                  <div class="h1">Hero Title Goes Here</div>
+                  <div class="hero-img" aria-label="Hero image placeholder"><span style="padding: 250px; line-height: 150px;">Hero image</span></div>
+                  <p class="p">
+                    Hero description paragraph. Use 16px body text and 1.5 line-height. Links can be
+                    teal and underlined when needed.
+                  </p>
+                </div>
+
+                <!-- Split Feature (light section) -->
+                <div class="bg-light">
+                  <div class="title-strip">
+                    <div class="h2" style="margin-bottom:0;">Split Feature Title</div>
+                  </div>
+                  <div class="two-col">
+                    <div class="left">
+                      <p class="p">
+                        Left column text (60%). This is your “title + text on left, thumbnail on right” pattern.
+                      </p>
+                    </div>
+                    <div class="right">
+                      <div class="thumb" aria-label="Thumbnail placeholder"><span style="padding: 50px; line-height: 100px;">Thumnail image.</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CTA (lavender section) -->
+                <div class="bg-purple block">
+                  <div class="h2" style="margin:0 0 8px 0;">CTA Title</div>
+                  <p class="p">
+                    CTA body text. Keep it short and action-oriented. This block uses the lavender background and purple button.
+                  </p>
+                  <a class="btn btn-primary" href="#" onclick="return false;" style="margin-top:12px; padding: 10px 12px;">
+                    <i class="fa-solid fa-heart"></i>
+                    Donate
+                  </a>
+                  <!--
+                  <a class="btn btn-primary" href="#" onclick="return false;" style="margin-top:12px;">
+                    <span
+                      aria-hidden="true"
+                      style="width:18px;height:18px;border-radius:4px;display:inline-block;
+                             background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.35);"
+                    ></span>
+                    Donate
+                  </a> -->
+                </div>
+
+                <!-- Text-only section (light section like screenshot) -->
+                <div class="bg-light block">
+                  <div class="h2">Text-only Section Title</div>
+                  <p class="p">
+                    Text-only section content goes here. This is your simplest drag/drop component.
+                  </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                  <p class="group" style="margin-top: 0">
+                    <a href="#" onclick="return false;">Visit us</a> |
+                    <a href="#" onclick="return false;">Donate</a> |
+                    <a href="#" onclick="return false;">Get involved</a>
+                  </p>
+
+                  <div class="social">
+                    <div class="icon" title="Facebook"><i class="fa-brands fa-facebook" style="font-size:24px"></i></div>
+                    <div class="icon" title="YouTube"><i class="fa-brands fa-youtube"></i></div>
+                    <div class="icon" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></div>
+                    <div class="icon" title="Instagram"><i class="fa-brands fa-instagram"></i></div>
+                  </div>
+
+                  <!--<div class="social">
+                    <div class="icon" title="Facebook"></div>
+                    <div class="icon" title="YouTube"></div>
+                    <div class="icon" title="LinkedIn"></div>
+                    <div class="icon" title="Instagram"></div>
+                  </div>-->
+
+                  <p class="group">
+                    <a href="#" onclick="return false;">Unsubscribe</a> |
+                    <a href="#" onclick="return false;">Privacy policy</a>
+                  </p>
+
+                  <p style="margin: 0 0 4px 0">© 2026 KeelWorks. All rights reserved.</p>
+                  <p style="margin: 0">2398 West Beach Road, Oak Harbor, WA 98277 USA</p>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const navButtons = Array.from(document.querySelectorAll(".nav-btn"));
+        const tabs = Array.from(document.querySelectorAll(".tab"));
+        const pageHeading = document.getElementById("pageHeading");
+        const panelTitle = document.getElementById("panelTitle");
+        const panelMeta = document.getElementById("panelMeta");
+
+        function activate(tabId) {
+          tabs.forEach((t) => t.classList.toggle("active", t.id === tabId));
+          navButtons.forEach((b) =>
+            b.classList.toggle("active", b.dataset.tab === tabId)
+          );
+
+          const activeTab = document.getElementById(tabId);
+          if (activeTab) {
+            pageHeading.textContent =
+              activeTab.dataset.heading || "Design System";
+            panelTitle.textContent =
+              activeTab.dataset.title || "Design System";
+            panelMeta.textContent = activeTab.dataset.meta || "";
+          }
+        }
+
+        navButtons.forEach((btn) => {
+          btn.addEventListener("click", () => activate(btn.dataset.tab));
+        });
+
+        activate("tab-colors");
+      })();
+    </script>
+  </body>
+</html>
