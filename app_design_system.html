@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Newsletter App Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&amp;family=Lato:wght@400;500;600;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+<style>
+      :root {
+        /* Layout */
+        --container-max: 640px;
+        --radius-card: 8px;
+        --radius-image: 6px;
+        --radius-button: 9px;
+        --border: #e5e7eb;
+
+        /* Colors */
+        --bg-page: #f3f4f6;
+        --bg-card: #ffffff;
+        --bg-strip: #f7f7f7;
+        --bg-light: #ebebeb;
+        --bg-offwhite: #f7f7f7;
+        --bg-purple: #D0BCD5;
+        --bg-footer: #666a6f;
+
+        --brand: #00929c;
+        --btn: #825e8b;
+
+        --text-strong: #212121;
+        --text: #333333;
+        --text-muted: #555;
+        --white: #ffffff;
+
+        /* Typography (newsletter match) */
+        --font-body: "Lato", Arial, sans-serif;
+        --font-heading: "Raleway", "Roboto", Arial, sans-serif;
+        --fs-body: 16px;
+        --fs-h: 24px;
+
+        /* Spacing */
+        --space-xs: 6px;
+        --space-s: 10px;
+        --space-m: 12px;
+        --space-l: 20px;
+        --space-xl: 32px;
+        --space-2xl: 48px;
+
+        /* Buttons */
+        --btn-primary-bg: #825e8b;
+        --btn-primary-text: #ffffff;
+        --btn-primary-hover: #6f4f77;
+
+        --btn-secondary-bg: transparent;
+        --btn-secondary-text: #825e8b;
+        --btn-secondary-border: #825e8b;
+        --btn-secondary-hover-bg: rgba(130, 94, 139, 0.12);
+
+        /* Links */
+        --link: #00929c;
+        --link-hover: #007b83;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg-page);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: var(--fs-body);
+        line-height: 1.5;
+      }
+
+      /* App shell */
+      .app {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+      }
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Left nav */
+      .nav {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        background: var(--bg-card);
+        border-right: 1px solid var(--border);
+        padding: 16px;
+      }
+      @media (max-width: 980px) {
+        .nav {
+          position: relative;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+
+      .brandline {
+        display: grid;
+        gap: 8px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 14px;
+      }
+      .brandline h1 {
+        margin: 0;
+        font-size: 16px;
+        color: var(--text-strong);
+        line-height: 1.2;
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+
+      .nav h2 {
+        margin: 14px 0 8px 0;
+        font-size: 14px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+
+      .nav button {
+        width: 100%;
+        text-align: left;
+        padding: 10px 10px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-strong);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: var(--font-body);
+      }
+      .nav button:hover {
+        background: #f7f7f7;
+        border-color: var(--border);
+      }
+      .nav button.active {
+        background: rgba(0, 146, 156, 0.1);
+        border-color: rgba(0, 146, 156, 0.25);
+        color: #0d4e52;
+      }
+
+
+      /* Right content */
+      .content {
+        padding: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .page-title {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .page-title h1 {
+        margin: 0;
+        font-size: 22px;
+        color: var(--text-strong);
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+      .chip2 {
+        font-size: 14px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        white-space: nowrap;
+        font-family: var(--font-body);
+      }
+
+      .panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .panel-header {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .panel-header h3 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-strong);
+        font-family: var(--font-heading);
+        font-weight: 700;
+      }
+      .panel-body {
+        padding: 16px;
+      }
+
+      .note {
+        margin: 0 0 14px 0;
+        padding: 10px 12px;
+        background: var(--bg-strip);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      /* Tokens */
+      .token-list {
+        display: grid;
+        gap: 10px;
+      }
+      .token {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      .token .name {
+        font-weight: 700;
+        color: var(--text-strong);
+        font-size: 13px;
+        font-family: var(--font-heading);
+      }
+      .token .desc {
+        margin-top: 4px;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.35;
+        font-family: var(--font-body);
+      }
+      .token .value {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: right;
+        white-space: nowrap;
+      }
+      .swatch {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+
+      /* Buttons + links */
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: var(--radius-button);
+        padding: 12px 18px;
+        font-size: 14px;
+        line-height: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background-color 120ms ease, border-color 120ms ease,
+          transform 80ms ease;
+        font-family: var(--font-body);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-primary {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+      }
+      .btn-primary:hover {
+        background: var(--btn-primary-hover);
+      }
+      .btn-secondary {
+        background: var(--btn-secondary-bg);
+        color: var(--btn-secondary-text);
+        border-color: var(--btn-secondary-border);
+      }
+      .btn-secondary:hover {
+        background: var(--btn-secondary-hover-bg);
+      }
+
+      .link {
+        color: var(--link);
+        text-decoration: underline;
+        font-weight: 600;
+        transition: color 120ms ease;
+        font-family: var(--font-body);
+      }
+      .link:hover {
+        color: var(--link-hover);
+      }
+
+      /* Preview frame */
+      .email-frame {
+        border-radius: 0;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        /* border-radius: var(--radius-card); */
+        overflow: hidden;
+        width: 100%;
+        max-width: var(--container-max);
+      }
+      .block {
+        padding: var(--space-l);
+      }
+
+      .strip {
+        background: var(--bg-strip);
+        padding: var(--space-xs) 16px;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-family: var(--font-body);
+      }
+      .strip a {
+        color: var(--brand);
+        text-decoration: underline;
+      }
+
+      /* Header (aligned logo + date) */
+      .header {
+        padding: 20px;
+        background: #ffffff;
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .header-top {
+        font-family: "Raleway", Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--brand, #00929c);
+        line-height: 22px;
+        white-space: nowrap;
+      }
+      .logo {
+        width: 180px;
+        max-width: 180px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Lato", Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--brand, #00929c);
+        background: linear-gradient(
+          90deg,
+          rgba(0, 146, 156, 0.25),
+          rgba(0, 0, 0, 0)
+        );
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+        border-radius: 6px;
+      }
+
+      /* Typography blocks */
+      .h1,
+      .h2 {
+        font-family: "Raleway", Arial, sans-serif;
+        font-size: font-size: 24px;
+        font-weight: bolder;
+        line-height: 31px;
+        color: #212121;
+      }
+      .h1 {
+        margin: 0 0 16px 0;
+        font-weight: 700;
+      }
+      .h2 {
+        margin: 0 0 12px 0;
+        font-weight: 600;
+      }
+      .p {
+        margin: 0;
+        font-family: "Lato", Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #212121;
+      }
+      .p + .p {
+        margin: 0 0 12px 0;
+      }
+
+      .p-body {
+        font-size:16px;
+        font-weight: normal;
+        color: #333333;
+        line-height: 24px;
+      }
+
+      .section {
+        font-family: "Lato", Arial, sans-serif;
+          color: #212121;
+          text-align: left;
+          margin: 0 0 16px 0;
+      }
+      .section-h1 {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 31px;
+        color: #212121;
+      }
+      .section-h2 {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+      .hero-img {
+        width: 100%;
+        height: 170px;
+        border-radius: var(--radius-image);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 146, 156, 0.18),
+          rgba(130, 94, 139, 0.18)
+        );
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+        margin-bottom: 12px;
+      }
+
+      .bg-light {
+        background: var(--bg-light);
+      }
+      .bg-offwhite {
+        background: var(--bg-offwhite);
+      }
+      .bg-white {
+        background: var(--bg-card);
+      }
+      .bg-purple {
+        background: var(--bg-purple);
+      }
+
+      .title-strip {
+        padding: var(--space-l) var(--space-l) 10px var(--space-l);
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        padding: 0 var(--space-l) var(--space-l) var(--space-l);
+      }
+      .two-col .left {
+        padding-right: 10px;
+      }
+      .two-col .right {
+        padding-left: 10px;
+        padding-bottom: var(--space-s);
+      }
+      .thumb {
+        width: 100%;
+        height: 120px;
+        border-radius: var(--radius-image);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.07),
+          rgba(0, 146, 156, 0.12)
+        );
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+      }
+
+      @media (max-width: 640px) {
+        .two-col {
+          grid-template-columns: 1fr;
+          padding: var(--space-l);
+        }
+        .two-col .right {
+          order: -1;
+          padding-left: 0;
+        }
+        .two-col .left {
+          padding-right: 0;
+        }
+      }
+
+      .footer {
+        background: var(--bg-footer);
+        color: var(--white);
+        padding: var(--space-l);
+        font-family: var(--font-body);
+      }
+      .footer a {
+        color: var(--white);
+        text-decoration: underline;
+      }
+      .footer .group {
+        margin: 0 0 var(--space-xl) 0;
+      }
+      .social {
+        display: flex;
+        gap: 8px;
+        margin: 0 0 var(--space-2xl) 0;
+      }
+      /* .social .icon {
+        width: 64px;
+        height: 48px;
+      border-radius: 6px;
+         background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);*/
+      }
+
+      .fa-facebook {
+        font-size: 24px;
+      }
+
+      .fa-youtube {
+        font-size: 24px;
+      }
+
+      .fa-linkedin {
+        font-size: 24px;
+      }
+
+      .fa-instagram {
+        font-size: 24px;
+      }
+
+      .preview-wrap {
+        margin-top: 12px;
+      }
+
+      /* Tabs */
+      .tab {
+        display: none;
+      }
+      .tab.active {
+        display: block;
+      }
+      /* --- NAV ICONS (ADD ONLY) --- */
+      .nav-btn{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .nav-ico{
+        width: 16px;
+        height: 16px;
+        flex: 0 0 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+      }
+      .nav-ico svg{
+        width: 16px;
+        height: 16px;
+        display: block;
+      }
+      .nav button:hover .nav-ico{
+        color: var(--text-strong);
+      }
+      .nav button.active .nav-ico{
+        color: #0d4e52;
+      }
+      /* Preview tab: center content only when active */
+      #tab-preview.active {
+        display: flex;              /* overrides .tab.active { display:block } */
+        justify-content: center;
+      }
+
+
+    
+      /* --- DESIGN SYSTEM: COLOR PAGE (ds-*) --- */
+      .ds-bars{
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 12px 0 6px 0;
+      }
+      .ds-bar{
+        height: 44px;
+        border-radius: 0px; /* match newsletter frame vibe */
+        border: 1px solid var(--border);
+        overflow: hidden;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .ds-bar-label{
+        color: #fff;
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 14px;
+        text-align:center;
+        padding: 0 10px;
+        text-shadow: 0 1px 2px rgba(0,0,0,.25);
+        line-height: 1.2;
+      }
+      .ds-mono{
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+        font-weight: 700;
+      }
+      .ds-divider{
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
+      .ds-section{
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin: 12px 0;
+      }
+      .ds-section.ds-compact{ margin: 10px 0; }
+      .ds-section-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        background: var(--bg-strip);
+        border-bottom: 1px solid var(--border);
+      }
+      .ds-section-title{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        font-family: var(--font-heading);
+        font-weight: 800;
+        color: var(--text-strong);
+        font-size: 13px;
+      }
+      .ds-section-meta{
+        color: var(--text-muted);
+        font-size: 14px;
+        white-space: nowrap;
+        font-family: var(--font-body);
+      }
+      .ds-dot{
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,.12);
+        display:inline-block;
+      }
+      .ds-h3{
+        margin: 0 0 8px 0;
+        font-family: var(--font-heading);
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text-strong);
+      }
+      .ds-grid2{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .ds-table{
+        width:100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        font-family: var(--font-body);
+      }
+      .ds-table thead th{
+        text-align:left;
+        padding: 10px 14px;
+        color: var(--text-muted);
+        font-size: 14px;
+        border-bottom: 1px solid var(--border);
+        background: #fff;
+        font-family: var(--font-heading);
+        font-weight: 800;
+      }
+      .ds-table tbody td{
+        padding: 10px 14px;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: top;
+      }
+      .ds-table tbody tr:last-child td{ border-bottom: none; }
+
+      .ds-swatch{
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        display:inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+      .ds-hex{ color: var(--text-muted); font-weight: 600; }
+      .ds-usage{ color: var(--text-muted); line-height: 1.35; }
+
+      
+      /* --- ds-note: same style as ds-info, used for palette guidance notes --- */
+      .ds-note{
+        margin-top: 10px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        background: #eef6ff;
+        border-radius: 12px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .ds-note-ic{
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #2563EB;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 14px;
+        flex: 0 0 auto;
+        line-height: 1;
+        margin-top: 1px;
+      }
+      .ds-note-text{
+        color: #1d4ed8;
+        font-size: 14px;
+        line-height: 1.4;
+        font-family: var(--font-body);
+      }
+      .ds-note-text .ds-mono{ font-weight: 800; }
+
+      /* ds-info icon layout */
+      .ds-info{
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .ds-info-ic{
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #2563EB;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-weight: 900;
+        font-size: 14px;
+        flex: 0 0 auto;
+        line-height: 1;
+        margin-top: 1px;
+      }
+      .ds-info-body{ flex: 1 1 auto; }
+
+
+      .ds-info{
+        margin-top: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        background: #eef6ff;
+        border-radius: 12px;
+      }
+      .ds-info-title{
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 13px;
+        color: #1d4ed8;
+        margin-bottom: 6px;
+      }
+      .ds-info-list{
+        margin: 0;
+        padding-left: 18px;
+        color: #1d4ed8;
+        font-size: 14px;
+        line-height: 1.4;
+        font-family: var(--font-body);
+      }
+
+      @media (max-width: 980px){
+        .ds-bars{ grid-template-columns: repeat(2, 1fr); }
+        .ds-grid2{ grid-template-columns: 1fr; }
+      }
+
+    
+
+/* --- KeelWorks Typography Spec (scoped) --- */
+
+#tab-typography-spec .kwds{--bg:#fff;--fg:#0f172a;--muted:#475569;--subtle:#64748b;--border:#e2e8f0;--surface:#f8fafc;--codebg:#0b1220;--codefg:#e2e8f0;--link:#2563eb;--good:#0f766e;--bad:#b91c1c;--shadow:0 1px 2px rgba(15,23,42,.08),0 6px 18px rgba(15,23,42,.06);--radius:16px;--maxw:1120px;--base:18px;--scale:1.125;--font-body:"Lato",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";--font-heading:"Raleway",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}    /* Do / Don't card tweaks */    :root{      --do-bg: #D1FAE5;      --dont-bg: #FEE2E2;      --do-border: #a7f3d0;      --dont-border: #fecaca;    }    @media (prefers-color-scheme: dark){      :root{        /* keep the intent in dark mode while staying readable */        --do-bg: color-mix(in srgb, #10b981 18%, var(--surface));        --dont-bg: color-mix(in srgb, #ef4444 18%, var(--surface));        --do-border: color-mix(in srgb, #10b981 28%, var(--border));        --dont-border: color-mix(in srgb, #ef4444 28%, var(--border));      }    }
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e5e7eb;--muted:#cbd5e1;--subtle:#94a3b8;--border:#1f2a44;--surface:#0f172a;--link:#60a5fa;--shadow:none}}
+#tab-typography-spec .kwds{box-sizing:border-box}html{scroll-behavior:smooth}
+#tab-typography-spec .kwds{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:var(--base);line-height:1.5}
+#tab-typography-spec .kwds a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+#tab-typography-spec .kwds .topbar{position:sticky;top:0;z-index: 2147483647;backdrop-filter:blur(10px);background:color-mix(in srgb,var(--bg) 88%,transparent);border-bottom:1px solid var(--border)}
+#tab-typography-spec .kwds .topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px}
+#tab-typography-spec .kwds .brand{display:flex;flex-direction:column;gap:2px;min-width:240px}
+#tab-typography-spec .kwds .brand strong{font-family:var(--font-heading);font-weight:700;letter-spacing:.2px}
+#tab-typography-spec .kwds .brand span{font-size: 14px;color:var(--subtle);letter-spacing:.2px}
+#tab-typography-spec .kwds .search{flex:1;display:flex;justify-content:flex-end}
+#tab-typography-spec .kwds .search input{width:min(420px,100%);border:1px solid var(--border);background:color-mix(in srgb,var(--surface) 70%,transparent);border-radius:999px;padding:10px 12px;font:inherit;font-size:14px;color:var(--fg);outline:none}
+#tab-typography-spec .kwds .search input:focus{border-color:color-mix(in srgb,var(--link) 65%,var(--border));box-shadow:0 0 0 4px color-mix(in srgb,var(--link) 12%,transparent)}
+#tab-typography-spec .kwds .layout{max-width:var(--maxw);margin:0 auto;padding:24px 20px 80px;display:grid;grid-template-columns:280px 1fr;gap:24px}
+@media (max-width:980px){.layout{grid-template-columns:1fr}.toc{position:relative!important;top:auto!important}.brand{min-width:unset}.search{justify-content:flex-start}}
+#tab-typography-spec .kwds .toc{position:sticky;top:72px;align-self:start;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:14px;box-shadow:var(--shadow)}
+#tab-typography-spec .kwds .toc h3{margin:0 0 10px;font-family:var(--font-heading);font-size:14px;letter-spacing:.2px}
+#tab-typography-spec .kwds .toc a{display:block;padding:8px 10px;border-radius:10px;color:var(--muted);font-size:14px}
+#tab-typography-spec .kwds .toc a:hover{background:color-mix(in srgb,var(--border) 35%,transparent);color:var(--fg);text-decoration:none}
+#tab-typography-spec .kwds main{min-width:0;display:flex;flex-direction:column;gap:18px}
+#tab-typography-spec .kwds .hero{border:1px solid var(--border);border-radius:calc(var(--radius) + 6px);background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,transparent),color-mix(in srgb,var(--surface) 60%,transparent));padding:22px 22px 18px;box-shadow:var(--shadow)}
+#tab-typography-spec .kwds .hero h1{margin:0 0 6px;font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.15;letter-spacing:-.02em}
+#tab-typography-spec .kwds .hero p{margin:0;color:var(--muted);max-width:74ch}
+#tab-typography-spec .kwds .hero .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
+#tab-typography-spec .kwds .pill{font-size: 14px;border:1px solid var(--border);background:color-mix(in srgb,var(--bg) 45%,var(--surface));color:var(--muted);padding:6px 10px;border-radius:999px}
+#tab-typography-spec .kwds section.card{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);padding:20px;box-shadow:var(--shadow)}
+#tab-typography-spec .kwds section.card h2{margin:0 0 10px;font-family:var(--font-heading);font-weight:700;font-size:22px;line-height:1.25;letter-spacing:-.01em}
+#tab-typography-spec .kwds section.card h3{margin:16px 0 8px;font-family:var(--font-heading);font-weight:600;font-size:16px;line-height:1.3}
+#tab-typography-spec .kwds section.card p{margin:0 0 10px;color:var(--muted);max-width:85ch}
+#tab-typography-spec .kwds .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+#tab-typography-spec .kwds .note{border-left:4px solid color-mix(in srgb,var(--link) 55%,var(--border));background:color-mix(in srgb,var(--link) 6%,transparent);padding:10px 12px;border-radius:12px;color:var(--muted);font-size:14px;margin:10px 0 0}
+#tab-typography-spec .kwds ul{margin:10px 0 0 18px;color:var(--muted)}li{margin:6px 0}
+#tab-typography-spec .kwds .do-dont{font-size:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+@media (max-width:820px){.do-dont{font-size:16px;grid-template-columns:1fr}}
+#tab-typography-spec .kwds .panel{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:14px}
+#tab-typography-spec .kwds .panel h4{margin:0 0 6px;font-family:var(--font-heading);font-size:14px}
+#tab-typography-spec .kwds .panel.do{background:var(--do-bg);border-color:var(--do-border)}.panel.dont{background:var(--dont-bg);border-color:var(--dont-border)}.panel.do h4{color:var(--good)}.panel.dont h4{color:var(--bad)}
+#tab-typography-spec .kwds table{width:100%;border-collapse:collapse;overflow:hidden;border:1px solid var(--border);border-radius:14px;background:var(--bg)}
+#tab-typography-spec .kwds thead th{text-align:left;font-size: 14px;letter-spacing:.06em;text-transform:uppercase;color:var(--subtle);background:color-mix(in srgb,var(--surface) 75%,transparent);border-bottom:1px solid var(--border);padding:10px 12px}
+#tab-typography-spec .kwds tbody td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--muted);font-size:14px}
+#tab-typography-spec .kwds tbody tr:last-child td{border-bottom:none}
+#tab-typography-spec .kwds .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+#tab-typography-spec .kwds .token{color:var(--fg);font-weight:600}.right{text-align:right}
+#tab-typography-spec .kwds .specimen{display:grid;grid-template-columns:170px 1fr;gap:12px 16px;padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+@media (max-width:820px){.specimen{grid-template-columns:1fr}}
+#tab-typography-spec .kwds .specimen .label{font-size: 14px;color:var(--subtle);text-transform:uppercase;letter-spacing:.06em;padding-top:10px}
+#tab-typography-spec .kwds .specimen .sample{border:1px solid var(--border);border-radius:14px;background:var(--bg);padding:14px}
+#tab-typography-spec .kwds .sample .tag{font-size: 14px;color:var(--subtle);margin-bottom:8px}
+#tab-typography-spec .kwds .display-xl{font-family:var(--font-heading);font-size:36px;line-height:44px;font-weight:600}
+#tab-typography-spec .kwds .display-lg{font-family:var(--font-heading);font-size:32px;line-height:38px;font-weight:600}
+#tab-typography-spec .kwds .display-md{font-family:var(--font-heading);font-size:28px;line-height:34px;font-weight:500}
+#tab-typography-spec .kwds .heading-xl{font-family:var(--font-heading);font-size:26px;line-height:33px;font-weight:500}
+#tab-typography-spec .kwds .heading-lg{font-family:var(--font-heading);font-size:24px;line-height:31px;font-weight:500}
+#tab-typography-spec .kwds .heading-md{font-family:var(--font-heading);font-size:22px;line-height:28px;font-weight:500}
+#tab-typography-spec .kwds .heading-sm{font-family:var(--font-heading);font-size:20px;line-height:26px;font-weight:500}
+#tab-typography-spec .kwds .body-lg{font-family:var(--font-body);font-size:20px;line-height:30px;font-weight:400}
+#tab-typography-spec .kwds .body-md{font-family:var(--font-body);font-size:18px;line-height:27px;font-weight:400}
+#tab-typography-spec .kwds .body-sm{font-family:var(--font-body);font-size:16px;line-height:24px;font-weight:400}
+#tab-typography-spec .kwds .label-sm{font-family:var(--font-body);font-size:14px;line-height:21px;font-weight:400}
+#tab-typography-spec .kwds .caption{font-family:var(--font-body);font-size: 14px;line-height:18px;font-weight:400}
+#tab-typography-spec .kwds pre{background:var(--codebg);color:var(--codefg);padding:14px;border-radius:14px;overflow:auto;border:1px solid color-mix(in srgb,var(--border) 40%,transparent)}
+#tab-typography-spec .kwds .footer{margin-top:10px;color:var(--subtle);font-size: 14px}
+@media print{.topbar,.toc,.search{display:none!important}body{background:#fff;color:#000}.layout{grid-template-columns:1fr;padding:0}section.card,.hero{box-shadow:none}a{color:#000;text-decoration:underline}}
+
+#tab-typography-spec .kwds .do-dont ul{ margin-top: 8px; }
+#tab-typography-spec .kwds .do-dont li{ font-size: 16px; line-height: 1.55; }
+#tab-typography-spec .kwds .do-dont .mono{ font-size: 0.95em; }
+#tab-typography-spec .kwds .panel h4{ font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+
+    /* Instructional body text uses body-md */
+    section.card p,
+    section.card ul,
+    section.card li,
+    .panel ul,
+    .panel li,
+#tab-typography-spec .kwds .note{
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    /* Keep small UI elements smaller */
+    .toc a,
+    thead th,
+    .sample .tag,
+#tab-typography-spec .kwds .footer{
+        font-size: 14px;
+    }
+
+
+    /* Code blocks use body-sm */
+#tab-typography-spec .kwds pre, #tab-typography-spec .kwds code{
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+
+    /* Principles section single column */
+#tab-typography-spec .kwds #principles .grid2{
+        grid-template-columns: 1fr !important;
+    }
+
+
+    /* Info boxes smaller text */
+#tab-typography-spec .kwds .note{
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+
+    /* Hero title spacing */
+#tab-typography-spec .kwds .hero h1{
+        margin-bottom: 20px;
+    }
+
+    /* Hero instructional text uses body-sm */
+#tab-typography-spec .kwds .hero p{
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+
+    /* Do / Don't bullet adjustments */
+#tab-typography-spec .kwds .do-dont ul{
+        padding-left: 16px; /* reduced left spacing */
+        margin-left: 0;
+    }
+
+#tab-typography-spec .kwds .do-dont li{
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+
+    /* Adjust bullet spacing slightly right */
+#tab-typography-spec .kwds .do-dont ul{
+        padding-left: 26px; /* moved 10px right from previous 16px */
+    }
+
+    /* Do / Don't paragraph text smaller */
+#tab-typography-spec .kwds .do-dont p{
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+    /* Panel boxes (e.g., Typeface boxes) bullet alignment + text size */
+#tab-typography-spec .kwds .panel ul{
+        padding-left: 26px;
+    }
+
+#tab-typography-spec .kwds .panel li{
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+#tab-typography-spec .kwds .panel p{
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+
+    /* Code blocks use 14px */
+#tab-typography-spec .kwds pre, #tab-typography-spec .kwds code{
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+
+    /* Mobile pattern boxes single column */
+#tab-typography-spec .kwds #mobile .grid2{
+        grid-template-columns: 1fr !important;
+    }
+
+
+
+/* --- Typography nested navigation --- */
+.nav-group{ margin-top: 6px; }
+.nav-group-toggle{
+  width:100%;
+  text-align:left;
+  padding:10px 10px;
+  border-radius:10px;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--text-strong);
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+  font-family:var(--font-body);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.nav-group-toggle:hover{ background:#f7f7f7; border-color:var(--border); }
+.nav-group-toggle.active{
+  background: rgba(0, 146, 156, 0.1);
+  border-color: rgba(0, 146, 156, 0.25);
+  color:#0d4e52;
+}
+.nav-group-toggle .left{
+  display:flex; align-items:center; gap:10px;
+}
+.nav-group-toggle .chev{ transition:transform 140ms ease; opacity:.8; }
+.nav-group-toggle[aria-expanded="false"] .chev{ transform:rotate(-90deg); }
+
+.nav-sub{
+  margin-left: 26px;
+  margin-top: 6px;
+  display:none; /* closed by default */
+  gap: 6px;
+}
+.nav-sub .nav-btn{
+  padding:10px 10px;
+  border-radius:10px;
+}
+/* 2nd level active highlight (gray) */
+.nav-sub .nav-btn.sub-active{
+  background:#f7f7f7;
+  border-color: var(--border);
+  color: var(--text-strong);
+}
+.nav-subsub{
+  margin-left: 12px;
+  display:grid;
+  gap: 2px;
+  margin-top: 4px;
+}
+.nav-sub-link{
+  display:block;
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid transparent;
+  color: var(--text-muted);
+  font-size:13px;
+  text-decoration:none;
+  font-family: var(--font-body);
+}
+.nav-sub-link:hover{ background:#f7f7f7; border-color: var(--border); }
+
+
+/* --- KeelWorks Typography refinements --- */
+
+/* 20px spacing between sections in KeelWorks Typography */
+#tab-typography-spec .kwds .card + .card {
+  margin-top: 20px;
+}
+
+/* Rounded token column cells (first column in tables) */
+#tab-typography-spec .kwds table td:first-child {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: var(--surface);
+}
+
+/* Ensure header first column aligns visually */
+#tab-typography-spec .kwds table th:first-child {
+  padding-left: 12px;
+}
+
+
+/* --- Fix: first column in tables should be clean (no pill/box) --- */
+#tab-typography-spec .kwds table td:first-child{
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 10px 12px !important;
+}
+
+
+/* --- Fix: restore row dividers for first column cells --- */
+#tab-typography-spec .kwds table td:first-child{
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 10px 12px !important;
+}
+#tab-typography-spec .kwds tbody tr:last-child td:first-child{
+  border-bottom: none !important;
+}
+
+/* --- Change Don't card background --- */
+#tab-typography-spec .kwds .panel.dont{
+  background: #FCE2E2 !important;
+}
+
+/* --- Add spacing below first section (hero) --- */
+#tab-typography-spec .kwds .hero{
+  margin-bottom: 20px !important;
+}
+
+/* --- Principles: force 1 column --- */
+#tab-typography-spec .kwds #kw-principles .grid2{
+  grid-template-columns: 1fr !important;
+}
+
+
+/* --- Align Size / Relative columns left (match header alignment) --- */
+#tab-typography-spec .kwds table th.right,
+#tab-typography-spec .kwds table td.right{
+  text-align: left !important;
+}
+
+
+/* --- Preview: Desktop/Phone toggle button (inside Email Template card) --- */
+#tab-preview .preview-switch-row{
+  display:flex;
+  justify-content:flex-end;
+  margin: 10px 0 12px;
+}
+#tab-preview .preview-switch-btn{
+  border: 1px solid rgba(0, 146, 156, 0.25);
+  background: rgba(0, 146, 156, 0.12);
+  color: #0d4e52;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+}
+#tab-preview .preview-switch-btn:hover{ filter: brightness(0.98); }
+
+/* Device sizing */
+#tab-preview .preview-device{
+  display:flex;
+  justify-content:center;
+}
+#tab-preview .preview-device.desktop > .email-frame{
+  width: 640px;
+  max-width: 100%;
+}
+#tab-preview .preview-device.phone > .email-frame{
+  width: 375px;
+  max-width: 92vw;
+  border-radius: 22px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+
+/* --- Fix Preview toggle placement: prevent flex column sidebar effect --- */
+#tab-preview .preview-switch-row{
+  display:flex !important;
+  justify-content:flex-end !important;
+  width:100%;
+  margin: 10px 0 12px !important;
+}
+#tab-preview .preview-switch-btn{
+  writing-mode: horizontal-tb !important;
+  transform:none !important;
+  height:auto !important;
+  width:auto !important;
+}
+
+
+/* --- Eye icon styling for preview toggle --- */
+#tab-preview .preview-switch-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+#tab-preview .preview-switch-btn .eye-icon{
+  opacity:0.9;
+}
+
+
+/* --- Fix: Make KeelWorks Typography intro paragraph full width --- */
+#tab-typography-spec .hero p{
+  max-width: none !important;
+  width: 100% !important;
+}
+
+
+/* --- Fix: Make instructional/intro paragraphs full width across KeelWorks Typography sections --- */
+/* Applies to lead paragraphs directly under each section card; excludes callout boxes (.note). */
+#tab-typography-spec .kwds section.card > p:not(.note),
+#tab-typography-spec .kwds section.card > .hero p:not(.note),
+#tab-typography-spec .kwds section.card > div > p:not(.note){
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* --- Preview toggle (scoped only to #tab-preview) --- */
+#tab-preview .preview-switch-row{
+  display:flex;
+  justify-content:flex-end;
+  margin: 10px 0 12px;
+}
+#tab-preview .preview-switch-btn{
+  border:1px solid rgba(0,146,156,0.25);
+  background:rgba(0,146,156,0.12);
+  color:#0d4e52;
+  border-radius:999px;
+  padding:6px 12px;
+  font-size: 14px;
+  cursor:pointer;
+}
+#tab-preview .preview-device{
+  display:flex;
+  justify-content:center;
+}
+#tab-preview .preview-device.desktop > .email-frame{
+  width:640px;
+  max-width:100%;
+}
+#tab-preview .preview-device.phone > .email-frame{
+  width:375px;
+  max-width:92vw;
+  border-radius:22px;
+  box-shadow:0 8px 28px rgba(0,0,0,0.10);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+
+
+/* --- Fix: keep Preview toggle as a small top-right pill (avoid vertical stretch) --- */
+#tab-preview{
+  position: relative;
+  padding-top: 44px; /* room for toggle under header divider */
+}
+#tab-preview .preview-switch-row{
+  position: absolute;
+  top: 10px;
+  right: 0;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+#tab-preview .preview-switch-btn{
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+  height: auto !important;
+  width: auto !important;
+  white-space: nowrap;
+}
+
+
+/* --- Adjust Hero & Thumbnail placeholder text --- */
+.hero-image,
+.thumbnail-image{
+  text-align: left !important;
+  padding-left: 25px !important;
+  font-size: 12px !important;
+}
+
+.thumbnail-image{
+  font-size: 12px !important;
+}
+
+
+/* --- Preview: image placeholder label alignment --- */
+#tab-preview .img-label{
+  display:block;
+  width:100%;
+  text-align:left;
+  padding-left:25px;
+  font-size:12px;
+  line-height:18px;
+  color: var(--text-muted);
+}
+
+
+/* --- Floating Back to Top button --- */
+#backToTop{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2147483647;
+  border: none;
+  background: #00929C; /* brand teal */
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+#backToTop.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+#backToTop:hover{
+  background: #007C84;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.22);
+}
+
+
+/* --- Preview Image Placeholder Adjustments --- */
+
+/* Hero image centered */
+#tab-preview .hero-image,
+#tab-preview .hero-img-label{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  font-size:12px !important;
+}
+
+/* Thumbnail image left aligned middle */
+#tab-preview .thumb-img-label{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  padding-left:20px !important;
+  font-size:12px !important;
+  text-align:left !important;
+}
+
+
+/* --- Preview placeholder labels: left + vertically centered --- */
+#tab-preview .hero-img{
+  display:flex !important;
+  align-items:center !important;   /* vertical middle */
+  justify-content:flex-start !important;
+  padding-left:20px !important;
+}
+#tab-preview .hero-img .hero-img-label{
+  font-size:12px !important;
+  padding-left:0 !important;
+  width:auto !important;
+  display:inline-block !important;
+  text-align:left !important;
+}
+
+/* Thumbnail placeholder */
+#tab-preview .thumb{
+  display:flex !important;
+  align-items:center !important;   /* vertical middle */
+  justify-content:flex-start !important;
+  padding-left:20px !important;
+}
+#tab-preview .thumb span{
+  font-size:12px !important;
+  text-align:left !important;
+}
+
+
+/* --- Preview: prevent placeholder label wrapping in phone view --- */
+#tab-preview .hero-img .hero-img-label,
+#tab-preview .thumb span{
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: calc(100% - 20px) !important;
+}
+
+/* Override earlier conflicting rules that made labels flex (caused weird wrapping/position) */
+#tab-preview .hero-img-label{
+  display: inline-block !important;
+}
+
+
+/* --- Preview: placeholder labels left-aligned (avoid truncation + wrapping in phone) --- */
+#tab-preview .hero-img,
+#tab-preview .thumb{
+  position: relative !important;
+}
+
+#tab-preview .hero-img .hero-img-label,
+#tab-preview .thumb span{
+  position: absolute !important;
+  left: 20px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  max-width: none !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure thumbnail span doesn't inherit centered styles */
+#tab-preview .thumb{
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  padding-left: 0 !important;
+}
+
+
+/* --- Floating Back to Top button (Color / KeelWorks Typography / Preview) --- */
+#backToTop{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2147483647;
+  border: none;
+  background: #00929C; /* brand teal */
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+#backToTop.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+#backToTop:hover{
+  background: #007C84;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.22);
+}
+</style>
+</head>
+<body>
+<div class="app">
+<!-- LEFT NAV -->
+<aside class="nav">
+<div class="brandline">
+<h1>App Design System</h1>
+</div>
+<h2>Foundation</h2>
+<button class="nav-btn active" data-tab="tab-colors">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 3a9 9 0 0 0 0 18h3a3 3 0 0 0 0-6h-1a2 2 0 0 1 0-4h2a4 4 0 0 0 0-8h-4z"></path>
+<path d="M7.5 10.5h.01"></path><path d="M9.5 7.5h.01"></path><path d="M14.5 7.5h.01"></path><path d="M16.5 10.5h.01"></path>
+</svg>
+</span>
+        Color
+      </button>
+<div class="nav-group" id="nav-group-typography">
+<button aria-controls="nav-sub-typography" aria-expanded="false" class="nav-group-toggle" id="typographyToggle" type="button">
+<span class="left"><span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 7V5h16v2"></path><path d="M10 19h4"></path><path d="M12 5v14"></path>
+</svg>
+</span><span>Typography</span></span>
+<span aria-hidden="true" class="chev">▾</span>
+</button>
+<div aria-label="Typography pages" class="nav-sub" id="nav-sub-typography">
+<button class="nav-btn" data-subnav="true" data-tab="tab-typography-spec">KeelWork Typography</button>
+<div aria-label="KeelWork Typography sections" class="nav-subsub">
+<a class="nav-sub-link" data-jump="kw-overview" href="#kw-overview">Overview</a>
+<a class="nav-sub-link" data-jump="kw-principles" href="#kw-principles">Principles</a>
+<a class="nav-sub-link" data-jump="kw-system" href="#kw-system">Type System</a>
+<a class="nav-sub-link" data-jump="kw-scale" href="#kw-scale">Type Scale</a>
+<a class="nav-sub-link" data-jump="kw-tokens" href="#kw-tokens">Typography Tokens</a>
+<a class="nav-sub-link" data-jump="kw-guidelines" href="#kw-guidelines">Usage Guidelines</a>
+<a class="nav-sub-link" data-jump="kw-mobile" href="#kw-mobile">Mobile</a>
+<a class="nav-sub-link" data-jump="kw-accessibility" href="#kw-accessibility">Accessibility</a>
+<a class="nav-sub-link" data-jump="kw-specimens" href="#kw-specimens">Specimens</a>
+<a class="nav-sub-link" data-jump="kw-implementation" href="#kw-implementation">Implementation Notes</a>
+<a class="nav-sub-link" data-jump="kw-references" href="#kw-references">References</a>
+</div>
+<button class="nav-btn" data-subnav="true" data-tab="tab-typography">Newsletter Typography</button>
+</div>
+</div>
+<button class="nav-btn" data-tab="tab-layout">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path>
+</svg>
+</span>
+        Layout
+      </button>
+<button class="nav-btn" data-tab="tab-spacing">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M7 7l-3 3 3 3"></path><path d="M17 7l3 3-3 3"></path><path d="M4 10h16"></path>
+<path d="M12 14v7"></path><path d="M9 18l3 3 3-3"></path>
+</svg>
+</span>
+        Spacing
+      </button>
+<button class="nav-btn" data-tab="tab-buttons-links">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1"></path>
+<path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"></path>
+</svg>
+</span>
+        Buttons &amp; Links
+      </button>
+<h2>Components</h2>
+<button class="nav-btn" data-tab="tab-header">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 6h16"></path><path d="M4 10h9"></path><path d="M17 10h3"></path><path d="M4 14h16"></path>
+</svg>
+</span>
+        Header
+      </button>
+<button class="nav-btn" data-tab="tab-hero">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="14" rx="2" width="18" x="3" y="5"></rect>
+<path d="M7 13l2-2 3 3 3-4 2 3"></path><path d="M8 9h.01"></path>
+</svg>
+</span>
+        Hero
+      </button>
+<button class="nav-btn" data-tab="tab-split">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="M12 4v16"></path>
+<path d="M6 8h3"></path><path d="M6 12h3"></path><path d="M15 10h3"></path>
+</svg>
+</span>
+        Split Feature
+      </button>
+<button class="nav-btn" data-tab="tab-text">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 6h16"></path><path d="M4 10h16"></path><path d="M4 14h10"></path><path d="M4 18h12"></path>
+</svg>
+</span>
+        Text-only
+      </button>
+<button class="nav-btn" data-tab="tab-footer">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 18h16"></path><path d="M7 18v-6"></path><path d="M12 18v-10"></path><path d="M17 18v-4"></path><path d="M4 6h16"></path>
+</svg>
+</span>
+        Footer
+      </button>
+<!-- Preview button (separated) -->
+<div style="border-top: 1px solid var(--border); margin: 12px 0;"></div>
+<button class="nav-btn" data-tab="tab-preview">
+<span class="nav-ico">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="16" rx="2" width="18" x="3" y="4"></rect>
+<path d="M3 8h18"></path>
+<path d="M7 12h4"></path>
+<path d="M7 16h10"></path>
+</svg>
+</span>
+        Preview
+      </button>
+</aside>
+<!-- RIGHT CONTENT -->
+<main class="content">
+<div class="page-title">
+<h1 id="pageHeading">Color</h1>
+<div class="chip2">
+            Hover states are “web preview”; many email clients ignore :hover
+          </div>
+</div>
+<section class="panel">
+<div class="panel-header">
+<h3 id="panelTitle">Foundation • Color</h3>
+<span class="chip2" id="panelMeta">Tokens</span>
+</div>
+<div class="panel-body">
+<!-- COLOR TAB (added WHITE section option) -->
+<div class="tab active" data-heading="Color" data-meta="Tokens" data-title="Foundation • Color" id="tab-colors">
+<p class="note">
+  Color foundation for KeelWorks Newsletter App. This page documents brand palettes, neutrals, semantic, and functional colors with tokens and usage.
+</p>
+<!-- Primary bars -->
+<div aria-label="Primary brand colors" class="ds-bars">
+<div class="ds-bar" style="background:#00929C">
+<div class="ds-bar-label">Cyan • 500 • <span class="ds-mono">#00929C</span> • <span class="ds-mono">brand.primary.500</span></div>
+</div>
+<div class="ds-bar" style="background:#825E8B">
+<div class="ds-bar-label">Purple • 500 • <span class="ds-mono">#825E8B</span> • <span class="ds-mono">brand.secondary.500</span></div>
+</div>
+<div class="ds-bar" style="background:#F0BE42">
+<div class="ds-bar-label">Yellow • 500 • <span class="ds-mono">#F0BE42</span> • <span class="ds-mono">brand.tertiary.500</span></div>
+</div>
+<div class="ds-bar" style="background:#B91C1C">
+<div class="ds-bar-label">Red • 500 • <span class="ds-mono">#B91C1C</span> • <span class="ds-mono">brand.red.500</span></div>
+</div>
+</div>
+<div class="ds-divider"></div>
+<!-- Full-width palette tables -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#00929C"></span>Brand • Primary • Cyan</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#004047"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#004047</span></td><td class="ds-mono">brand.primary.900</td><td class="ds-usage">Dark accent sections • Headlines on light backgrounds</td></tr>
+<tr><td><span class="ds-swatch" style="background:#00545C"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#00545C</span></td><td class="ds-mono">brand.primary.800</td><td class="ds-usage">Strong hover states • Section headers</td></tr>
+<tr><td><span class="ds-swatch" style="background:#066C74"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#066C74</span></td><td class="ds-mono">brand.primary.700</td><td class="ds-usage">Pressed states • Emphasis borders</td></tr>
+<tr><td><span class="ds-swatch" style="background:#077A85"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#077A85</span></td><td class="ds-mono">brand.primary.600</td><td class="ds-usage">Hover states • Focus rings</td></tr>
+<tr><td><span class="ds-swatch" style="background:#00929C"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#00929C</span></td><td class="ds-mono">brand.primary.500</td><td class="ds-usage">Brand identity • Primary buttons • Key accents</td></tr>
+<tr><td><span class="ds-swatch" style="background:#40AAB2"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#40AAB2</span></td><td class="ds-mono">brand.primary.400</td><td class="ds-usage">Secondary button states • Card accents</td></tr>
+<tr><td><span class="ds-swatch" style="background:#58B6BE"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#58B6BE</span></td><td class="ds-mono">brand.primary.300</td><td class="ds-usage">Soft backgrounds • Tags</td></tr>
+<tr><td><span class="ds-swatch" style="background:#D2EEF0"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#D2EEF0</span></td><td class="ds-mono">brand.primary.100</td><td class="ds-usage">Tint fills • Subtle panels</td></tr>
+</tbody>
+</table>
+</div>
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#825E8B"></span>Brand • Secondary • Plum</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#433347"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#433347</span></td><td class="ds-mono">brand.secondary.900</td><td class="ds-usage">Dark accent sections • Headlines</td></tr>
+<tr><td><span class="ds-swatch" style="background:#53385A"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#53385A</span></td><td class="ds-mono">brand.secondary.800</td><td class="ds-usage">Emphasis headers • Strong hover</td></tr>
+<tr><td><span class="ds-swatch" style="background:#684571"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#684571</span></td><td class="ds-mono">brand.secondary.700</td><td class="ds-usage">Pressed states • Selected navigation</td></tr>
+<tr><td><span class="ds-swatch" style="background:#6F4B78"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#6F4B78</span></td><td class="ds-mono">brand.secondary.600</td><td class="ds-usage">Hover states • Tags</td></tr>
+<tr><td><span class="ds-swatch" style="background:#825E8B"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#825E8B</span></td><td class="ds-mono">brand.secondary.500</td><td class="ds-usage">Secondary actions • Accents</td></tr>
+<tr><td><span class="ds-swatch" style="background:#B49ABB"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#B49ABB</span></td><td class="ds-mono">brand.secondary.300</td><td class="ds-usage">Soft backgrounds • Callouts</td></tr>
+<tr><td><span class="ds-swatch" style="background:#D0BCD5"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#D0BCD5</span></td><td class="ds-mono">brand.secondary.200</td><td class="ds-usage">Surface tint • Card accents</td></tr>
+<tr><td><span class="ds-swatch" style="background:#E0D3E3"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#E0D3E3</span></td><td class="ds-mono">brand.secondary.100</td><td class="ds-usage">Subtle background • Notification surface</td></tr>
+</tbody>
+</table>
+</div>
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#F0BE42"></span>Brand • Tertiary • Yellow</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#7A5400"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#7A5400</span></td><td class="ds-mono">brand.tertiary.900</td><td class="ds-usage">Strong emphasis • High-contrast highlights</td></tr>
+<tr><td><span class="ds-swatch" style="background:#A87400"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#A87400</span></td><td class="ds-mono">brand.tertiary.800</td><td class="ds-usage">Emphasis header • Dark hover</td></tr>
+<tr><td><span class="ds-swatch" style="background:#C58C00"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#C58C00</span></td><td class="ds-mono">brand.tertiary.700</td><td class="ds-usage">Feature callouts • Accent borders</td></tr>
+<tr><td><span class="ds-swatch" style="background:#E2A81A"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#E2A81A</span></td><td class="ds-mono">brand.tertiary.600</td><td class="ds-usage">Hover/active • Promotion chips</td></tr>
+<tr><td><span class="ds-swatch" style="background:#F0BE42"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#F0BE42</span></td><td class="ds-mono">brand.tertiary.500</td><td class="ds-usage">Attention highlights • Accent tags (not warning)</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FFEBA3"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#FFEBA3</span></td><td class="ds-mono">brand.tertiary.200</td><td class="ds-usage">Soft highlight backgrounds • Containers</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FFF0CA"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FFF0CA</span></td><td class="ds-mono">brand.tertiary.100</td><td class="ds-usage">Subtle tint • Notification surface</td></tr>
+</tbody>
+</table>
+</div>
+<div aria-label="Guidance" class="ds-note" role="note">
+<span aria-hidden="true" class="ds-note-ic">i</span>
+<div class="ds-note-text">Brand Yellow is for highlights and marketing accents. Use the Warning palette (below) for semantic warning states.</div>
+</div>
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#B91C1C"></span>Brand • Red</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#7F1111"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#7F1111</span></td><td class="ds-mono">brand.red.900</td><td class="ds-usage">Strong promotional emphasis • High-contrast accents</td></tr>
+<tr><td><span class="ds-swatch" style="background:#991B1B"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#991B1B</span></td><td class="ds-mono">brand.red.800</td><td class="ds-usage">Emphasis headers • Dark hover states</td></tr>
+<tr><td><span class="ds-swatch" style="background:#A61E1E"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#A61E1E</span></td><td class="ds-mono">brand.red.700</td><td class="ds-usage">Feature callouts • Accent borders</td></tr>
+<tr><td><span class="ds-swatch" style="background:#B91C1C"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#B91C1C</span></td><td class="ds-mono">brand.red.500</td><td class="ds-usage">Marketing highlights • High attention accents</td></tr>
+<tr><td><span class="ds-swatch" style="background:#DD2F2C"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#DD2F2C</span></td><td class="ds-mono">brand.red.400</td><td class="ds-usage">Interactive hover states • Visual emphasis elements</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FCE2E2"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FCE2E2</span></td><td class="ds-mono">brand.red.100</td><td class="ds-usage">Subtle tint background • Decorative UI areas</td></tr>
+</tbody>
+</table>
+</div>
+<div aria-label="Guidance" class="ds-note" role="note">
+<span aria-hidden="true" class="ds-note-ic">i</span>
+<div class="ds-note-text">Brand Red is reserved for marketing/brand emphasis. Use <span class="ds-mono">semantic.error.*</span> for error states.</div>
+</div>
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#666A6F"></span>Neutral • Gray</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#212121"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#212121</span></td><td class="ds-mono">neutral.gray.900</td><td class="ds-usage">Primary headings • High-contrast body text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#404955"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#404955</span></td><td class="ds-mono">neutral.gray.800</td><td class="ds-usage">Section titles • Strong emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#666A6F"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#666A6F</span></td><td class="ds-mono">neutral.gray.500</td><td class="ds-usage">Default body text • Form labels</td></tr>
+<tr><td><span class="ds-swatch" style="background:#E5E5E5"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#E5E5E5</span></td><td class="ds-mono">neutral.gray.300</td><td class="ds-usage">Subtle borders • Dividers</td></tr>
+<tr><td><span class="ds-swatch" style="background:#F1F1F1"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#F1F1F1</span></td><td class="ds-mono">neutral.gray.200</td><td class="ds-usage">Subtle backgrounds • Card surfaces</td></tr>
+<tr><td><span class="ds-swatch" style="background:#F7F7F7"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#F7F7F7</span></td><td class="ds-mono">neutral.gray.100</td><td class="ds-usage">Page background • Section background</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FFFFFF"></span><span class="ds-mono">0</span> <span class="ds-mono ds-hex">#FFFFFF</span></td><td class="ds-mono">neutral.gray.0</td><td class="ds-usage">Base surface • Inverse text background</td></tr>
+</tbody>
+</table>
+</div>
+<div class="ds-divider"></div>
+<h3 class="ds-h3">Semantic Colors</h3>
+<!-- Semantic: Error -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#B91C1C"></span>Error</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#3B0707"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#3B0707</span></td><td class="ds-mono">semantic.error.900</td><td class="ds-usage">Extreme emphasis (rare) • Dark-on-light headings</td></tr>
+<tr><td><span class="ds-swatch" style="background:#5F0D0D"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#5F0D0D</span></td><td class="ds-mono">semantic.error.800</td><td class="ds-usage">Destructive confirmations • Critical emphasis text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#7F1111"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#7F1111</span></td><td class="ds-mono">semantic.error.700</td><td class="ds-usage">Error labels • Strong emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#991B1B"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#991B1B</span></td><td class="ds-mono">semantic.error.600</td><td class="ds-usage">Error icon/border • Accessible error text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#B91C1C"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#B91C1C</span></td><td class="ds-mono">semantic.error.500</td><td class="ds-usage">Default error state (alerts, borders, icons)</td></tr>
+<tr><td><span class="ds-swatch" style="background:#DD2F2C"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#DD2F2C</span></td><td class="ds-mono">semantic.error.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FCA5A5"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#FCA5A5</span></td><td class="ds-mono">semantic.error.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FECACA"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#FECACA</span></td><td class="ds-mono">semantic.error.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FCE2E2"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FCE2E2</span></td><td class="ds-mono">semantic.error.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+</tbody>
+</table>
+</div>
+<!-- Semantic: Success -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#0C9622"></span>Success</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#052E12"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#052E12</span></td><td class="ds-mono">semantic.success.900</td><td class="ds-usage">Extreme emphasis (rare) • Dark-on-light headings</td></tr>
+<tr><td><span class="ds-swatch" style="background:#064E1D"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#064E1D</span></td><td class="ds-mono">semantic.success.800</td><td class="ds-usage">Strong confirmation text • Success headers</td></tr>
+<tr><td><span class="ds-swatch" style="background:#06641A"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#06641A</span></td><td class="ds-mono">semantic.success.700</td><td class="ds-usage">Success labels • Emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#0A7A1C"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#0A7A1C</span></td><td class="ds-mono">semantic.success.600</td><td class="ds-usage">Success icon/border • Accessible success text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#0C9622"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#0C9622</span></td><td class="ds-mono">semantic.success.500</td><td class="ds-usage">Default success state (alerts, borders, icons)</td></tr>
+<tr><td><span class="ds-swatch" style="background:#4ADE80"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#4ADE80</span></td><td class="ds-mono">semantic.success.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#86EFAC"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#86EFAC</span></td><td class="ds-mono">semantic.success.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+<tr><td><span class="ds-swatch" style="background:#BBF7D0"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#BBF7D0</span></td><td class="ds-mono">semantic.success.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+<tr><td><span class="ds-swatch" style="background:#DCFCE7"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#DCFCE7</span></td><td class="ds-mono">semantic.success.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+</tbody>
+</table>
+</div>
+<!-- Semantic: Warning -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#F59E0B"></span>Warning</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#78350F"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#78350F</span></td><td class="ds-mono">semantic.warning.900</td><td class="ds-usage">Extreme emphasis (rare) • Dark-on-light headings</td></tr>
+<tr><td><span class="ds-swatch" style="background:#92400E"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#92400E</span></td><td class="ds-mono">semantic.warning.800</td><td class="ds-usage">Strong warning text • Headers</td></tr>
+<tr><td><span class="ds-swatch" style="background:#B45309"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#B45309</span></td><td class="ds-mono">semantic.warning.700</td><td class="ds-usage">Warning labels • Emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#D97706"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#D97706</span></td><td class="ds-mono">semantic.warning.600</td><td class="ds-usage">Warning icon/border • Accessible warning text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#F59E0B"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#F59E0B</span></td><td class="ds-mono">semantic.warning.500</td><td class="ds-usage">Default warning state (alerts, borders, icons)</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FBBF24"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#FBBF24</span></td><td class="ds-mono">semantic.warning.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FCD34D"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#FCD34D</span></td><td class="ds-mono">semantic.warning.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FDE68A"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#FDE68A</span></td><td class="ds-mono">semantic.warning.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+<tr><td><span class="ds-swatch" style="background:#FFF7E6"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#FFF7E6</span></td><td class="ds-mono">semantic.warning.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+</tbody>
+</table>
+</div>
+<!-- Semantic: Information -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#2563EB"></span>Information</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#1E3A8A"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#1E3A8A</span></td><td class="ds-mono">semantic.info.900</td><td class="ds-usage">High-contrast info headings</td></tr>
+<tr><td><span class="ds-swatch" style="background:#1E40AF"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#1E40AF</span></td><td class="ds-mono">semantic.info.800</td><td class="ds-usage">Strong info labels • Header emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#1D4ED8"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#1D4ED8</span></td><td class="ds-mono">semantic.info.700</td><td class="ds-usage">Info text emphasis • Buttons on pale info</td></tr>
+<tr><td><span class="ds-swatch" style="background:#2563EB"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#2563EB</span></td><td class="ds-mono">semantic.info.600</td><td class="ds-usage">Info icon/border • Accessible info text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#3B82F6"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#3B82F6</span></td><td class="ds-mono">semantic.info.500</td><td class="ds-usage">Default info state (alerts, borders, icons)</td></tr>
+<tr><td><span class="ds-swatch" style="background:#60A5FA"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#60A5FA</span></td><td class="ds-mono">semantic.info.400</td><td class="ds-usage">Hover/active accents • Inline emphasis</td></tr>
+<tr><td><span class="ds-swatch" style="background:#93C5FD"></span><span class="ds-mono">300</span> <span class="ds-mono ds-hex">#93C5FD</span></td><td class="ds-mono">semantic.info.300</td><td class="ds-usage">Soft borders • Chips</td></tr>
+<tr><td><span class="ds-swatch" style="background:#BFDBFE"></span><span class="ds-mono">200</span> <span class="ds-mono ds-hex">#BFDBFE</span></td><td class="ds-mono">semantic.info.200</td><td class="ds-usage">Tinted surfaces • Subtle banners</td></tr>
+<tr><td><span class="ds-swatch" style="background:#DBEAFE"></span><span class="ds-mono">100</span> <span class="ds-mono ds-hex">#DBEAFE</span></td><td class="ds-mono">semantic.info.100</td><td class="ds-usage">Background fills • Toast background</td></tr>
+</tbody>
+</table>
+</div>
+<div class="ds-divider"></div>
+<h3 class="ds-h3">Functional Colors</h3>
+<!-- Functional: Links (Light Mode) -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#006699"></span>Links • Light Mode</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#006699"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#006699</span></td><td class="ds-mono">functional.link.default</td><td class="ds-usage">Default link text</td></tr>
+<tr><td><span class="ds-swatch" style="background:#065379"></span><span class="ds-mono">800</span> <span class="ds-mono ds-hex">#065379</span></td><td class="ds-mono">functional.link.hover</td><td class="ds-usage">Hover state</td></tr>
+<tr><td><span class="ds-swatch" style="background:#004466"></span><span class="ds-mono">900</span> <span class="ds-mono ds-hex">#004466</span></td><td class="ds-mono">functional.link.active</td><td class="ds-usage">Pressed/active state</td></tr>
+<tr><td><span class="ds-swatch" style="background:#663399"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#663399</span></td><td class="ds-mono">functional.link.visited</td><td class="ds-usage">Visited links</td></tr>
+<tr><td><span class="ds-swatch" style="background:#999999"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#999999</span></td><td class="ds-mono">functional.link.disabled</td><td class="ds-usage">Disabled links • Inactive navigation</td></tr>
+</tbody>
+</table>
+</div>
+<!-- Functional: Links (Dark Mode) -->
+<div class="ds-section">
+<div class="ds-section-head">
+<div class="ds-section-title"><span class="ds-dot" style="background:#4DB8FF"></span>Links • Dark Mode</div>
+<div class="ds-section-meta">Columns: Color • Token • Usage</div>
+</div>
+<table class="ds-table">
+<thead><tr><th style="width:180px">Color</th><th style="width:240px">Token</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><span class="ds-swatch" style="background:#4DB8FF"></span><span class="ds-mono">700</span> <span class="ds-mono ds-hex">#4DB8FF</span></td><td class="ds-mono">functional.link.default.dark</td><td class="ds-usage">Default link text on dark surfaces</td></tr>
+<tr><td><span class="ds-swatch" style="background:#80CCFF"></span><span class="ds-mono">600</span> <span class="ds-mono ds-hex">#80CCFF</span></td><td class="ds-mono">functional.link.hover.dark</td><td class="ds-usage">Hover state</td></tr>
+<tr><td><span class="ds-swatch" style="background:#B38DFF"></span><span class="ds-mono">500</span> <span class="ds-mono ds-hex">#B38DFF</span></td><td class="ds-mono">functional.link.visited.dark</td><td class="ds-usage">Visited links</td></tr>
+<tr><td><span class="ds-swatch" style="background:#666666"></span><span class="ds-mono">400</span> <span class="ds-mono ds-hex">#666666</span></td><td class="ds-mono">functional.link.disabled.dark</td><td class="ds-usage">Disabled links • Inactive navigation</td></tr>
+</tbody>
+</table>
+</div><div class="ds-divider"></div>
+<div class="ds-info">
+<span aria-hidden="true" class="ds-info-ic">i</span>
+<div class="ds-info-body">
+<div class="ds-info-title">Why we define color scales from 100–900</div>
+<ul class="ds-info-list">
+<li>Consistent light-to-dark progression</li>
+<li>Easier mapping for design + dev</li>
+<li>Supports accessibility + theming (including dark mode)</li>
+<li>Avoids inconsistent labels like “light”, “lighter”, “darkest”</li>
+</ul>
+</div>
+</div>
+</div><div class="tab" data-heading="KeelWorks Typography" data-meta="KeelWorks Typography" data-title="Foundation • Typography" id="tab-typography-spec"><div class="kwds">
+<div class="hero" data-keywords="overview purpose rationale fonts base scale" id="kw-overview">
+<h1>KeelWorks Typography</h1>
+<p>KeelWorks typography provides a clear, accessible reading experience across products by pairing a readable body typeface with a distinctive heading typeface and a consistent scale.</p>
+<div class="meta">
+<span class="pill"><span class="mono">Body</span>: Lato</span>
+<span class="pill"><span class="mono">Headings</span>: Raleway</span>
+<span class="pill"><span class="mono">Base</span>: 18px</span>
+<span class="pill"><span class="mono">Scale</span>: 1.125 (Major Second)</span>
+<span class="pill"><span class="mono">Goal</span>: Clarity + hierarchy + accessibility</span>
+</div>
+</div>
+<section class="card" data-keywords="principles clarity hierarchy consistency accessibility readability" id="kw-principles">
+<h2>Principles</h2>
+<div class="grid2">
+<div><h3>Clarity</h3><p>Prioritize readability and scanability in all contexts, from dense dashboards to long-form content.</p>
+<ul><li>Prefer simple, open letterforms and comfortable spacing.</li><li>Keep headings short; use body text for detail.</li></ul></div>
+<div><h3>Consistency</h3><p>Use a shared scale and token set so typography feels unified across platforms and surfaces.</p>
+<ul><li>Always use tokens instead of ad-hoc sizes.</li><li>Maintain hierarchy order (don’t skip levels).</li></ul></div>
+<div><h3>Hierarchy</h3><p>Create obvious structure with size, weight, and spacing—without relying on color alone.</p>
+<ul><li>Use Display styles for page and section titles.</li><li>Use Heading styles for component and content headings.</li></ul></div>
+<div><h3>Accessibility</h3><p>Support users with low vision, cognitive load constraints, or reading challenges.</p>
+<ul><li>Keep sufficient size and line-height for body text.</li><li>Meet WCAG contrast requirements for text and labels.</li></ul></div>
+</div>
+</section>
+<section class="card" data-keywords="system fonts rationale lato raleway" id="kw-system">
+<h2>Type System</h2>
+<p>The system uses <strong>Lato</strong> for body/UI text and <strong>Raleway</strong> for headings/display, balancing readability with emphasis.</p>
+<div class="grid2">
+<div class="panel"><h4>Heading Typeface: Raleway</h4><ul><li>Display and Heading tokens.</li><li>Titles and short-to-medium phrases.</li><li>Avoid for dense paragraphs.</li></ul></div>
+<div class="panel"><h4>Body Typeface: Lato</h4><ul><li>Body, Label, and Caption tokens.</li><li>Long reading and UI copy.</li><li>Generous line-height for legibility.</li></ul></div>
+</div>
+<div class="note"><strong>Rule of thumb:</strong> Raleway communicates structure. Lato communicates content.</div>
+</section>
+<section class="card" data-keywords="type scale major second 1.125 base 18px" id="kw-scale">
+<h2>Type Scale</h2>
+<p>We use an <strong>18px base</strong> and the <strong>Major Second scale (1.125)</strong> for predictable steps that preserve hierarchy and accessibility.</p>
+<h3>Scale Steps</h3>
+<table aria-label="Type scale steps">
+<thead><tr><th>Role</th><th class="right">Size (px)</th><th class="right">Relative</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td class="token">caption</td><td class="right">12</td><td class="right">0.67×</td><td>Captions, helper text</td></tr>
+<tr><td class="token">label-sm</td><td class="right">14</td><td class="right">0.78×</td><td>Labels, UI metadata</td></tr>
+<tr><td class="token">body-sm</td><td class="right">16</td><td class="right">0.89×</td><td>Secondary content, compact UI</td></tr>
+<tr><td class="token">body-md</td><td class="right">18</td><td class="right">1.00×</td><td>Default body size</td></tr>
+<tr><td class="token">body-lg</td><td class="right">20</td><td class="right">1.11×</td><td>Primary content, emphasis</td></tr>
+<tr><td class="token">heading-md</td><td class="right">22</td><td class="right">1.22×</td><td>Subheadings</td></tr>
+<tr><td class="token">heading-lg</td><td class="right">24</td><td class="right">1.33×</td><td>Mobile max for headings</td></tr>
+<tr><td class="token">heading-xl</td><td class="right">26</td><td class="right">1.44×</td><td>Card / panel titles</td></tr>
+<tr><td class="token">display-md</td><td class="right">28</td><td class="right">1.56×</td><td>Content headers</td></tr>
+<tr><td class="token">display-lg</td><td class="right">32</td><td class="right">1.78×</td><td>Section titles</td></tr>
+<tr><td class="token">display-xl</td><td class="right">36</td><td class="right">2.00×</td><td>Main page titles</td></tr>
+</tbody>
+</table>
+<div class="note">Use tokens as the source of truth (approved weights and line-heights).</div>
+</section>
+<section class="card" data-keywords="tokens typography tokens variables design tokens size line height weight" id="kw-tokens">
+<h2>Typography Tokens</h2>
+<p>Tokens define approved size, line-height, and weight combinations. Use tokens consistently across design and code.</p>
+<h3>Heading Tokens (Raleway)</h3>
+<table aria-label="Heading tokens">
+<thead><tr><th>Token</th><th class="right">Size</th><th class="right">Line-height</th><th>Weight</th><th>Recommended use</th></tr></thead>
+<tbody>
+<tr><td class="mono token">display-xl</td><td class="right">36px</td><td class="right">44px</td><td>Semi-bold (600)</td><td>Main page titles</td></tr>
+<tr><td class="mono token">display-lg</td><td class="right">32px</td><td class="right">38px</td><td>Semi-bold (600)</td><td>Section titles</td></tr>
+<tr><td class="mono token">display-md</td><td class="right">28px</td><td class="right">34px</td><td>Medium (500)</td><td>Content headers</td></tr>
+<tr><td class="mono token">heading-xl</td><td class="right">26px</td><td class="right">33px</td><td>Medium (500)</td><td>Card titles</td></tr>
+<tr><td class="mono token">heading-lg</td><td class="right">24px</td><td class="right">31px</td><td>Medium (500)</td><td>Max heading size for mobile</td></tr>
+<tr><td class="mono token">heading-md</td><td class="right">22px</td><td class="right">28px</td><td>Medium (500)</td><td>Subheadings</td></tr>
+<tr><td class="mono token">heading-sm</td><td class="right">20px</td><td class="right">26px</td><td>Medium (500)</td><td>Inline sections</td></tr>
+</tbody>
+</table>
+<h3>Body &amp; UI Tokens (Lato)</h3>
+<table aria-label="Body tokens">
+<thead><tr><th>Token</th><th class="right">Size</th><th class="right">Line-height</th><th>Weight</th><th>Recommended use</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td class="mono token">body-lg</td><td class="right">20px</td><td class="right">30px</td><td>Regular (400)</td><td>Primary content</td><td>Desktop web, long reading</td></tr>
+<tr><td class="mono token">body-md</td><td class="right">18px</td><td class="right">27px</td><td>Regular (400)</td><td>Primary content</td><td>Default for web and apps</td></tr>
+<tr><td class="mono token">body-sm</td><td class="right">16px</td><td class="right">24px</td><td>Regular (400)</td><td>Secondary content</td><td>Email, compact surfaces</td></tr>
+<tr><td class="mono token">label-sm</td><td class="right">14px</td><td class="right">21px</td><td>Regular (400)</td><td>Labels, UI metadata</td><td>Field labels, table headers</td></tr>
+<tr><td class="mono token">caption</td><td class="right">12px</td><td class="right">18px</td><td>Regular (400)</td><td>Captions, helper text</td><td>Use with strong contrast</td></tr>
+</tbody>
+</table>
+<div class="note"><strong>Line-height intent:</strong> Display ≈ 1.2× • Headings ≈ 1.3× • Body ≈ 1.5× (token values above are the approved specs).</div>
+</section>
+<section class="card" data-keywords="guidelines do dont hierarchy headings body usage rules" id="kw-guidelines">
+<h2>Usage Guidelines</h2>
+<p>Use typography to communicate structure first, then style. Follow these rules to keep pages readable and consistent.</p>
+<div class="do-dont">
+<div class="panel do"><h4>Do</h4><ul>
+<li>Use <span class="mono">display-*</span> for pages and major sections.</li>
+<li>Use <span class="mono">heading-*</span> for content and component headings.</li>
+<li>Use <span class="mono">body-md</span> as the default for paragraph text.</li>
+<li>Keep headings short; move details into body text.</li>
+<li>Maintain hierarchy (don’t jump from Display to small labels).</li>
+</ul></div>
+<div class="panel dont"><h4>Don’t</h4><ul>
+<li>Use Raleway for dense paragraphs or long-form reading.</li>
+<li>Skip levels (e.g., <span class="mono">display-xl</span> → <span class="mono">caption</span>).</li>
+<li>Invent one-off font sizes that bypass tokens.</li>
+<li>Reduce line-height below approved specs to “fit more.”</li>
+<li>Rely on color alone for hierarchy.</li>
+</ul></div>
+</div>
+<h3>Platform Notes</h3>
+<ul>
+<li><strong>Desktop web:</strong> Prefer <span class="mono">body-md</span> or <span class="mono">body-lg</span> depending on density.</li>
+<li><strong>Mobile:</strong> Keep headings at or below <span class="mono">heading-lg</span> unless intentionally editorial.</li>
+<li><strong>Data-heavy UIs:</strong> Use <span class="mono">body-sm</span> sparingly; ensure contrast and spacing remain comfortable.</li>
+</ul>
+</section>
+<section class="card" data-keywords="mobile responsive breakpoints app ios android" id="kw-mobile">
+<h2>Mobile</h2>
+<p>
+          KeelWorks products run on mobile. Typography should stay readable at arm’s length, adapt to smaller viewports,
+          and avoid overly large display styles that push content below the fold.
+        </p>
+<h3>Recommended defaults</h3>
+<ul>
+<li><strong>Default body:</strong> <span class="mono">body-md</span> (18px). Use <span class="mono">body-sm</span> only for dense UI where space is constrained.</li>
+<li><strong>Headings:</strong> Prefer <span class="mono">heading-md</span> / <span class="mono">heading-lg</span>. Avoid <span class="mono">display-xl</span> on small screens.</li>
+<li><strong>Line length:</strong> Keep paragraphs short; break long instructions into bullets.</li>
+</ul>
+<h3>Suggested responsive behavior</h3>
+<p>Use one of these patterns and apply it consistently:</p>
+<div class="grid2">
+<div class="panel">
+<h4>Pattern A — Same tokens, usage limits</h4>
+<ul>
+<li>Keep token specs identical on all platforms.</li>
+<li>On mobile, cap headings at <span class="mono">heading-lg</span> and use <span class="mono">display-lg</span> only for top-level screens.</li>
+</ul>
+</div>
+<div class="panel">
+<h4>Pattern B — Responsive token overrides</h4>
+<ul>
+<li>Use the same token names, but adjust a few sizes at a defined breakpoint (e.g., ≤768px).</li>
+<li>Typical reductions: <span class="mono">display-xl</span> → 32px, <span class="mono">display-lg</span> → 28px, <span class="mono">heading-xl</span> → 22px.</li>
+</ul>
+</div>
+</div>
+<h3>Breakpoints (documentation)</h3>
+<ul>
+<li><strong>Mobile:</strong> ≤ 768px (or your app’s “compact” width class)</li>
+<li><strong>Tablet:</strong> 769–1024px</li>
+<li><strong>Desktop:</strong> ≥ 1025px</li>
+</ul>
+<div class="note">
+          If the product uses native dynamic type (iOS) or font scaling (Android), tokens should map to the system’s text styles and respect user font-size settings.
+        </div>
+</section>
+<section class="card" data-keywords="accessibility wcag contrast minimum sizes line height" id="kw-accessibility">
+<h2>Accessibility</h2>
+<p>Typography must support legibility for all users. Follow WCAG guidance for contrast and keep token sizing unless a documented exception exists.</p>
+<h3>Minimum guidance</h3>
+<ul>
+<li>Prefer <span class="mono">body-md</span> (18px) or larger for default reading.</li>
+<li>Use <span class="mono">caption</span> only for supporting content and with strong contrast.</li>
+<li>Don’t reduce line-height below token specs.</li>
+<li>Ensure interactive text meets contrast requirements in all states.</li>
+</ul>
+<div class="note">If you need an exception (e.g., dense tables), document the reason and add compensating support (contrast, spacing, zoom).</div>
+</section>
+<section class="card" data-keywords="specimens examples preview display heading body" id="kw-specimens">
+<h2>Specimens</h2>
+<p>Visual previews of token styles.</p>
+<div class="specimen">
+<div class="label">Headings</div><div class="sample"><div class="tag mono">display-xl</div><div class="display-xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">display-lg</div><div class="display-lg">Pellentesque habitant morbi tristique senectus et netus.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">display-md</div><div class="display-md">Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">heading-xl</div><div class="heading-xl">Donec ullamcorper nulla non metus auctor fringilla.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">heading-lg</div><div class="heading-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">heading-md</div><div class="heading-md">Pellentesque habitant morbi tristique senectus et netus.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">heading-sm</div><div class="heading-sm">Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div></div>
+<div class="label">Body &amp; UI</div><div class="sample"><div class="tag mono">body-lg</div><div class="body-lg">Donec ullamcorper nulla non metus auctor fringilla. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">body-md</div><div class="body-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Aenean eu leo quam.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">body-sm</div><div class="body-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">label-sm</div><div class="label-sm">Label text for form fields, table headers, and metadata</div></div>
+<div class="label"></div><div class="sample"><div class="tag mono">caption</div><div class="caption">Caption or helper text (use sparingly; ensure contrast)</div></div>
+</div>
+</section>
+<section class="card" data-keywords="implementation css tokens variables figma code" id="kw-implementation">
+<h2>Implementation Notes</h2>
+<p>Keep tokens consistent between design and code. Minimal CSS token example:</p>
+<pre><code>:root {
+  --font-body: "Lato", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  --font-heading: "Raleway", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+
+  --display-xl-size: 36px; --display-xl-lh: 44px; --display-xl-wt: 600;
+  --display-lg-size: 32px; --display-lg-lh: 38px; --display-lg-wt: 600;
+  --display-md-size: 28px; --display-md-lh: 34px; --display-md-wt: 500;
+
+  --heading-xl-size: 26px; --heading-xl-lh: 33px; --heading-xl-wt: 500;
+  --heading-lg-size: 24px; --heading-lg-lh: 31px; --heading-lg-wt: 500;
+  --heading-md-size: 22px; --heading-md-lh: 28px; --heading-md-wt: 500;
+  --heading-sm-size: 20px; --heading-sm-lh: 26px; --heading-sm-wt: 500;
+
+  --body-lg-size: 20px; --body-lg-lh: 30px; --body-lg-wt: 400;
+  --body-md-size: 18px; --body-md-lh: 27px; --body-md-wt: 400;
+  --body-sm-size: 16px; --body-sm-lh: 24px; --body-sm-wt: 400;
+  --label-sm-size: 14px; --label-sm-lh: 21px; --label-sm-wt: 400;
+  --caption-size: 12px; --caption-lh: 18px; --caption-wt: 400;
+}</code></pre>
+<h3>Recommended conventions</h3>
+<ul><li>Use token names as the source of truth.</li><li>Map tokens to platform styles (CSS, components, native).</li><li>Document responsive overrides centrally.</li></ul>
+</section>
+<section class="card" data-keywords="references typescale research" id="kw-references">
+<h2>References</h2>
+<ul><li>Typescale research and scale selection rationale (internal)</li><li>Font selection research (internal)</li><li>WCAG contrast guidance (external standards)</li></ul>
+</section>
+</div></div><div class="tab" data-heading="Typography" data-meta="Sample-matched" data-title="Foundation • Typography" id="tab-typography">
+<p class="note">
+                Matches the newsletter sample: headings use Raleway/Roboto, body uses Lato. H1/H2 are 24px; paragraphs are 16px.
+              </p>
+<div class="token-list">
+<div class="token">
+<div>
+<div class="name"><span class="section-h1">Heading font</span></div>
+<div class="desc">h1 (titles, section headers).</div>
+</div>
+<div class="value">Raleway, Arial, sans-serif</div>
+</div>
+<div class="token">
+<div>
+<div class="name"><span class="p-body">Body font</span></div>
+<div class="desc">p (paragraphs).</div>
+</div>
+<div class="value">Lato</div>
+</div>
+<div class="token">
+<div>
+<div class="name"> <span class="section-h1">Heading size</span></div>
+<div class="desc">h1/h2</div>
+</div>
+<div class="value">24px</div>
+</div>
+<div class="token">
+<div>
+<div class="name"><span class="p-body">Body size</span></div>
+<div class="desc">p (paragraphs).</div>
+</div>
+<div class="value">16px</div>
+</div>
+</div>
+<div class="preview-wrap">
+<p class="note">Preview: sample heading + paragraph styling.</p>
+<div class="email-frame">
+<div class="block">
+<div class="section-h1">Say Hello to The Current!</div>
+<p class="p-body">We're thrilled to debut KeelWorks' revamped newsletter for the new year. Here you'll find vibrant images and more story depth.&gt;</p>
+<p class="p-body">
+                      Links look like <a class="link" href="#" onclick="return false;">this</a> (teal + underlined).
+                    </p>
+</div>
+</div>
+</div>
+</div><div class="tab" data-heading="Layout" data-meta="Grid" data-title="Foundation • Layout" id="tab-layout">
+<p class="note">
+                Default layout is single-column. Feature sections use a 60/40 two-column split that stacks on mobile.
+              </p>
+<div class="token-list">
+<div class="token">
+<div>
+<div class="name">Container</div>
+<div class="desc">Main email card.</div>
+</div>
+<div class="value">Max 640px</div>
+</div>
+<div class="token">
+<div>
+<div class="name">Section padding</div>
+<div class="desc">Standard block padding.</div>
+</div>
+<div class="value">20px</div>
+</div>
+<div class="token">
+<div>
+<div class="name">Two-column split</div>
+<div class="desc">Text 60% / image 40% with 10px gutters.</div>
+</div>
+<div class="value">60/40 • 10px</div>
+</div>
+</div>
+<div class="preview-wrap">
+<p class="note">Preview: one-column vs two-column.</p>
+<div class="email-frame">
+<div class="bg-white block">
+<div class="h2">One-column section</div>
+<p class="p">Title + text (and optionally a full-width image).</p>
+</div>
+<div class="bg-light">
+<div class="title-strip">
+<div class="h2" style="margin-bottom:0;">Two-column section</div>
+</div>
+<div class="two-col">
+<div class="left">
+<p class="p">Text column (60%). Use this for feature stories.</p>
+</div>
+<div class="right">
+<div class="thumb"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="tab" data-heading="Spacing" data-meta="Scale" data-title="Foundation • Spacing" id="tab-spacing">
+<p class="note">
+                Spacing scale used throughout: 6, 10, 12, 20, 32, 48.
+              </p>
+<div class="token-list">
+<div class="token">
+<div><div class="name">XS</div><div class="desc">Utility strip padding.</div></div>
+<div class="value">6px</div>
+</div>
+<div class="token">
+<div><div class="name">S</div><div class="desc">Small gaps / gutters.</div></div>
+<div class="value">10px</div>
+</div>
+<div class="token">
+<div><div class="name">M</div><div class="desc">Between paragraphs and image-to-text.</div></div>
+<div class="value">12px</div>
+</div>
+<div class="token">
+<div><div class="name">L</div><div class="desc">Default section padding.</div></div>
+<div class="value">20px</div>
+</div>
+<div class="token">
+<div><div class="name">XL</div><div class="desc">Footer group spacing.</div></div>
+<div class="value">32px</div>
+</div>
+<div class="token">
+<div><div class="name">2XL</div><div class="desc">Footer social spacing.</div></div>
+<div class="value">48px</div>
+</div>
+</div>
+</div><div class="tab" data-heading="Buttons &amp; Links" data-meta="States" data-title="Foundation • Buttons &amp; Links" id="tab-buttons-links">
+<p class="note">
+                Buttons and links are defined together. Hover behavior is for web preview; many email clients won’t show hover.
+              </p>
+<div class="token-list">
+<div class="token">
+<div>
+<div class="name">Primary button</div>
+<div class="desc">Filled purple, white text.</div>
+</div>
+<div class="value">hover: darken</div>
+</div>
+<div class="token">
+<div>
+<div class="name">Secondary button</div>
+<div class="desc">Outlined purple, transparent fill.</div>
+</div>
+<div class="value">hover: subtle wash</div>
+</div>
+<div class="token">
+<div>
+<div class="name">Link</div>
+<div class="desc">Teal and underlined.</div>
+</div>
+<div class="value">hover: darken teal</div>
+</div>
+</div>
+<div class="preview-wrap">
+<p class="note">Preview: button + link styles.</p>
+<div class="btn-row">
+<a class="btn btn-primary" href="#" onclick="return false;">Primary Button</a>
+<a class="btn btn-secondary" href="#" onclick="return false;">Secondary Button</a>
+<a class="btn btn-primary" href="#" onclick="return false;">
+<i aria-hidden="true" class="fa-solid fa-heart"></i>
+                  Primary Button
+                </a>
+<a class="btn btn-secondary" href="#" onclick="return false;">
+<i aria-hidden="true" class="fa-solid fa-heart"></i>
+                  Secondary Button
+                </a>
+</div>
+<p style="margin: 12px 0 0 0;">
+                  Example links:
+                  <a class="link" href="#" onclick="return false;">View email in browser</a>
+                   • 
+                  <a class="link" href="#" onclick="return false;">Privacy policy</a>
+</p>
+</div>
+</div><div class="tab" data-heading="Header" data-meta="Logo + Date" data-title="Component • Header" id="tab-header">
+<p class="note">
+                Header shows “View email in browser” strip + logo placeholder (left) + date (right).
+              </p>
+<div class="email-frame">
+<div class="strip">
+<a href="#" onclick="return false;">View email in browser</a>
+</div>
+<div class="header">
+<div class="header-row">
+<div class="logo">KeelWorks Logo (180px)</div>
+<div class="header-top">JAN '26</div>
+</div>
+</div>
+</div>
+</div><div class="tab" data-heading="Hero" data-meta="Title + Image + Text" data-title="Component • Hero" id="tab-hero">
+<p class="note">
+                Hero uses H1 (24px), a full-width image (radius 6px), and paragraph.
+              </p>
+<div class="email-frame">
+<div class="header">
+<div class="header-row">
+<div class="logo">KeelWorks Logo (180px)</div>
+<div class="header-top">JAN '26</div>
+</div>
+</div>
+<div class="block">
+<div class="h1">Say Hello to The Current!</div>
+<div aria-label="Hero image placeholder" class="hero-img"></div>
+<p class="p">
+                    We're thrilled to debut KeelWorks' revamped newsletter for the new year.
+                  </p>
+</div>
+</div>
+</div><div class="tab" data-heading="Split Feature" data-meta="60/40" data-title="Component • Split Feature" id="tab-split">
+<p class="note">
+                Title strip + text left and thumbnail right. Stacks on mobile (image first).
+              </p>
+<div class="email-frame">
+<div class="bg-light">
+<div class="title-strip">
+<div class="h2" style="margin-bottom: 0">
+                      Inclusive by Heart: Celebrating the Strength of Our Diversity
+                    </div>
+</div>
+<div class="two-col">
+<div class="left">
+<p class="p">
+                        Inclusion and diversity are KeelWorks’ greatest strengths and are intrinsic to our DNA.
+                      </p>
+</div>
+<div class="right">
+<div aria-label="Thumbnail placeholder" class="thumb"></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="tab" data-heading="Text-only" data-meta="Simple" data-title="Component • Text-only" id="tab-text">
+<p class="note">H2 + paragraph. Use any section background: white / off-white / light.</p>
+<div class="email-frame">
+<div class="bg-white block">
+<div class="h2">Worldwide and Worldwise</div>
+<p class="p">
+                    KeelWorks’ volunteers span the globe. Today, folks from nearly 30 countries across 5 continents share their time and talents.
+                  </p>
+</div>
+</div>
+</div><div class="tab" data-heading="Footer" data-meta="Links + Social" data-title="Component • Footer" id="tab-footer">
+<p class="note">Footer uses dark background with underlined links and 32px social icons.</p>
+<div class="email-frame">
+<div class="footer">
+<p class="group" style="margin-top: 0">
+<a href="#" onclick="return false;">Visit us</a> |
+                    <a href="#" onclick="return false;">Donate</a> |
+                    <a href="#" onclick="return false;">Get involved</a>
+</p>
+<div class="social">
+<div class="icon" title="Facebook"><i class="fa-brands fa-facebook" style="font-size:24px"></i></div>
+<div class="icon" title="YouTube"><i class="fa-brands fa-youtube"></i></div>
+<div class="icon" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></div>
+<div class="icon" title="Instagram"><i class="fa-brands fa-instagram"></i></div>
+</div>
+<!-- <div class="social">
+                    <div class="icon" title="Facebook"></div>
+                    <div class="icon" title="YouTube"></div>
+                    <div class="icon" title="LinkedIn"></div>
+                    <div class="icon" title="Instagram"></div>
+                  </div>-->
+<p class="group">
+<a href="#" onclick="return false;">Unsubscribe</a> |
+                    <a href="#" onclick="return false;">Privacy policy</a>
+</p>
+<p style="margin: 0 0 4px 0">© 2026 KeelWorks. All rights reserved.</p>
+<p style="margin: 0">2398 West Beach Road, Oak Harbor, WA 98277 USA</p>
+</div>
+</div>
+</div><div class="tab" data-heading="Preview" data-meta="Max 640px" data-title="Email Template" id="tab-preview">
+<div class="preview-switch-row">
+<button aria-label="Toggle preview device" class="preview-switch-btn" type="button"></button>
+</div>
+<div class="desktop preview-device" data-device="desktop"><div class="email-frame">
+<!-- View in browser strip -->
+<div class="strip">
+<a href="#" onclick="return false;">View email in browser</a>
+</div>
+<!-- Header -->
+<div class="header">
+<div class="header-row">
+<div class="logo">KeelWorks Logo (180px)</div>
+<div class="header-top">JAN '26</div>
+</div>
+</div>
+<!-- Hero -->
+<div class="block">
+<div class="h1">Hero Title Goes Here</div>
+<div aria-label="Hero image placeholder" class="hero-img"><span style="padding: 250px; line-height: 150px;"><span class="img-label hero-img-label">Hero image</span></span></div>
+<p class="p">
+                    Hero description paragraph. Use 16px body text and 1.5 line-height. Links can be
+                    teal and underlined when needed.
+                  </p>
+</div>
+<!-- Split Feature (light section) -->
+<div class="bg-light">
+<div class="title-strip">
+<div class="h2" style="margin-bottom:0;">Split Feature Title</div>
+</div>
+<div class="two-col">
+<div class="left">
+<p class="p">
+                        Left column text (60%). This is your “title + text on left, thumbnail on right” pattern.
+                      </p>
+</div>
+<div class="right">
+<div aria-label="Thumbnail placeholder" class="thumb"><span style="padding: 50px; line-height: 100px;">Thumbnail image</span></div>
+</div>
+</div>
+</div>
+<!-- CTA (lavender section) -->
+<div class="bg-purple block">
+<div class="h2" style="margin:0 0 8px 0;">CTA Title</div>
+<p class="p">
+                    CTA body text. Keep it short and action-oriented. This block uses the lavender background and purple button.
+                  </p>
+<a class="btn btn-primary" href="#" onclick="return false;" style="margin-top:12px; padding: 10px 12px;">
+<i class="fa-solid fa-heart"></i>
+                    Donate
+                  </a>
+<!--
+                  <a class="btn btn-primary" href="#" onclick="return false;" style="margin-top:12px;">
+                    <span
+                      aria-hidden="true"
+                      style="width:18px;height:18px;border-radius:4px;display:inline-block;
+                             background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.35);"
+                    ></span>
+                    Donate
+                  </a> -->
+</div>
+<!-- Text-only section (light section like screenshot) -->
+<div class="bg-light block">
+<div class="h2">Text-only Section Title</div>
+<p class="p">
+                    Text-only section content goes here. This is your simplest drag/drop component.
+                  </p>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p class="group" style="margin-top: 0">
+<a href="#" onclick="return false;">Visit us</a> |
+                    <a href="#" onclick="return false;">Donate</a> |
+                    <a href="#" onclick="return false;">Get involved</a>
+</p>
+<div class="social">
+<div class="icon" title="Facebook"><i class="fa-brands fa-facebook" style="font-size:24px"></i></div>
+<div class="icon" title="YouTube"><i class="fa-brands fa-youtube"></i></div>
+<div class="icon" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></div>
+<div class="icon" title="Instagram"><i class="fa-brands fa-instagram"></i></div>
+</div>
+<!--<div class="social">
+                    <div class="icon" title="Facebook"></div>
+                    <div class="icon" title="YouTube"></div>
+                    <div class="icon" title="LinkedIn"></div>
+                    <div class="icon" title="Instagram"></div>
+                  </div>-->
+<p class="group">
+<a href="#" onclick="return false;">Unsubscribe</a> |
+                    <a href="#" onclick="return false;">Privacy policy</a>
+</p>
+<p style="margin: 0 0 4px 0">© 2026 KeelWorks. All rights reserved.</p>
+<p style="margin: 0">2398 West Beach Road, Oak Harbor, WA 98277 USA</p>
+</div>
+</div></div>
+</div>
+</div></section></main></div><script>
+      (function () {
+        const navButtons = Array.from(document.querySelectorAll(".nav-btn"));
+        const tabs = Array.from(document.querySelectorAll(".tab"));
+        const pageHeading = document.getElementById("pageHeading");
+        const panelTitle = document.getElementById("panelTitle");
+        const panelMeta = document.getElementById("panelMeta");
+        
+        const typographyToggle = document.getElementById("typographyToggle");
+        const typographySub = document.getElementById("nav-sub-typography");
+        const typographyGroup = document.getElementById("nav-group-typography");
+        const subButtons = Array.from(document.querySelectorAll("#nav-sub-typography .nav-btn[data-subnav='true']"));
+        const jumpLinks = Array.from(document.querySelectorAll("[data-jump]"));
+
+        function setTypographyGroupActive(isActive){
+          if(!typographyToggle) return;
+          typographyToggle.classList.toggle("active", isActive);
+        }
+
+        function setSubActive(tabId){
+          subButtons.forEach(b => b.classList.toggle("sub-active", b.dataset.tab === tabId));
+        }
+
+        if(typographyToggle && typographySub){
+          typographyToggle.addEventListener("click", () => {
+            const expanded = typographyToggle.getAttribute("aria-expanded") === "true";
+            typographyToggle.setAttribute("aria-expanded", String(!expanded));
+            typographySub.style.display = expanded ? "none" : "grid";
+          });
+        }
+
+        jumpLinks.forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetId = a.getAttribute("data-jump");
+            activate("tab-typography-spec");
+            // Ensure subnav open for context when jumping
+            if(typographyToggle && typographySub){
+              typographyToggle.setAttribute("aria-expanded", "true");
+              typographySub.style.display = "grid";
+              setTypographyGroupActive(true);
+              setSubActive("tab-typography-spec");
+            }
+            requestAnimationFrame(() => {
+              const el = document.getElementById(targetId);
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+          });
+        });
+    
+
+        function activate(tabId) {
+          tabs.forEach((t) => t.classList.toggle("active", t.id === tabId));
+          navButtons.forEach((b) =>
+            b.classList.toggle("active", b.dataset.tab === tabId)
+          );
+
+          // Typography group active state
+          const isTypography = (tabId === "tab-typography-spec" || tabId === "tab-typography");
+          setTypographyGroupActive(isTypography);
+          if(isTypography){
+            setSubActive(tabId);
+          } else {
+            setSubActive("");
+          }
+
+
+          const activeTab = document.getElementById(tabId);
+          if (activeTab) {
+            pageHeading.textContent =
+              activeTab.dataset.heading || "Design System";
+            panelTitle.textContent =
+              activeTab.dataset.title || "Design System";
+            panelMeta.textContent = activeTab.dataset.meta || "";
+          }
+        }
+
+        navButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if(btn.dataset.subnav === "true" && typographyToggle && typographySub){
+              typographyToggle.setAttribute("aria-expanded","true");
+              typographySub.style.display = "grid";
+            }
+            activate(btn.dataset.tab);
+          });
+        });
+
+        activate("tab-colors");
+      })();
+    
+// Preview: toggle desktop/phone width
+(() => {
+  const tab = document.getElementById("tab-preview");
+  if(!tab) return;
+  const btn = tab.querySelector(".preview-switch-btn");
+  const wrap = tab.querySelector(".preview-device");
+  if(!btn || !wrap) return;
+
+  function sync(){
+    const isDesktop = wrap.classList.contains("desktop");
+    
+            const label = isDesktop ? "Phone" : "Desktop";
+            btn.innerHTML = label + ' <svg class="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">  <path d="M1.5 12s3.5-7 10.5-7 10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"         stroke="currentColor" stroke-width="1.5"/>  <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg> ';
+            
+  }
+
+  btn.addEventListener("click", () => {
+    const isDesktop = wrap.classList.contains("desktop");
+    wrap.classList.toggle("desktop", !isDesktop);
+    wrap.classList.toggle("phone", isDesktop);
+    sync();
+  });
+
+  // init
+  wrap.classList.add("desktop");
+  wrap.classList.remove("phone");
+  sync();
+})();
+
+// Preview toggle (scoped to preview tab)
+document.addEventListener("click", function(e){
+  const btn = e.target.closest(".preview-switch-btn");
+  if(!btn) return;
+  const tab = document.getElementById("tab-preview");
+  if(!tab || !tab.classList.contains("active")) return;
+
+  const wrap = tab.querySelector(".preview-device");
+  if(!wrap) return;
+
+  const isDesktop = wrap.classList.contains("desktop");
+  wrap.classList.toggle("desktop", !isDesktop);
+  wrap.classList.toggle("phone", isDesktop);
+  btn.textContent = isDesktop ? "Desktop" : "Phone";
+});
+
+// Preview toggle (Preview tab only)
+(() => {
+  const tab = document.getElementById("tab-preview");
+  if(!tab) return;
+
+  const btn = tab.querySelector(".preview-switch-btn");
+  const wrap = tab.querySelector(".preview-device");
+  if(!btn || !wrap) return;
+
+  const eye = `<svg class="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">  <path d="M1.5 12s3.5-7 10.5-7 10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"         stroke="currentColor" stroke-width="1.5"/>  <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>`;
+
+  function renderLabel() {
+    const isDesktop = wrap.classList.contains("desktop");
+    const label = isDesktop ? "Phone" : "Desktop";
+    btn.innerHTML = label + " " + eye;
+  }
+
+  btn.addEventListener("click", () => {
+    const isDesktop = wrap.classList.contains("desktop");
+    wrap.classList.toggle("desktop", !isDesktop);
+    wrap.classList.toggle("phone", isDesktop);
+    wrap.dataset.device = isDesktop ? "phone" : "desktop";
+    renderLabel();
+  });
+
+  // init
+  wrap.classList.add("desktop");
+  wrap.classList.remove("phone");
+  wrap.dataset.device = "desktop";
+  renderLabel();
+})();
+
+
+
+
+
+
+
+
+
+// Back to Top button (Colors / KeelWorks Typography / Preview) — auto-detect scroller
+(() => {
+  const btn = document.getElementById("backToTop");
+  if(!btn) return;
+
+  const longTabs = new Set(["tab-colors","tab-typography-spec","tab-preview"]);
+  const SHOW_AFTER = 240;
+
+  function activeTabId(){
+    const active = document.querySelector(".tab.active");
+    return active ? active.id : null;
+  }
+
+  function pickScroller(){
+    // Try common containers first
+    const candidates = [
+      document.querySelector(".panel-body"),
+      document.querySelector(".panel"),
+      document.querySelector("main"),
+      document.querySelector(".content"),
+      document.querySelector(".app"),
+      document.scrollingElement,
+      document.documentElement,
+      document.body
+    ].filter(Boolean);
+
+    for(const el of candidates){
+      if(el === document.documentElement || el === document.body || el === document.scrollingElement) continue;
+      if(el.scrollHeight > el.clientHeight + 2) return el;
+    }
+    // Fallback: window scroll
+    return window;
+  }
+
+  function metrics(scroller){
+    if(scroller === window){
+      const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const vh = window.innerHeight;
+      const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      return { y, vh, h };
+    }
+    return { y: scroller.scrollTop, vh: scroller.clientHeight, h: scroller.scrollHeight };
+  }
+
+  let scroller = window;
+
+  function update(){
+    const id = activeTabId();
+    if(!id || !longTabs.has(id)){
+      btn.classList.remove("show");
+      return;
+    }
+
+    scroller = pickScroller();
+    const { y, vh, h } = metrics(scroller);
+
+    if(h <= vh + 80){
+      btn.classList.remove("show");
+      return;
+    }
+
+    btn.classList.toggle("show", y > SHOW_AFTER);
+  }
+
+  function scrollTop(){
+    if(scroller === window){
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      scroller.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  btn.addEventListener("click", scrollTop);
+
+  // Listen broadly (some containers may change)
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  document.addEventListener("scroll", (e) => {
+    // capture scroll events from nested containers
+    if(e.target && e.target !== document) update();
+  }, { passive: true, capture: true });
+
+  document.addEventListener("click", (e) => {
+    if(e.target.closest("[data-tab]")) setTimeout(update, 0);
+  });
+
+  // Periodic safety update
+  setInterval(update, 300);
+
+  update();
+})();
+
+
+/* Back to Top (fallback, guaranteed) */
+(function(){
+  function ready(fn){
+    if(document.readyState === "loading"){ document.addEventListener("DOMContentLoaded", fn); }
+    else { fn(); }
+  }
+
+  ready(function(){
+    var btn = document.getElementById("backToTop");
+    if(!btn) return;
+
+    var longTabs = {"tab-colors":1, "tab-typography-spec":1, "tab-preview":1};
+
+    function activeTabId(){
+      var el = document.querySelector(".tab.active");
+      return el ? el.id : "";
+    }
+
+    function scrollY(){
+      var yWin = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      var pb = document.querySelector(".panel-body");
+      var yPb = pb ? pb.scrollTop : 0;
+      // also try panel
+      var panel = document.querySelector(".panel");
+      var yPanel = panel ? panel.scrollTop : 0;
+      return Math.max(yWin, yPb, yPanel);
+    }
+
+    function scrollToTop(){
+      // scroll everything plausible
+      var pb = document.querySelector(".panel-body");
+      if(pb && pb.scrollTop) pb.scrollTop = 0;
+      var panel = document.querySelector(".panel");
+      if(panel && panel.scrollTop) panel.scrollTop = 0;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    btn.addEventListener("click", scrollToTop);
+
+    function update(){
+      var id = activeTabId();
+      if(!longTabs[id]){
+        btn.classList.remove("show");
+        return;
+      }
+      if(scrollY() > 240){
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    }
+
+    window.addEventListener("scroll", update, { passive: true });
+    document.addEventListener("scroll", update, { passive: true, capture: true });
+    document.addEventListener("click", function(e){
+      if(e.target && e.target.closest && e.target.closest("[data-tab]")) setTimeout(update, 0);
+    });
+
+    // periodic safety
+    setInterval(update, 300);
+    update();
+  });
+})();
+
+
+/* Back to Top (wheel-aware patch) */
+(function(){
+  function ready(fn){
+    if(document.readyState === "loading"){ document.addEventListener("DOMContentLoaded", fn); }
+    else { fn(); }
+  }
+  ready(function(){
+    var btn = document.getElementById("backToTop");
+    if(!btn) return;
+    var longTabs = {"tab-colors":1, "tab-typography-spec":1, "tab-preview":1};
+    var interacted = false;
+
+    function activeTabId(){
+      var el = document.querySelector(".tab.active") || document.querySelector(".panel.active");
+      return el ? el.id : "";
+    }
+
+    function scrollY(){
+      var yWin = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      var pb = document.querySelector(".panel-body");
+      var yPb = pb ? pb.scrollTop : 0;
+      var panel = document.querySelector(".panel");
+      var yPanel = panel ? panel.scrollTop : 0;
+      return Math.max(yWin, yPb, yPanel);
+    }
+
+    function update(){
+      var id = activeTabId();
+      if(!longTabs[id]){ btn.classList.remove("show"); return; }
+      // Show after small scroll OR after interaction if there's any scroll at all
+      var y = scrollY();
+      if(y > 180 || (interacted && y > 40)){
+        btn.classList.add("show");
+      }else{
+        btn.classList.remove("show");
+      }
+    }
+
+    // Mouse wheel scrolls the container under cursor; capture wheel to ensure we refresh state.
+    document.addEventListener("wheel", function(){
+      interacted = true;
+      setTimeout(update, 0);
+    }, { passive: true, capture: true });
+
+    // Also update on any pointer interaction with the content area
+    document.addEventListener("pointerdown", function(e){
+      if(e.target && e.target.closest && e.target.closest(".panel-body")) interacted = true;
+      setTimeout(update, 0);
+    }, { passive: true, capture: true });
+
+    setTimeout(update, 0);
+  });
+})();
+</script><button aria-label="Back to top" id="backToTop" type="button">↑ Top</button></body>
+</html>
+<!-- TYPOGRAPHY TAB (updated to match newsletter sample CSS) -->
+<!-- LAYOUT TAB -->
+<!-- SPACING TAB -->
+<!-- BUTTONS & LINKS TAB (kept, CTA section removed elsewhere) -->
+<!-- ✅ COMPONENT: HEADER (NOW ONLY INSIDE THIS TAB) -->
+<!-- ✅ COMPONENT: HERO (FIXED: no self-closing div) -->
+<!-- SPLIT FEATURE -->
+<!-- TEXT ONLY -->
+<!-- FOOTER -->
+<!-- PREVIEW TAB -->
