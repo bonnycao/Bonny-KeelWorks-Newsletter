@@ -1436,6 +1436,24 @@
   background: #007C84;
   box-shadow: 0 14px 32px rgba(0,0,0,0.22);
 }
+
+
+/* Sidebar Typography chevron: larger + closer to label */
+.nav-group-toggle .left{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-group-toggle .chev-inline{
+  font-size: 16px;
+  line-height: 1;
+  margin-left: 6px;
+  transform: translateY(1px);
+  color: var(--text-muted);
+}
+.nav-group-toggle[aria-expanded="true"] .chev-inline{
+  content: "▴";
+}
 </style>
 </head>
 <body>
@@ -1461,10 +1479,9 @@
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
 <path d="M4 7V5h16v2"></path><path d="M10 19h4"></path><path d="M12 5v14"></path>
 </svg>
-</span><span>Typography</span></span>
-<span aria-hidden="true" class="chev">▾</span>
+</span><span>Typography</span><span aria-hidden="true" class="chev-inline">▾</span></span>
 </button>
-<div aria-label="Typography pages" class="nav-sub" id="nav-sub-typography">
+<div aria-label="Typography pages" class="nav-sub" id="nav-sub-typography" style="display:none;">
 <button class="nav-btn" data-subnav="true" data-tab="tab-typography-spec">KeelWork Typography</button>
 <div aria-label="KeelWork Typography sections" class="nav-subsub">
 <a class="nav-sub-link" data-jump="kw-overview" href="#kw-overview">Overview</a>
@@ -2793,6 +2810,31 @@ document.addEventListener("click", function(e){
 
     setTimeout(update, 0);
   });
+})();
+
+
+
+/* Typography nav chevron sync (no state toggling) */
+(() => {
+  const btn = document.getElementById("typographyToggle");
+  if(!btn) return;
+  const chev = btn.querySelector(".chev-inline");
+  if(!chev) return;
+
+  function sync(){
+    const open = btn.getAttribute("aria-expanded") === "true";
+    chev.textContent = open ? "▴" : "▾";
+  }
+
+  // Sync after existing toggle runs
+  btn.addEventListener("click", () => setTimeout(sync, 0));
+
+  // Also sync when other nav actions force-open the subnav
+  const mo = new MutationObserver(sync);
+  mo.observe(btn, { attributes: true, attributeFilter: ["aria-expanded"] });
+
+  // Initial
+  sync();
 })();
 </script><button aria-label="Back to top" id="backToTop" type="button">↑ Top</button></body>
 </html>
