@@ -304,7 +304,7 @@
 .primary-btn:hover { background:#066A71; }
 
     .content-card {
-      min-height: 570px;
+      min-height: 460px;
       background: #ffffff;
       border: 1px solid #ededed;
       border-radius: 4px;
@@ -581,6 +581,142 @@
 
 
 .modal-close:hover { background: #212121; }
+
+
+@media (max-width: 550px) {
+  .invite-modal,
+  .success-popup {
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+  }
+  .footer {
+    position: fixed !important;
+    bottom: 30px !important;
+    left: calc(80px + (100vw - 80px) / 2) !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    max-width: calc(100vw - 80px - 30px) !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+  }
+}
+}
+
+
+  .invite-modal,
+  .success-popup {
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+  }
+}
+}
+
+
+@media (max-width: 400px) {
+  .page-title {
+    font-size: 20px !important;
+  }
+  .page-helper,
+  .page-description {
+    font-size: 14px !important;
+  }
+  .filter,
+  .filter-dropdown {
+    width: 80px !important;
+    height: 36px !important;
+    min-width: 80px !important;
+    font-size: 14px !important;
+    padding: 0 12px !important;
+  }
+  .filter span:first-child {
+    font-size: 14px !important;
+  }
+  .primary-btn,
+  .large-btn,
+  .btn-primary,
+  .invite-btn,
+  .action-btn {
+    font-size: 14px !important;
+  }
+}
+  .page-description {
+    font-size: 14px !important;
+  }
+  .filter-dropdown {
+    width: 72px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+  }
+  .btn-primary,
+  .invite-btn,
+  .action-btn {
+    width: 72px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .app {
+    overflow: hidden;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 2000;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .content {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin-left: 0 !important;
+    transition: transform 0.22s ease !important;
+    will-change: transform;
+  }
+
+  body.sidebar-mobile-open .content {
+    transform: translateX(calc(100vw - 48px)) !important;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .footer {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 30px) !important;
+    max-width: calc(100vw - 30px) !important;
+    text-align: center !important;
+    font-size: 9px !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    z-index: 10 !important;
+    margin: 0 !important;
+  }
+
+  .page {
+    padding-bottom: 110px !important;
+  }
+
+  .content-card,
+  .card {
+    margin-bottom: 30px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -613,7 +749,7 @@
           <span class="material-symbols-outlined">group</span>
           <span class="nav-label">Users</span>
         </a>
-       <!--<a href="#" class="nav-item" title="Assets">
+        <!--<a href="#" class="nav-item" title="Assets">
           <span class="material-symbols-outlined">perm_media</span>
           <span class="nav-label">Assets</span>
         </a>-->
@@ -701,27 +837,91 @@
 
 
 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.getElementById('sidebar');
   const sidebarToggle = document.getElementById('sidebarToggle') || document.getElementById('btn');
   const toggleIcon = document.getElementById('toggleIcon') || document.getElementById('icon');
 
-  function updateTitles() {
-    if (!sidebar || !sidebarToggle) return;
-    const collapsed = sidebar.classList.contains('collapsed');
-    sidebarToggle.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+  function setToggleState(collapsed) {
+    if (toggleIcon) toggleIcon.textContent = collapsed ? 'arrow_menu_open' : 'arrow_menu_close';
+    if (sidebarToggle) {
+      sidebarToggle.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+      sidebarToggle.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    }
+  }
+
+  function openMobileSidebar() {
+    if (!sidebar || window.innerWidth >= 600) return;
+    sidebar.classList.remove('collapsed');
+    document.body.classList.add('sidebar-mobile-open');
+    setToggleState(false);
+  }
+
+  function closeMobileSidebar() {
+    if (!sidebar || window.innerWidth >= 600) return;
+    sidebar.classList.add('collapsed');
+    document.body.classList.remove('sidebar-mobile-open');
+    setToggleState(true);
+  }
+
+  function handleResponsiveSidebar() {
+    if (!sidebar) return;
+
+    if (window.innerWidth < 600) {
+      if (!document.body.classList.contains('sidebar-mobile-open')) {
+        sidebar.classList.add('collapsed');
+        setToggleState(true);
+      }
+    } else {
+      document.body.classList.remove('sidebar-mobile-open');
+      sidebar.classList.remove('collapsed');
+      setToggleState(false);
+    }
   }
 
   if (sidebarToggle) {
     sidebarToggle.addEventListener('click', () => {
-      const collapsed = sidebar.classList.toggle('collapsed');
-      if (toggleIcon) toggleIcon.textContent = collapsed ? 'arrow_menu_open' : 'arrow_menu_close';
-      sidebarToggle.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
-      updateTitles();
+      if (window.innerWidth < 600) {
+        if (document.body.classList.contains('sidebar-mobile-open')) {
+          closeMobileSidebar();
+        } else {
+          openMobileSidebar();
+        }
+      } else {
+        const collapsed = sidebar.classList.toggle('collapsed');
+        setToggleState(collapsed);
+      }
     });
   }
-  updateTitles();
+
+  handleResponsiveSidebar();
+  window.addEventListener('resize', handleResponsiveSidebar);
+
+  let touchStartX = null;
+  let touchStartY = null;
+
+  document.addEventListener('touchstart', (event) => {
+    const touch = event.changedTouches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (event) => {
+    if (window.innerWidth >= 600 || touchStartX === null || touchStartY === null) return;
+
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+
+    if (document.body.classList.contains('sidebar-mobile-open') && dx < -50 && Math.abs(dx) > Math.abs(dy)) {
+      closeMobileSidebar();
+    }
+
+    touchStartX = null;
+    touchStartY = null;
+  }, { passive: true });
 
   const inviteModalOverlay = document.getElementById('inviteModalOverlay');
   const openInviteModalTop = document.getElementById('openInviteModalTop');
@@ -803,11 +1003,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (inviteUserName.value.trim() !== '') clearFieldError(inviteUserName, inviteUserNameError);
     });
   }
+
   if (inviteUserEmail) {
     inviteUserEmail.addEventListener('input', () => {
       if (isValidEmail(inviteUserEmail.value)) clearFieldError(inviteUserEmail, inviteUserEmailError);
     });
   }
+
   if (inviteUserNote) {
     inviteUserNote.addEventListener('input', () => {
       if (inviteUserNote.value.trim() !== '') clearFieldError(inviteUserNote, inviteUserNoteError);
@@ -850,6 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+
 
 
 
