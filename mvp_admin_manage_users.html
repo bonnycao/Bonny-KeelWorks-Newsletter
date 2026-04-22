@@ -1812,10 +1812,11 @@ document.addEventListener('DOMContentLoaded', () => {
         showFieldError(inviteUserEmail, inviteUserEmailError);
         hasError = true;
       }
-      if (!inviteUserNote || inviteUserNote.value.trim() === '') {
-        showFieldError(inviteUserNote, inviteUserNoteError);
-        hasError = true;
-      }
+     // REMOVE
+     // if (!inviteUserNote || inviteUserNote.value.trim() === '') {
+     //   showFieldError(inviteUserNote, inviteUserNoteError);
+     //   hasError = true;
+     //  }
 
       if (hasError) return;
 
