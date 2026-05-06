@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KeelWorks Newsletter App - Users</title>
+  <title>KeelWorks Newsletter App - Home</title>
   <link rel="icon" type="image/png" href="images/favicon-16x16.png">
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,0,0" rel="stylesheet">
+
+
   <style>
     :root {
       --sidebar-width: 240px;
@@ -23,6 +25,8 @@
       --border: #ececec;
       --toggle-left: 24px;
     }
+
+
 .btn-cancel:hover { background: #F1F1F1; }
 
     * { box-sizing: border-box; }
@@ -270,357 +274,37 @@
       margin-bottom: 14px;
     }
 
-    .filter {
-  height:44px;
-  padding:0 16px;
-  border:1px solid #d8dce3;
-  border-radius:6px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:#fff;
-}
-.filter.disabled {
-  opacity:0.5;
-  pointer-events:none;
-}
-
-    .filter .material-symbols-outlined {
-      font-size: 20px;
-    }
-
-    .primary-btn {
-  width:120px;
-  height:44px;
-  border-radius:8px;
-  border:none;
-  background:#077A85;
-  color:#fff;
-  font-family:'Lato', sans-serif;
-  font-weight:500;
-  font-size:16px;
-  cursor:pointer;
-  padding-left:20px;
-  padding-right:20px;
-}
-.primary-btn:hover { background:#066A71; }
-.primary-btn:hover { background:#066A71; }
-
-    .content-card {
-      min-height: 460px;
-      background: #ffffff;
-      border: 1px solid #ededed;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 24px;
-    }
-
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .empty-illustration {
-      width: 220px;
-      height: auto;
-      object-fit: contain;
-      margin-bottom: 18px;
-      opacity: 0.96;
-    }
-
-    .empty-title {
-      margin: 0 0 18px 0;
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 1.3;
-      color: var(--text-primary);
-    }
 
     .footer {
-  position: fixed;
-  bottom: 24px;
-  left: calc(240px + (100vw - 240px) / 2);
-  transform: translateX(-50%);
-  width: 1440px;
-  max-width: calc(100vw - 240px - 96px);
-  text-align: center;
-  font-family: 'Lato', sans-serif;
-  font-size: 12px;
-  color: #6a6a6a;
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* Invite User modal */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-overlay.active {
-  display: flex;
-}
-
-.invite-modal {
-  width: 532px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-  padding: 32px;
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  top: 18px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 999px;
-  background: #4a4a4a;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 26px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-title {
-  margin: 0 0 8px 0;
-  font-family: 'Lato', sans-serif;
-  font-weight: 700;
-  font-size: 24px;
-  color: #212121;
-}
-
-.modal-description {
-  margin: 0 0 24px 0;
-  font-family: 'Lato', sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #6f6f6f;
-}
-
-.form-group {
-  margin-bottom: 18px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-family: 'Lato', sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  color: #212121;
-}
-
-.form-input,
-.form-textarea {
-  width: 100%;
-  border: 1px solid #d8dce3;
-  border-radius: 4px;
-  background: #ffffff;
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  color: #212121;
-  padding: 0 14px;
-  outline: none;
-}
-
-.form-input {
-  height: 42px;
-}
-
-.form-textarea {
-  min-height: 84px;
-  padding-top: 14px;
-  resize: none;
-}
-
-.form-input::placeholder,
-.form-textarea::placeholder {
-  color: #9a9a9a;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 14px;
-  margin-top: 32px;
-}
-
-.btn-cancel {
-  transition: background 0.2s ease;
-
-  min-width: 98px;
-  height: 42px;
-  padding: 0 20px;
-  border-radius: 6px;
-  border: 1px solid #d8dce3;
-  background: #ffffff;
-  color: #5f6368;
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn-send {
-  min-width: 83px;
-  height: 42px;
-  padding: 0 20px;
-  border-radius: 6px;
-  border: none;
-  background: #077A85;
-  color: #ffffff;
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn-send:hover {
-  background: #066A71;
-}
-
-
-.form-error {
-  display: none;
-  margin-top: 6px;
-  font-family: 'Lato', sans-serif;
-  font-size: 13px;
-  color: #C62828;
-}
-
-.form-input.error,
-.form-textarea.error {
-  border-color: #C62828;
-}
-
-.form-error.visible {
-  display: block;
-}
-
-
-.success-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-}
-
-.success-overlay.active {
-  display: flex;
-}
-
-.success-popup {
-  width: 420px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 32px 28px;
-  text-align: center;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-}
-
-.success-check {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 18px;
-  border-radius: 999px;
-  background: #E8F5E9;
-  color: #2E7D32;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 34px;
-  font-weight: 700;
-}
-
-.success-title {
-  margin: 0 0 8px 0;
-  font-family: 'Lato', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: #212121;
-}
-
-.success-message {
-  margin: 0 0 24px 0;
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #4f4f4f;
-}
-
-.success-ok {
-  min-width: 96px;
-  height: 42px;
-  padding: 0 20px;
-  border: none;
-  border-radius: 8px;
-  background: #077A85;
-  color: #ffffff;
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.success-ok:hover {
-  background: #066A71;
-}
-
-
-.modal-close:hover { background: #212121; }
-
-
-@media (max-width: 550px) {
-  .invite-modal,
-  .success-popup {
-    width: calc(100% - 30px) !important;
-    max-width: calc(100% - 30px) !important;
-    margin-left: 15px !important;
-    margin-right: 15px !important;
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    margin-top: 40px;
+    padding-bottom: 24px;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: #6a6a6a;
+    z-index: auto;
+    pointer-events: none;
   }
-  .footer {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: calc(80px + (100vw - 80px) / 2) !important;
-    transform: translateX(-50%) !important;
-    width: auto !important;
-    max-width: calc(100vw - 80px - 30px) !important;
-    text-align: center !important;
-    font-size: 11px !important;
-    line-height: 1.3 !important;
-    white-space: normal !important;
+
+  @media (max-width: 550px) {
+    .footer {
+      position: static !important;
+      transform: none !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin-top: 32px !important;
+      padding-bottom: 20px !important;
+      text-align: center !important;
+      font-size: 11px !important;
+      line-height: 1.3 !important;
+      white-space: normal !important;
+    }
   }
 }
-}
-
-
-  .invite-modal,
-  .success-popup {
-    width: calc(100% - 30px) !important;
-    max-width: calc(100% - 30px) !important;
-    margin-left: 15px !important;
-    margin-right: 15px !important;
-  }
-}
-}
-
 
 @media (max-width: 400px) {
   .page-title {
@@ -630,48 +314,17 @@
   .page-description {
     font-size: 14px !important;
   }
-  .filter,
-  .filter-dropdown {
-    width: 80px !important;
-    height: 36px !important;
-    min-width: 80px !important;
-    font-size: 14px !important;
-    padding: 0 12px !important;
-  }
-  .filter span:first-child {
-    font-size: 14px !important;
-  }
-  .primary-btn,
-  .large-btn,
-  .btn-primary,
-  .invite-btn,
-  .action-btn {
-    font-size: 14px !important;
-  }
-}
+
   .page-description {
     font-size: 14px !important;
   }
-  .filter-dropdown {
-    width: 72px !important;
-    height: 34px !important;
-    font-size: 14px !important;
-  }
-  .btn-primary,
-  .invite-btn,
-  .action-btn {
-    width: 72px !important;
-    height: 34px !important;
-    font-size: 14px !important;
-  }
-}
 
+}
 
 @media (max-width: 600px) {
   .app {
     overflow: hidden;
   }
-
   .sidebar {
     position: fixed !important;
     top: 0;
@@ -694,7 +347,6 @@
   }
 }
 
-
 @media (max-width: 500px) {
   .footer {
     position: fixed !important;
@@ -712,7 +364,7 @@
   }
 
   .page {
-    padding-bottom: 110px !important;
+    padding-bottom: 160px !important;
   }
 
   .content-card,
@@ -721,607 +373,82 @@
   }
 }
 
-
-    .manage-users-card {
-      min-height: 420px;
-      padding: 0;
-      display: block;
-      overflow: visible;
-      margin-bottom: 72px;
-    }
-
-    .users-table-wrap {
-      width: 100%;
-      background: #ffffff;
-      overflow-x: auto;
-      overflow-y: visible;
-    }
-
-    .users-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
-    .users-table thead th {
-      text-align: left;
-      padding: 28px 24px 16px 24px;
-      font-family: 'Lato', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1.3;
-      color: #212121;
-      border-bottom: 1px solid #ececec;
-    }
-
-    .users-table thead th.actions-col {
-      text-align: center;
-      width: 110px;
-    }
-
-    .users-table tbody tr {
-      border-bottom: 1px solid #ececec;
-    }
-
-    .users-table tbody td {
-      padding: 18px 24px;
-      vertical-align: middle;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: #212121;
-    }
-
-    .users-table tbody td input,
-    .users-table tbody td select {
-      width: 100%;
-      height: 34px;
-      border: 1px solid #ececec;
-      border-radius: 4px;
-      background: #ffffff;
-      padding: 0 12px;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: #f1f1f1;
-      outline: none;
-      box-shadow: none;
-    }
-
-    .users-table tbody td input:disabled,
-    .users-table tbody td select:disabled {
-      color: #bcbcbc;
-      -webkit-text-fill-color: #bcbcbc;
-      opacity: 1;
-      background: #ffffff;
-      cursor: default;
-    }
-
-
-
-
-
-    .role-select-wrap .material-symbols-outlined {
-      padding-right: 10px;
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 18px;
-      color: #bcbcbc;
-      pointer-events: none;
-    }
-
-    .status-cell { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 400; color: #212121; text-align: left; }
-
-    .action-menu-btn {
-  width: 34px;
-  height: 28px;
-  border: 1px solid #212121;
-  border-radius: 4px;
+.content-card {
+  min-height: 570px;
   background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.action-menu-btn .material-symbols-outlined {
-  font-size: 22px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #5d6674;
-  font-variation-settings: 'wght' 400, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
-}
-
-    .users-table .actions-col {
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .table-footer {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 10px 24px 90px 24px; /* reduced bottom space */
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: #212121;
-    }
-
-    .table-count-select {
-      min-width: 34px;
-      height: 24px;
-      border: 1px solid #7f7f7f;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      padding: 0 4px;
-      background: #ffffff;
-      font-size: 14px;
-      color: #212121;
-    }
-
-    .table-count-select .material-symbols-outlined {
-      font-size: 16px;
-      color: #212121;
-    }
-
-
-
-
-
-.action-menu-btn .dots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Lato', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: #212121;
-  width: 100%;
-  height: 100%;
-  transform: translateY(-5px);
-}
-
-
-    .filter-dropdown {
-      position: relative;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
-    .filter-trigger {
-      width: 96px;
-      height: 38px;
-      border: 1px solid #cfd4dc;
-      border-radius: 6px;
-      background: #ffffff;
-      padding: 0 12px 0 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: #212121;
-      cursor: pointer;
-    }
-
-    .filter-trigger-arrow {
-      font-size: 20px;
-      line-height: 1;
-      font-variation-settings: 'wght' 200, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
-      color: #212121;
-    }
-
-    .filter-menu {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      min-width: 140px;
-      background: #ffffff;
-      border: 1px solid #d9dde3;
-      border-radius: 4px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      padding: 6px 0;
-      display: none;
-      z-index: 200;
-    }
-
-    .filter-dropdown.open .filter-menu {
-      display: block;
-    }
-
-    .filter-option {
-      width: 100%;
-      border: none;
-      background: transparent;
-      text-align: left;
-      padding: 10px 14px;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: #212121;
-      cursor: pointer;
-    }
-
-    .filter-option:hover,
-    .filter-option.active {
-      background: #f7f7f7;
-    }
-
-
-.users-table tbody tr:hover {
-  background-color: #f7f7f7;
-  transition: background-color 0.15s ease-in-out;
-}
-
-
-
-.action-menu-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-menu-btn {
-  width: 34px;
-  height: 28px;
-  border: 1px solid #212121;
+  border: 1px solid #ededed;
   border-radius: 4px;
-  background: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
-}
-
-.action-menu-btn:hover {
-  background: #f7f7f7;
-}
-
-.action-menu-btn .dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Lato', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: #212121;
-  width: 100%;
-  height: 100%;
-  transform: translateY(-5px);
+  text-align: center;
+  padding: 40px 24px;
 }
 
-.action-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 158px;
-  background: #ffffff;
-  border: 1px solid #d9dde3;
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
-  padding: 8px 0;
-  display: none;
-  z-index: 300;
-}
-
-.action-menu-wrap.open .action-menu {
-  display: block;
-}
-
-.menu-item {
-  margin-bottom: 5px;
-  width: 100%;
-  border: none;
-  background: transparent;
+.empty-state {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 10px 16px;
-  text-align: left;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
+}
+
+.empty-illustration {
+  width: 220px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 18px;
+  opacity: 0.96;
+}
+
+.empty-title {
+  margin: 0 0 18px 0;
+  font-size: 24px;
   font-weight: 400;
-  color: #212121;
-  cursor: pointer;
-}
-
-.menu-item:hover {
-  background: #f7f7f7;
-}
-
-.menu-item .material-symbols-outlined {
-  font-size: 20px;
-  line-height: 1;
-  color: inherit;
-  font-variation-settings: 'wght' 200, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
-}
-
-.menu-item.delete {
-  color: #ff3b30;
+  line-height: 1.3;
+  color: var(--text-primary);
 }
 
 
-.action-save {
-  width: 100%;
+@media (max-width: 550px) {
+  .delete-modal {
+    max-width: calc(100% - 30px);
+    padding: 24px 22px 24px 22px;
+  }
 }
 
-.action-save-btn {
-  width: 100%;
-  min-width: 148px;
-  height: 50px;
-  border: none;
-  background: transparent;
+.content-card {
+  min-height: 570px;
+  background: #ffffff;
+  border: 1px solid #ededed;
+  border-radius: 4px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 12px 16px;
-  text-align: left;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: #212121;
-  cursor: pointer;
-}
-
-.action-save-btn:hover {
-  background: #f7f7f7;
-}
-
-.action-save-btn .material-symbols-outlined {
-  font-size: 20px;
-  line-height: 1;
-  color: inherit;
-  font-variation-settings: 'wght' 200, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
-}
-
-[data-user-row].editing .action-menu {
-  min-width: 184px;
-}
-
-
-/* Editing state styles */
-[data-user-row].editing input,
-[data-user-row].editing select {
-  border-color: #b0b4b8 !important;
-  color: #212121 !important;
-}
-
-/* Ensure disabled (read-only) look remains lighter */
-[data-user-row] input:disabled,
-[data-user-row] select:disabled {
-  color: #bfc5cc;
-}
-
-
-.menu-item:last-child {
-  margin-bottom: 0;
-}
-
-
-
-
-
-/* Enabled edit mode for role dropdown */
-[data-user-row].editing
-
-/* Disabled/read-only state stays light */
-
-
-
-/* Clean single arrow like filter */
-
-
-
-
-
-
-[data-user-row].editing
-
-
-
-
-[data-user-row].editing
-
-
-
-
-
-
-
-
-
-
-
-
-[data-user-row].editing
-
-
-.role-select-wrap {
-  position: relative;
-  display: inline-block;
-  width: 100px;
-}
-
-.role-select-wrap select {
-  width: 100%;
-  height: 32px;
-  border: 1px solid #ececec;
-  border-radius: 4px;
-  padding: 0 30px 0 10px;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  background-color: #ffffff !important;
-  color: #bfc5cc;
-  -webkit-text-fill-color: #bfc5cc;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23bfc5cc' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
-  background-repeat: no-repeat !important;
-  background-position: right 8px center !important;
-  background-size: 18px 18px !important;
-}
-
-.role-select-wrap select:disabled {
-  color: #bfc5cc !important;
-  -webkit-text-fill-color: #bfc5cc !important;
-  border-color: #ececec !important;
-}
-
-.role-select-wrap select::-ms-expand {
-  display: none;
-}
-
-[data-user-row].editing .role-select-wrap select {
-  color: #212121 !important;
-  -webkit-text-fill-color: #212121 !important;
-  border-color: #b0b4b8 !important;
-  background-color: #ffffff !important;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23212121' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
-}
-
-
-/* Dropdown option hover */
-.role-select-wrap select option:hover { background-color: #f7f7f7 !important;
-  background-color: #f7f7f7;
-}
-
-
-.role-select-wrap select option {
-  padding: 6px 10px;
-}
-
-
-.action-menu-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
 }
 
-.action-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 158px;
-  background: #ffffff;
-  border: 1px solid #d9dde3;
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
-  padding: 8px 0;
-  display: none;
-  z-index: 9999;
-}
-
-.action-menu-wrap.open .action-menu {
-  display: block;
-}
-
-
-.delete-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(33, 33, 33, 0.55);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  padding: 24px;
-}
-
-.delete-modal-overlay.open {
+.empty-state {
   display: flex;
-}
-
-.delete-modal {
-  position: relative;
-  width: 100%;
-  max-width: 448px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
-  padding: 28px 30px 28px 30px;
-}
-
-.delete-modal-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 999px;
-  background: #4a4a4a;
-  color: #ffffff;
-  font-size: 22px;
-  line-height: 1;
-  display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
 }
 
-.delete-modal-title {
-  margin: 0 0 10px 0;
-  font-family: 'Lato', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: #212121;
+.empty-illustration {
+  width: 220px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 18px;
+  opacity: 0.96;
 }
 
-.delete-modal-text {
-  margin: 0;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #52565A;
-}
-
-.delete-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.delete-cancel-btn,
-.delete-confirm-btn {
-  min-width: 78px;
-  height: 36px;
-  border-radius: 4px;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
+.empty-title {
+  margin: 0 0 18px 0;
+  font-size: 24px;
   font-weight: 400;
-  padding: 0 18px;
-  cursor: pointer;
+  line-height: 1.3;
+  color: var(--text-primary);
 }
 
-.delete-cancel-btn {
-  background: #ffffff;
-  border: 1px solid #d9dde3;
-  color: #6a6a6a;
-}
-
-.delete-confirm-btn {
-  background: #E3342F;
-  border: 1px solid #E3342F;
-  color: #ffffff;
-}
 
 @media (max-width: 550px) {
   .delete-modal {
@@ -1331,48 +458,171 @@
 }
 
 
-/* Manager users final adjustments */
-.sidebar .material-symbols-outlined {
-  font-variation-settings: 'wght' 200, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
+/* Newsletter Workspace quick action cards */
+.content-card {
+  min-height: 570px;
+  background: #ffffff;
+  border: 1px solid #ededed;
+  border-radius: 10px;
+  display: block;
+  text-align: left;
+  padding: 64px 140px 72px 140px;
 }
-.filter-trigger .material-symbols-outlined,
-.role-select-wrap select,
-.role-select-wrap option,
-.action-menu .material-symbols-outlined,
-.action-save-btn .material-symbols-outlined {
-  font-variation-settings: 'wght' 200, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
+
+.quick-actions {
+  width: 100%;
 }
-.action-menu-btn .dots {
-  color: #212121;
-  font-size: 22px;
+
+.quick-actions-title {
+  margin: -104px 0 86px -140px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #344054;
+}
+
+.workspace-grid {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 48px;
+}
+
+.workspace-card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(16, 24, 40, 0.12);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.workspace-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.14);
+}
+
+.workspace-card-thumb {
+  width: 100%;
+  height: 145px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.workspace-card-body {
+  padding: 28px 30px 30px 30px;
+}
+
+.workspace-card-title {
+  margin: 0 0 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 20px;
   font-weight: 700;
-  transform: translateY(-5px);
-}
-.menu-item.action-remove,
-.menu-item.action-remove span,
-.menu-item.action-remove .material-symbols-outlined {
-  color: #D92D20 !important;
-}
-.table-count-select {
-  padding: 0 0 0 4px;
-}
-#pageCountSelect {
-  min-width: 20px;
-}
-.role-select-wrap {
-  width: 100px;
-}
-.role-select-wrap select {
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23bfc5cc' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
-}
-[data-user-row].editing .role-select-wrap select {
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23212121' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
+  line-height: 1.15;
+  color: #212121;
 }
 
+.workspace-card-title .material-symbols-outlined {
+  font-size: 26px;
+  color: #212121;
+  font-variation-settings: 'wght' 200, 'opsz' 24, 'FILL' 0, 'GRAD' 0;
+}
 
-.users-table tbody tr:last-child .action-menu {
-  top: auto;
-  bottom: calc(100% + 8px);
+.workspace-card-description {
+  min-height: 50px;
+  margin: 0 0 12px 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.42;
+  font-weight: 400;
+  color: #212121;
+}
+
+.workspace-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #00929c;
+}
+
+/* remove underline */
+.workspace-card-link:hover {
+  text-decoration: none;
+}
+
+/* arrow default position */
+.workspace-card-link .link-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+/* THIS is the hover effect */
+.workspace-card-link:hover .link-arrow {
+  transform: translateX(5px);
+}
+
+@media (max-width: 1200px) {
+  .content-card {
+    padding: 56px 72px 64px 72px;
+  }
+
+  .quick-actions-title {
+    margin-left: -72px;
+  }
+
+  .workspace-grid {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 900px) {
+  .content-card {
+    padding: 40px 24px 48px 24px;
+  }
+
+  .quick-actions-title {
+    margin: -80px 0 56px -24px;
+  }
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .content-card {
+    padding: 32px 18px 42px 18px;
+  }
+
+  .quick-actions-title {
+    margin: -72px 0 48px -18px;
+    font-size: 22px;
+  }
+
+  .workspace-card-thumb {
+    height: 120px;
+  }
+
+  .workspace-card-body {
+    padding: 22px;
+  }
+
+  .workspace-card-title {
+    font-size: 22px;
+  }
+
+  .workspace-card-description {
+    font-size: 16px;
+  }
 }
 
 </style>
@@ -1395,7 +645,7 @@
       </div>
 
       <nav class="nav">
-        <a href="mvp_app_home.html" class="nav-item" title="Home">
+        <a href="#" class="nav-item active" title="Home">
           <span class="material-symbols-outlined">home</span>
           <span class="nav-label">Home</span>
         </a>
@@ -1403,11 +653,11 @@
           <span class="material-symbols-outlined">newsmode</span>
           <span class="nav-label">Newsletters</span>
         </a>
-        <a href="#" class="nav-item active" title="Users">
+        <a href="mvp_admin_manage_users.html" class="nav-item" title="Users">
           <span class="material-symbols-outlined">group</span>
           <span class="nav-label">Users</span>
         </a>
-    <a href="#" class="nav-item" title="Assets">
+        <a href="#" class="nav-item" title="Assets">
           <span class="material-symbols-outlined">perm_media</span>
           <span class="nav-label">Assets</span>
         </a>
@@ -1418,10 +668,10 @@
       <div class="sidebar-divider"></div>
 
       <div class="bottom-nav">
-        <!--<a href="#" class="nav-item" title="Account Setting">
+        <a href="#" class="nav-item" title="Account Setting">
           <span class="material-symbols-outlined">settings</span>
           <span class="nav-label">Account Setting</span>
-        </a>-->
+        </a>
         <a href="#" class="nav-item" id="exitAppBtn" title="Exit App">
           <span class="material-symbols-outlined">logout</span>
           <span class="nav-label">Exit</span>
@@ -1436,97 +686,64 @@
 
       <div class="page">
         <div class="page-inner">
-          <h1 class="page-title">Users</h1>
-          <p class="page-helper">Admins can invite, edit, suspend, or remove users, while standard users have view-only access.</p>
+          <h1 class="page-title">Newsletter Workspace</h1>
+          <p class="page-helper">Create newsletters, manage assets, and collaborate with your team.</p>
+          <section class="content-card">
 
 
-<div class="toolbar">
-            <div class="filter-dropdown" id="filterDropdown">
-              <button class="filter-trigger" id="filterTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span class="filter-current" id="filterCurrent">All</span>
-                <span class="material-symbols-outlined filter-trigger-arrow">keyboard_arrow_down</span>
-              </button>
-              <div class="filter-menu" id="filterMenu" role="listbox" aria-hidden="true">
-                <button class="filter-option active" type="button" data-value="All">All (6)</button>
-                <button class="filter-option" type="button" data-value="Active">Active (3)</button>
-                <button class="filter-option" type="button" data-value="Expired">Expired (1)</button>
-                <button class="filter-option" type="button" data-value="Pending">Pending (1)</button>
-                <button class="filter-option" type="button" data-value="Suspended">Suspended (1)</button>
-              </div>
-            </div>
-            <button class="primary-btn" id="openInviteModalTop">Invite User</button>
-          </div>
+                        <div class="quick-actions">
 
-          <section class="content-card manage-users-card">
+                          <div class="workspace-grid">
+                            <article class="workspace-card">
+                              <img class="workspace-card-thumb" src="images/create-newsletter.jpg" alt="Create newsletter preview">
+                              <div class="workspace-card-body">
+                                <h3 class="workspace-card-title">
+                                  <span class="material-symbols-outlined">newsmode</span>
+                                  <span>Newsletters</span>
+                                </h3>
+                                <p class="workspace-card-description">Start building a monthly newsletter and prepare it for web and email-ready HTML export..</p>
+                                <a class="workspace-card-link" href="#" aria-label="Create new newsletter">Create New <span class="link-arrow" aria-hidden="true">→</span></a>
+                              </div>
+                            </article>
 
-<div class="users-table-wrap">
-              <table class="users-table">
-                <thead>
-                  <tr data-user-row>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th style="text-align:left;">Status</th>
-                    <th class="actions-col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-<tbody>
-  <tr data-user-row>
-    <td><input type="text" value="John Smith" disabled></td>
-    <td><input type="text" value="john.smith@keelworks.org" disabled></td>
-    <td><div class="role-select-wrap"><select disabled><option selected>Admin</option><option>Editor</option></select></div></td>
-    <td class="status-cell">Active</td>
-    <td class="actions-col"><div class="action-menu-wrap"><button class="action-menu-btn" type="button" aria-label="Open actions"><span class="dots">...</span></button><div class="action-menu" role="menu" aria-hidden="true"></div></div></td>
-  </tr>
-  <tr data-user-row>
-    <td><input type="text" value="Justin Quintern" disabled></td>
-    <td><input type="text" value="justin.quintern@keelworks.org" disabled></td>
-    <td><div class="role-select-wrap"><select disabled><option selected>Admin</option><option>Editor</option></select></div></td>
-    <td class="status-cell">Active</td>
-    <td class="actions-col"><div class="action-menu-wrap"><button class="action-menu-btn" type="button" aria-label="Open actions"><span class="dots">...</span></button><div class="action-menu" role="menu" aria-hidden="true"></div></div></td>
-  </tr>
-  <tr data-user-row>
-    <td><input type="text" value="Jennifer Martins" disabled></td>
-    <td><input type="text" value="jennifer.martins@keelworks.org" disabled></td>
-    <td><div class="role-select-wrap"><select disabled><option>Admin</option><option selected>Editor</option></select></div></td>
-    <td class="status-cell">Active</td>
-    <td class="actions-col"><div class="action-menu-wrap"><button class="action-menu-btn" type="button" aria-label="Open actions"><span class="dots">...</span></button><div class="action-menu" role="menu" aria-hidden="true"></div></div></td>
-  </tr>
-  <tr data-user-row>
-    <td><input type="text" value="Annie German" disabled></td>
-    <td><input type="text" value="annie.german@keelworks.org" disabled></td>
-    <td><div class="role-select-wrap"><select disabled><option>Admin</option><option selected>Editor</option></select></div></td>
-    <td class="status-cell">Pending</td>
-    <td class="actions-col"><div class="action-menu-wrap"><button class="action-menu-btn" type="button" aria-label="Open actions"><span class="dots">...</span></button><div class="action-menu" role="menu" aria-hidden="true"></div></div></td>
-  </tr>
-  <tr data-user-row>
-    <td><input type="text" value="Catherine Wang" disabled></td>
-    <td><input type="text" value="catherine.wang@keelworks.com" disabled></td>
-    <td><div class="role-select-wrap"><select disabled><option>Admin</option><option selected>Editor</option></select></div></td>
-    <td class="status-cell">Expired</td>
-    <td class="actions-col"><div class="action-menu-wrap"><button class="action-menu-btn" type="button" aria-label="Open actions"><span class="dots">...</span></button><div class="action-menu" role="menu" aria-hidden="true"></div></div></td>
-  </tr>
-  <tr data-user-row>
-    <td><input type="text" value="Kirsten Jettinghoff" disabled></td>
-    <td><input type="text" value="kirsten.gettinghoff@keelworks.org" disabled></td>
-    <td><div class="role-select-wrap"><select disabled><option>Admin</option><option selected>Editor</option></select></div></td>
-    <td class="status-cell">Suspended</td>
-    <td class="actions-col"><div class="action-menu-wrap"><button class="action-menu-btn" type="button" aria-label="Open actions"><span class="dots">...</span></button><div class="action-menu" role="menu" aria-hidden="true"></div></div></td>
-  </tr>
-</tbody>
-</tbody>
-              </table>
+                            <article class="workspace-card">
+                              <img class="workspace-card-thumb" src="images/view-newsletters.jpg" alt="Newsletter content preview">
+                              <div class="workspace-card-body">
+                                <h3 class="workspace-card-title">
+                                  <span class="material-symbols-outlined">list_alt</span>
+                                  <span>Newsletter content</span>
+                                </h3>
+                                <p class="workspace-card-description">Browse all newsletters, including drafts, sent items and saved content versions.</p>
+                                <a class="workspace-card-link" href="mvp_app_content.html" aria-label="View newsletter content">View Content <span class="link-arrow" aria-hidden="true">→</span></a>
+                              </div>
+                            </article>
 
-              <div class="table-footer">
-                <span>Show</span>
-                <div class="table-count-select">
-                  <span id="pageCountSelect">6</span>
-                  <span class="material-symbols-outlined">keyboard_arrow_down</span>
-                </div>
-                <span>of <span id="paginationTotal">6</span></span>
-              </div>
-            </div>
+                            <article class="workspace-card">
+                              <img class="workspace-card-thumb" src="images/upload.jpg" alt="Assets upload preview">
+                              <div class="workspace-card-body">
+                                <h3 class="workspace-card-title">
+                                  <span class="material-symbols-outlined">perm_media</span>
+                                  <span>Assets</span>
+                                </h3>
+                                <p class="workspace-card-description">Add banner images, thumbnails, and reusable assets for upcoming newsletter issues.</p>
+                                <a class="workspace-card-link" href="#" aria-label="Browse and upload assets">Browse &amp; Upload Assets <span class="link-arrow" aria-hidden="true">→</span></a>
+                              </div>
+                            </article>
+
+                            <article class="workspace-card">
+                              <img class="workspace-card-thumb" src="images/manage-users.jpg" alt="Manage users preview">
+                              <div class="workspace-card-body">
+                                <h3 class="workspace-card-title">
+                                  <span class="material-symbols-outlined">group_add</span>
+                                  <span>Users</span>
+                                </h3>
+                                <p class="workspace-card-description">Add, update, or remove users and control who can access newsletter app features.</p>
+                                <a class="workspace-card-link" href="mvp_admin_manage_users.html" aria-label="View users">View Users <span class="link-arrow" aria-hidden="true">→</span></a>
+                              </div>
+                            </article>
+                          </div>
+                        </div>
+
           </section>
 
           <div class="footer">© 2026 KeelWorks Newsletter App</div>
@@ -1555,8 +772,8 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="inviteUserNote">Note (Optional)</label>
-      <textarea class="form-textarea" id="inviteUserNote" placeholder="Add your note here."></textarea>
+      <label class="form-label" for="inviteUserNote">Note</label>
+      <textarea class="form-textarea" id="inviteUserNote" placeholder="Add a note and Newsletter App URL"></textarea>
       <div class="form-error" id="inviteUserNoteError">Note is required.</div>
     </div>
 
@@ -1580,7 +797,7 @@
   <div class="success-popup" role="dialog" aria-modal="true" aria-labelledby="successTitle">
     <div class="success-check">✓</div>
     <h2 class="success-title" id="successTitle">Invitation Sent</h2>
-    <p class="success-message">The invitation email was successfully sent. It remains valid for 48 hours.</p>
+    <p class="success-message">The invitation email was successfully sent. It remains valid for 7 days.</p>
     <button class="success-ok" id="successOkButton">OK</button>
   </div>
 </div>
@@ -1812,11 +1029,10 @@ document.addEventListener('DOMContentLoaded', () => {
         showFieldError(inviteUserEmail, inviteUserEmailError);
         hasError = true;
       }
-      // REMOVE
-      //if (!inviteUserNote || inviteUserNote.value.trim() === '') {
-      //  showFieldError(inviteUserNote, inviteUserNoteError);
-      //hasError = true;
-      //}
+      if (!inviteUserNote || inviteUserNote.value.trim() === '') {
+        showFieldError(inviteUserNote, inviteUserNoteError);
+        hasError = true;
+      }
 
       if (hasError) return;
 
