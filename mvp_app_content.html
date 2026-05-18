@@ -3003,7 +3003,6 @@ h1 {
     if (status === 'Draft') {
       return [
         { label: 'Edit', icon: 'edit_square' },
-        { label: 'Achieve', icon: 'folder_check' },
         { label: 'Duplicate', icon: 'content_copy' },
         { label: 'Rename', icon: 'drive_file_rename_outline' },
         { label: 'Delete', icon: 'delete', danger: true }
@@ -3196,33 +3195,6 @@ h1 {
     refreshView(true);
   }
 
-  function achieveRow(row) {
-    row.setAttribute('data-status', 'Achieved');
-
-    const badge = row.querySelector('.newsletter-badge');
-
-    if (badge) {
-      badge.textContent = 'Achieved';
-
-      badge.classList.remove('draft');
-      badge.classList.add('achieved');
-    }
-
-    const link = row.querySelector('.newsletter-link');
-
-    if (link) {
-      link.innerHTML = `
-        <span class="material-symbols-outlined duplicate-icon">content_copy</span>
-        <span>Duplicate</span>
-      `;
-    }
-
-    renderMenu(row);
-
-    saveState();
-    refreshView(false);
-  }
-
   loadState();
 
   rows().forEach(renderMenu);
@@ -3339,12 +3311,6 @@ h1 {
 
       if (action.includes('rename')) {
         openRenameModal(row);
-        return;
-      }
-
-      if (action.includes('achieve')) {
-        achieveRow(row);
-        closeAllMenus();
         return;
       }
 
