@@ -624,6 +624,11 @@
   }
 }
 
+
+/* Unavailable Assets feature */
+.coming-soon-badge { display: inline-block; margin-left: 5px; padding: 2px 5px; border-radius: 4px; background: #fee2e2; color: #b91c1c; font-size: 10px; font-weight: 700; line-height: 1.3; white-space: nowrap; vertical-align: middle; }
+.nav-item-disabled { cursor: not-allowed; opacity: .7; }
+.workspace-card-link-disabled { color: #888 !important; cursor: not-allowed; text-decoration: none; opacity: .7; }
 </style>
 </head>
 <body>
@@ -656,10 +661,10 @@
           <span class="material-symbols-outlined">group</span>
           <span class="nav-label">Users</span>
         </a>
-        <a href="#" class="nav-item" title="Assets">
+        <span class="nav-item nav-item-disabled" title="Assets — Coming Soon" aria-disabled="true">
           <span class="material-symbols-outlined">perm_media</span>
-          <span class="nav-label">Assets</span>
-        </a>
+          <span class="nav-label">Assets <span class="coming-soon-badge">Coming Soon</span></span>
+        </span>
       </nav>
 
       <div class="sidebar-spacer"></div>
@@ -710,22 +715,10 @@
                               <div class="workspace-card-body">
                                 <h3 class="workspace-card-title">
                                   <span class="material-symbols-outlined">list_alt</span>
-                                  <span>Newsletter content</span>
+                                  <span>Newsletter Content</span>
                                 </h3>
                                 <p class="workspace-card-description">Browse all newsletters, including drafts, sent items and saved content versions.</p>
                                 <a class="workspace-card-link" href="mvp_app_content.html" aria-label="View newsletter content">View Content <span class="link-arrow" aria-hidden="true">→</span></a>
-                              </div>
-                            </article>
-
-                            <article class="workspace-card">
-                              <img class="workspace-card-thumb" src="images/upload.jpg" alt="Assets upload preview">
-                              <div class="workspace-card-body">
-                                <h3 class="workspace-card-title">
-                                  <span class="material-symbols-outlined">perm_media</span>
-                                  <span>Assets</span>
-                                </h3>
-                                <p class="workspace-card-description">Add banner images, thumbnails, and reusable assets for upcoming newsletter issues.</p>
-                                <a class="workspace-card-link" href="#" aria-label="Browse and upload assets">Browse &amp; Upload Assets <span class="link-arrow" aria-hidden="true">→</span></a>
                               </div>
                             </article>
 
@@ -740,6 +733,18 @@
                                 <a class="workspace-card-link" href="mvp_admin_manage_users.html" aria-label="View users">View Users <span class="link-arrow" aria-hidden="true">→</span></a>
                               </div>
                             </article>
+                            <article class="workspace-card">
+                              <img class="workspace-card-thumb" src="images/upload.jpg" alt="Assets upload preview">
+                              <div class="workspace-card-body">
+                                <h3 class="workspace-card-title">
+                                  <span class="material-symbols-outlined">perm_media</span>
+                                  <span>Assets (Coming soon)</span>
+                                </h3>
+                                <p class="workspace-card-description">Upload images, thumbnails, and reusable assets for building newsletters.</p>
+                                <span class="workspace-card-link workspace-card-link-disabled" aria-disabled="true">Browse &amp; Upload Assets <span class="link-arrow" aria-hidden="true">→</span></span>
+                              </div>
+                            </article>
+
                           </div>
                         </div>
 
