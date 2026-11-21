@@ -1,0 +1,3867 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>KeelWorks Controlled Newsletter Editor</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicon-32x32.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --teal: #00929c;
+        --purple: #825e8b;
+        --line: #e1e4e8;
+        --bg: #f7f7f7;
+        --text: #212121;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font:
+          14px Arial,
+          sans-serif;
+        color: var(--text);
+        background: #f7f7f7;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 212px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+      .sidebar {
+        background: white;
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+      }
+      .brand {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand-icon {
+        font-size: 32px;
+      }
+      .brand strong {
+        display: block;
+        color: var(--teal);
+        font-size: 21px;
+      }
+      .brand small {
+        color: var(--purple);
+        font-size: 14px;
+      }
+      .nav {
+        padding: 20px 12px;
+        display: grid;
+        gap: 8px;
+      }
+      .nav a,
+      .bottom a {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+        color: #222;
+        text-decoration: none;
+        border-radius: 6px;
+      }
+      .nav a.active {
+        background: #e8f6f7;
+        color: #006a71;
+        font-weight: bold;
+      }
+      .nav a:hover,
+      .bottom a:hover {
+        background: #f3f4f6;
+      }
+      .soon {
+        font-size: 10px;
+        color: #b91c1c;
+        background: #fee2e2;
+        border-radius: 4px;
+        padding: 3px 4px;
+      }
+      .bottom {
+        margin-top: auto;
+        padding: 12px;
+        border-top: 1px solid var(--line);
+      }
+      .main {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .topblank {
+        height: 62px;
+        background: white;
+        border-bottom: 1px solid var(--line);
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        margin: 22px 22px 14px;
+        padding: 15px 18px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        align-items: center;
+      }
+      .toolbar input,
+      .toolbar select {
+        height: 37px;
+        border: 1px solid #cfd5df;
+        border-radius: 6px;
+        background: white;
+        padding: 0 12px;
+      }
+      .toolbar input {
+        flex: 1;
+        min-width: 130px;
+      }
+      .toolbar select {
+        width: 115px;
+      }
+      .btn {
+        border: 1px solid #cfd5df;
+        border-radius: 6px;
+        background: #fff;
+        padding: 10px 15px;
+        white-space: nowrap;
+      }
+      .btn.primary {
+        background: var(--teal);
+        color: white;
+        border-color: var(--teal);
+      }
+      .btn.secondary {
+        background: #fff;
+        color: #066a71;
+        border: 1px solid #00929c;
+        font-weight: 600;
+      }
+      .btn.secondary:hover {
+        background: #eef9fa;
+      }
+      .btn.outline {
+        color: var(--teal);
+        border-color: var(--teal);
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 390px;
+        margin: 0 22px 16px;
+        min-height: 640px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        overflow: hidden;
+      }
+      .canvas-panel {
+        min-width: 0;
+        background: #f9fafb;
+        display: flex;
+        flex-direction: column;
+      }
+      .canvas-tools {
+        height: 40px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        background: white;
+      }
+      .canvas-tools button {
+        border: 0;
+        background: none;
+        padding: 7px 12px;
+      }
+      .canvas-tools button.active {
+        background: #eef5f6;
+      }
+      .canvas-scroll {
+        padding: 20px 22px;
+        overflow: auto;
+        flex: 1;
+      }
+      .email {
+        width: min(100%, 700px);
+        min-height: 540px;
+        background: white;
+        margin: 0 auto;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 8px #0000000b;
+      }
+      .dropzone {
+        min-height: 520px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .empty {
+        border: 2px dashed #8ac5ce;
+        background: #eef8fa;
+        color: #147b8a;
+        min-height: 130px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 18px;
+      }
+      .dropzone.over,
+      .insert.over {
+        outline: 3px solid #29a7bc;
+        outline-offset: -3px;
+        background: #eaf9fa;
+      }
+      .insert {
+        height: 2px;
+        border: 1px dashed transparent;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .insert:hover {
+        border-color: #69b9c4;
+        background: #f0fafb;
+      }
+      .insert:after {
+        content: "+";
+        position: absolute;
+        left: 50%;
+        top: -8px;
+        transform: translateX(-50%);
+        color: #00929c;
+        background: white;
+        padding: 0 8px;
+        opacity: 0;
+      }
+      .insert:hover:after {
+        opacity: 1;
+      }
+      .block {
+        border: 1px solid transparent;
+        position: relative;
+        padding: 0;
+        cursor: grab;
+      }
+      .block:active {
+        cursor: grabbing;
+      }
+      .block [contenteditable="true"] {
+        cursor: text;
+      }
+      .block:hover {
+        border-color: #87bdc5;
+      }
+      .block.selected {
+        outline: 2px solid #319ae8;
+        outline-offset: -2px;
+      }
+      .nested-actions {
+        margin-top: 12px;
+      }
+      .nested-action {
+        position: relative;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 3px;
+      }
+      .nested-action:hover,
+      .nested-action.selected {
+        border-color: #319ae8;
+        background: #f7fbff;
+      }
+      .nested-drop {
+        margin-top: 10px;
+        padding: 11px;
+        border: 1px dashed #8ac5ce;
+        border-radius: 5px;
+        color: #147b8a;
+        background: #f3fbfc;
+        text-align: center;
+        font:
+          12px Arial,
+          sans-serif;
+      }
+      .nested-drop.over {
+        outline: 3px solid #29a7bc;
+        background: #eaf9fa;
+      }
+      .block-actions {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        display: none;
+        gap: 3px;
+        background: white;
+        box-shadow: 0 2px 7px #0002;
+        border-radius: 5px;
+        padding: 3px;
+        z-index: 1;
+      }
+      .block:hover .block-actions,
+      .block.selected .block-actions {
+        display: flex;
+      }
+      .block-actions button {
+        border: 0;
+        background: #f4f6f8;
+        padding: 5px 8px;
+        border-radius: 3px;
+      }
+      .block h1,
+      .block h2,
+      .block p {
+        margin: 0 0 7px;
+      }
+      .block h1 {
+        font-size: 26px;
+      }
+      .block h2 {
+        font-size: 22px;
+      }
+      .block p {
+        line-height: 1.55;
+      }
+      .placeholder {
+        background: #e9f2f4;
+        color: #456f76;
+        border: 1px dashed #95b9c0;
+        padding: 32px 10px;
+        text-align: center;
+      }
+      .image-row {
+        display: grid;
+        grid-template-columns: 42% 1fr;
+        grid-template-areas:
+          "image title"
+          "image text";
+        gap: 16px;
+        align-items: center;
+      }
+      .image-row.reverse {
+        grid-template-columns: 1fr 42%;
+        grid-template-areas:
+          "title image"
+          "text image";
+      }
+      .image-row > [data-edit="title"] {
+        grid-area: title;
+        align-self: end;
+      }
+      .image-row > .image-row-media {
+        grid-area: image;
+      }
+      .image-row > [data-edit="text"] {
+        grid-area: text;
+        align-self: start;
+      }
+      .mobile .image-row,
+      .mobile .image-row.reverse {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .mobile .image-row > [data-edit="title"] {
+        order: 1;
+        align-self: stretch;
+        width: 100%;
+        text-align: left !important;
+      }
+      .mobile .image-row > .image-row-media {
+        order: 2;
+      }
+      .mobile .image-row > [data-edit="text"] {
+        order: 3;
+      }
+      .hero {
+        background: #eaf5f5;
+        text-align: center;
+        padding: 30px 15px;
+      }
+      .hero h1 {
+        color: #066a71;
+      }
+      .donate {
+        display: inline-block;
+        background: #825e8b;
+        color: white;
+        padding: 11px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .foot {
+        background: #323236;
+        color: white;
+        text-align: center;
+        font-size: 12px;
+      }
+      .foot p {
+        margin: 5px;
+      }
+      .library {
+        border-left: 1px solid var(--line);
+        background: #fafafa;
+        display: flex;
+        min-width: 0;
+      }
+      .library-main {
+        flex: 1;
+        padding: 17px;
+        min-width: 0;
+        overflow: auto;
+      }
+      .library h3 {
+        font-size: 15px;
+        margin: 3px 0 8px;
+      }
+      .hint {
+        color: #67737d;
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0 0 15px;
+      }
+      .tiles {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+      .tile {
+        height: 94px;
+        border: 1px solid #d5d5d5;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 9px;
+        text-align: center;
+        padding: 9px;
+        cursor: grab;
+        border-radius: 3px;
+      }
+      .tile:hover {
+        border-color: var(--teal);
+        background: #effafb;
+      }
+      .tile:active {
+        cursor: grabbing;
+      }
+      .tile .symbol {
+        font-size: 23px;
+        color: #353535;
+      }
+      .tile span:last-child {
+        font-size: 12px;
+      }
+      .rail {
+        width: 68px;
+        flex-shrink: 0;
+        background: #fff;
+        border-left: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+      }
+      .rail button {
+        background: white;
+        border: 0;
+        padding: 17px 4px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .rail button.active {
+        color: #066a71;
+        background: #eef7f7;
+        font-weight: bold;
+      }
+      .rail button span {
+        font-size: 21px;
+      }
+      .settings {
+        display: none;
+      }
+      .settings.active {
+        display: block;
+      }
+      .settings label {
+        display: block;
+        font-size: 12px;
+        margin: 14px 0 5px;
+      }
+      .settings input,
+      .settings textarea,
+      .settings select {
+        width: 100%;
+        border: 1px solid #ccd2d8;
+        border-radius: 5px;
+        padding: 9px;
+        background: white;
+      }
+      .settings textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+      /* Keep every dropdown chevron consistently inset from the right edge. */
+      select {
+        -webkit-appearance: none;
+        appearance: none;
+        padding-right: 38px !important;
+        background: #fff
+          url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNiA5bDYgNiA2LTYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIxMjEyMSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=")
+          no-repeat right 12px center / 18px 18px !important;
+      }
+      .settings .muted {
+        color: #68747b;
+        line-height: 1.6;
+        font-size: 12px;
+      }
+      .notice {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #193c41;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 7px;
+        box-shadow: 0 4px 16px #0003;
+        display: none;
+        z-index: 10;
+      }
+      .footer {
+        text-align: center;
+        padding: 8px;
+        font-size: 11px;
+        background: white;
+        border-top: 1px solid var(--line);
+      }
+      .mobile .email {
+        max-width: 360px;
+      }
+      .mobile .canvas-scroll {
+        background: #e9eef1;
+      }
+      .library-foot {
+        font-size: 11px;
+        color: #777;
+        margin-top: auto;
+        text-align: center;
+        padding: 12px;
+        border-top: 1px solid var(--line);
+      }
+      @media (max-width: 1100px) {
+        .workspace {
+          grid-template-columns: minmax(0, 1fr) 320px;
+        }
+        .rail {
+          width: 58px;
+        }
+        .toolbar {
+          flex-wrap: wrap;
+        }
+      }
+      @media (max-width: 760px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .workspace {
+          grid-template-columns: 1fr;
+          margin: 0 8px;
+        }
+        .library {
+          min-height: 400px;
+        }
+        .toolbar {
+          margin: 8px;
+        }
+        .canvas-scroll {
+          min-height: 480px;
+        }
+        .topblank {
+          height: 30px;
+        }
+      }
+
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        background: #f1f3f5;
+        color: #87919a;
+        border-color: #d7dce0;
+      }
+      .crop-panel {
+        margin-top: 12px;
+        padding: 12px;
+        border: 1px solid #d8e0e3;
+        border-radius: 8px;
+        background: #fff;
+      }
+      .crop-panel canvas {
+        display: block;
+        width: 100%;
+        max-height: 240px;
+        object-fit: contain;
+        background: #edf1f2;
+        border: 1px solid #dbe1e4;
+      }
+      .crop-panel input[type="range"] {
+        width: 100%;
+      }
+      .crop-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .crop-actions button {
+        flex: 1;
+      }
+      .settings .field-note {
+        font-size: 11px;
+        color: #64717b;
+        margin-top: 5px;
+      }
+
+      /* V6: independent, bounded scrolling for newsletter canvas and component library */
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .app {
+        height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .sidebar,
+      .main {
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .main {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topblank {
+        flex: 0 0 62px;
+      }
+
+      .toolbar {
+        flex: 0 0 auto;
+      }
+
+      .workspace {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+        margin-bottom: 16px;
+      }
+
+      .canvas-panel,
+      .library,
+      .library-main {
+        min-height: 0;
+      }
+
+      .canvas-scroll {
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+      }
+
+      .library-main {
+        height: 100%;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+      }
+
+      .library .rail {
+        overflow-y: auto;
+      }
+
+      .footer {
+        flex: 0 0 auto;
+      }
+
+      .catalog-group {
+        grid-column: 1/-1;
+        margin: 16px 0 1px;
+        padding: 8px 0 6px;
+        border-bottom: 1px solid #d9e3e5;
+        color: #066a71;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.025em;
+      }
+
+      .catalog-group:first-child {
+        margin-top: 0;
+      }
+
+      @media (max-width: 760px) {
+        html,
+        body {
+          height: auto;
+          overflow: auto;
+        }
+        .app {
+          height: auto;
+          min-height: 100dvh;
+          overflow: visible;
+        }
+        .main {
+          height: auto;
+          overflow: visible;
+        }
+        .workspace {
+          height: auto;
+          min-height: 700px;
+          display: flex;
+          flex-direction: column;
+        }
+        .canvas-panel {
+          height: 60vh;
+          min-height: 420px;
+        }
+        .library {
+          height: 48vh;
+          min-height: 330px;
+        }
+        .library-main {
+          overflow-y: auto;
+        }
+        .topblank {
+          flex-basis: 30px;
+        }
+      }
+
+      /* V7: contextual validation and image upload guidance */
+      .field-error {
+        margin: 7px 0 3px;
+        padding: 9px 11px;
+        border-left: 3px solid #c62828;
+        background: #fff0f0;
+        color: #9e2020;
+        font-size: 12px;
+        line-height: 1.45;
+        border-radius: 4px;
+      }
+
+      .upload-guidance {
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: #667784;
+        margin-top: 5px;
+      }
+
+      .crop-dimension {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+      }
+
+      .crop-dimension output {
+        font-variant-numeric: tabular-nums;
+        color: #006d77;
+      }
+
+      /* V8 toolbar hierarchy and responsive preview controls */
+      .toolbar .btn.primary {
+        background: #00929c;
+        border-color: #00929c;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .toolbar .btn:not(.primary):not(.cancel-action) {
+        background: #fff;
+        color: #26343a;
+        border-color: #bfcbd0;
+      }
+
+      .toolbar .cancel-action {
+        color: #b42318;
+        background: #fff;
+        border: 1px solid #c83a35;
+      }
+
+      .toolbar .cancel-action:hover {
+        background: #fff1f0;
+      }
+
+      .preview-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #4c5b62;
+        margin-right: 2px;
+      }
+
+      .canvas-tools button {
+        border-radius: 5px;
+      }
+      .canvas-tools button.active {
+        background: #e5f4f5;
+        color: #006a71;
+        font-weight: 700;
+      }
+
+      @media (max-width: 920px) {
+        .toolbar {
+          gap: 8px;
+        }
+        .toolbar input {
+          flex-basis: 100%;
+        }
+      }
+
+      /* V12: persistent contextual export notification and email section rhythm */
+      .export-message {
+        margin: 8px 16px 0;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid #9bd7b1;
+        border-radius: 7px;
+        background: #edf9f0;
+        color: #086b34;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+
+      .export-message[hidden] {
+        display: none !important;
+      }
+      .export-message.error {
+        border-color: #e8aaa7;
+        background: #fff2f1;
+        color: #a12424;
+      }
+
+      .export-message button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 3px;
+      }
+
+      .block > .image-row {
+        width: 100%;
+      }
+
+      .block .image-row img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .crop-toggle {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 8px;
+        text-align: left;
+      }
+      .crop-toggle .material-symbols-outlined {
+        flex: none;
+        font-size: 22px;
+      }
+      .crop-toggle span:last-child {
+        flex: 1;
+      }
+      .crop-panel {
+        margin-top: 6px;
+        margin-bottom: 12px;
+      }
+
+      /* Shared application shell */
+      :root {
+        --sidebar-width: 240px;
+        --sidebar-collapsed-width: 80px;
+        --nav-active: #00929c;
+        --nav-hover: #58b6be;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+      .app {
+        display: flex;
+        height: 100dvh;
+        min-height: 0;
+      }
+      .sidebar {
+        width: var(--sidebar-width);
+        min-width: var(--sidebar-width);
+        height: 100dvh;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        transition:
+          width 0.22s ease,
+          min-width 0.22s ease,
+          transform 0.22s ease;
+        background: #fff;
+        border-right: 1px solid #efefef;
+        z-index: 40;
+      }
+      .sidebar.collapsed {
+        width: var(--sidebar-collapsed-width);
+        min-width: var(--sidebar-collapsed-width);
+      }
+      .brand {
+        height: auto;
+        min-height: 78px;
+        padding: 16px 24px 8px;
+        align-items: flex-start;
+        border-bottom: 0;
+      }
+      .brand img {
+        width: 41px;
+        height: 51px;
+        object-fit: contain;
+        flex: 0 0 auto;
+      }
+      .brand-text {
+        margin-top: 6px;
+        white-space: nowrap;
+      }
+      .brand-title {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 1.04;
+        color: #00929c;
+      }
+      .brand-subtitle {
+        font-weight: 500;
+        font-size: 17px;
+        line-height: 1.1;
+        color: #825e8b;
+      }
+      .sidebar.collapsed .brand-text {
+        display: none;
+      }
+      .sidebar.collapsed .brand {
+        padding-left: 19px;
+        padding-right: 19px;
+      }
+      .toggle-row {
+        position: relative;
+        height: 40px;
+        padding-bottom: 16px;
+        flex: 0 0 auto;
+      }
+      .toggle-btn {
+        position: absolute;
+        left: 24px;
+        top: 0;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: #212121;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .toggle-btn:hover,
+      .toggle-btn:focus-visible {
+        background: #eef7f7;
+        color: #066a71;
+      }
+      .material-symbols-outlined {
+        font-size: 24px;
+        line-height: 1;
+        font-variation-settings:
+          "wght" 200,
+          "opsz" 24,
+          "FILL" 0,
+          "GRAD" 0;
+      }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 24px;
+      }
+      .nav .nav-item,
+      .bottom-nav .nav-item {
+        width: 192px;
+        height: 48px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 12px;
+        color: #212121;
+        text-decoration: none;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .nav .nav-item:hover,
+      .bottom-nav .nav-item:hover {
+        background: var(--nav-hover);
+        color: #fff;
+      }
+      .nav .nav-item.active {
+        background: var(--nav-active);
+        color: #fff;
+        font-weight: 600;
+      }
+      .sidebar.collapsed .nav,
+      .sidebar.collapsed .bottom-nav {
+        padding-left: 16px;
+        padding-right: 16px;
+        align-items: center;
+      }
+      .sidebar.collapsed .nav-item {
+        width: 48px;
+        height: 48px;
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+      }
+      .sidebar.collapsed .nav-label {
+        display: none;
+      }
+      .sidebar-spacer {
+        flex: 1;
+        min-height: 24px;
+      }
+      .sidebar-divider {
+        height: 1px;
+        background: var(--line);
+        margin: 0 24px 16px;
+      }
+      .sidebar.collapsed .sidebar-divider {
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+      .bottom-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 24px 16px;
+      }
+      .main {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        height: 100dvh;
+        overflow: hidden;
+      }
+      .topblank {
+        height: 62px;
+        min-height: 62px;
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+      }
+      .mobile-menu-btn {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: #212121;
+        align-items: center;
+        justify-content: center;
+      }
+      .mobile-menu-btn:hover,
+      .mobile-menu-btn:focus-visible {
+        background: #eef7f7;
+        color: #066a71;
+      }
+      .sidebar-backdrop {
+        display: none;
+      }
+
+      @media (max-width: 760px) {
+        html,
+        body {
+          height: 100%;
+          overflow: hidden;
+        }
+        .app {
+          height: 100dvh;
+          overflow: hidden;
+        }
+        .sidebar {
+          display: flex;
+          position: fixed;
+          inset: 0 auto 0 0;
+          width: min(240px, calc(100vw - 48px));
+          min-width: min(240px, calc(100vw - 48px));
+          height: 100dvh;
+          transform: translateX(-100%);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+        }
+        .sidebar.collapsed {
+          width: min(240px, calc(100vw - 48px));
+          min-width: min(240px, calc(100vw - 48px));
+        }
+        .sidebar.mobile-open {
+          transform: translateX(0);
+        }
+        .sidebar.mobile-open .brand-text,
+        .sidebar.collapsed.mobile-open .brand-text {
+          display: block;
+        }
+        .sidebar.mobile-open .brand {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+        .sidebar.mobile-open .nav,
+        .sidebar.mobile-open .bottom-nav {
+          padding-left: 24px;
+          padding-right: 24px;
+          align-items: stretch;
+        }
+        .sidebar.mobile-open .nav-item {
+          width: 192px;
+          justify-content: flex-start;
+          gap: 10px;
+          padding: 0 12px;
+        }
+        .sidebar.mobile-open .nav-label {
+          display: inline;
+        }
+        .sidebar-backdrop {
+          display: block;
+          position: fixed;
+          inset: 0;
+          background: rgba(17, 24, 39, 0.38);
+          opacity: 0;
+          visibility: hidden;
+          transition:
+            opacity 0.22s ease,
+            visibility 0.22s ease;
+          z-index: 30;
+        }
+        .sidebar-backdrop.visible {
+          opacity: 1;
+          visibility: visible;
+        }
+        .main {
+          width: 100%;
+          height: 100dvh;
+          overflow: auto;
+        }
+        .topblank {
+          height: 56px;
+          min-height: 56px;
+        }
+        .mobile-menu-btn {
+          display: inline-flex;
+        }
+        .workspace {
+          height: auto;
+          min-height: 700px;
+        }
+        .toolbar {
+          margin-top: 8px;
+        }
+        .canvas-panel {
+          height: 60vh;
+          min-height: 420px;
+        }
+        .library {
+          height: 48vh;
+          min-height: 330px;
+        }
+        .footer {
+          padding-bottom: max(8px, env(safe-area-inset-bottom));
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .sidebar,
+        .sidebar-backdrop {
+          transition: none;
+        }
+      }
+
+      .toggle-glyph {
+        font:
+          400 28px/1 Arial,
+          sans-serif;
+        transform: translateY(-1px);
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #006a71;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .back-link:hover {
+        text-decoration: none;
+      }
+      .back-link:hover span:last-child {
+        text-decoration: underline;
+      }
+      .back-link .material-symbols-outlined {
+        font-size: 20px;
+        text-decoration: none;
+      }
+      .topblank {
+        justify-content: flex-start;
+        gap: 10px;
+      }
+
+      .tile,
+      .tile:active {
+        cursor: pointer;
+      }
+      .tile .symbol {
+        color: #212121;
+      }
+      .tile span:last-child {
+        font-size: 14px;
+        color: #212121;
+      }
+
+      .inline-link-toolbar {
+        position: fixed;
+        z-index: 1200;
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 5px;
+        background: #fff;
+        border: 1px solid #c7d2d8;
+        border-radius: 7px;
+        box-shadow: 0 5px 18px rgba(20, 42, 48, 0.2);
+      }
+      .inline-link-toolbar.visible {
+        display: flex;
+      }
+      .inline-link-toolbar button {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border: 0;
+        border-radius: 5px;
+        background: #fff;
+        color: #006a71;
+        padding: 7px 10px;
+        font-weight: 700;
+      }
+      .inline-link-toolbar button:hover,
+      .inline-link-toolbar button:focus-visible {
+        background: #eef8f9;
+      }
+      .inline-link-toolbar .material-symbols-outlined {
+        font-size: 19px;
+      }
+      .inline-link-editor {
+        position: fixed;
+        z-index: 1210;
+        display: none;
+        width: min(360px, calc(100vw - 24px));
+        padding: 16px;
+        background: #fff;
+        border: 1px solid #c7d2d8;
+        border-radius: 9px;
+        box-shadow: 0 10px 30px rgba(20, 42, 48, 0.24);
+      }
+      .inline-link-editor.visible {
+        display: block;
+      }
+      .inline-link-editor label {
+        display: block;
+        margin: 0 0 6px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .inline-link-editor input[type="url"] {
+        width: 100%;
+        height: 38px;
+        border: 1px solid #aebbc1;
+        border-radius: 5px;
+        padding: 0 10px;
+      }
+      .inline-link-editor .link-check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 11px 0;
+        font-weight: 400;
+      }
+      .inline-link-editor .link-check input {
+        width: auto;
+      }
+      .inline-link-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .inline-link-actions .remove-link {
+        margin-right: auto;
+        color: #a12424;
+      }
+      .inline-link-error {
+        min-height: 18px;
+        margin-top: 5px;
+        color: #a12424;
+        font-size: 12px;
+      }
+      .block [contenteditable="true"] a {
+        color: #006699;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <img src="images/kw_logo.png" alt="KeelWorks logo" />
+          <div class="brand-text">
+            <div class="brand-title">KeelWorks</div>
+            <div class="brand-subtitle">Newsletter App</div>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <button
+            class="toggle-btn"
+            id="sidebarToggle"
+            type="button"
+            aria-label="Collapse sidebar"
+            title="Collapse sidebar"
+          >
+            <span
+              class="material-symbols-outlined"
+              id="toggleIcon"
+              aria-hidden="true"
+              >arrow_menu_close</span
+            >
+          </button>
+        </div>
+        <nav class="nav">
+          <a class="nav-item" href="mvp_app_home.html" title="Home"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >home</span
+            ><span class="nav-label">Home</span></a
+          >
+          <a class="nav-item" href="mvp_app_content.html" title="Newsletters"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >newsmode</span
+            ><span class="nav-label">Newsletters</span></a
+          >
+          <a class="nav-item" href="mvp_admin_manage_users.html" title="Users"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >group</span
+            ><span class="nav-label">Users</span></a
+          >
+          <span
+            class="nav-item"
+            title="Assets — Coming Soon"
+            aria-disabled="true"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >perm_media</span
+            ><span class="nav-label"
+              >Assets <span class="soon">Coming Soon</span></span
+            ></span
+          >
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-divider"></div>
+        <div class="bottom-nav">
+          <a class="nav-item" href="#" title="Account Setting"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >settings</span
+            ><span class="nav-label">Account Setting</span></a
+          ><a class="nav-item" href="#" title="Exit App"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >logout</span
+            ><span class="nav-label">Exit</span></a
+          >
+        </div>
+      </aside>
+      <div
+        class="sidebar-backdrop"
+        id="sidebarBackdrop"
+        aria-hidden="true"
+      ></div>
+      <main class="main">
+        <div class="topblank">
+          <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="sidebar"
+            aria-expanded="false"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true"
+              >menu</span
+            ></button
+          ><a class="back-link" href="mvp_app_content.html"
+            ><span class="material-symbols-outlined" aria-hidden="true"
+              >arrow_back</span
+            ><span>Back to Newsletters</span></a
+          >
+        </div>
+        <div class="toolbar">
+          <input
+            id="name"
+            aria-label="Newsletter title"
+            value="Newsletter November - Draft"
+          /><select id="month" aria-label="Month">
+            <option>January</option>
+            <option>February</option>
+            <option>March</option>
+            <option>April</option>
+            <option>May</option>
+            <option>June</option>
+            <option>July</option>
+            <option>August</option>
+            <option>September</option>
+            <option>October</option>
+            <option selected>November</option>
+            <option>December</option></select
+          ><select id="year" aria-label="Year">
+            <option>2025</option>
+            <option selected>2026</option>
+            <option>2027</option></select
+          ><select
+            id="exportFormat"
+            aria-label="Select export format"
+            style="width: 190px"
+          >
+            <option value="" selected disabled>Select export format</option>
+            <option value="html-with">HTML · with footer</option>
+            <option value="html-without">HTML · no footer</option>
+            <option value="pdf-with">PDF · with footer</option>
+            <option value="pdf-without">PDF · no footer</option></select
+          ><button class="btn primary" id="export" disabled>Export</button
+          ><button class="btn secondary" id="save">Save</button
+          ><button class="btn cancel-action" id="cancel">Cancel</button>
+        </div>
+        <div class="workspace">
+          <section class="canvas-panel" id="canvas-panel">
+            <div class="canvas-tools">
+              <span class="preview-label">Preview:</span
+              ><button
+                id="desktop"
+                class="active"
+                type="button"
+                title="Desktop preview"
+                aria-pressed="true"
+              >
+                ▣ &nbsp; Desktop</button
+              ><button
+                id="mobile"
+                type="button"
+                title="Phone preview"
+                aria-pressed="false"
+              >
+                ▯ &nbsp; Phone
+              </button>
+            </div>
+            <div
+              class="export-message"
+              id="exportMessage"
+              role="status"
+              aria-live="polite"
+              hidden
+            >
+              <span id="exportMessageText"></span
+              ><button
+                id="dismissExportMessage"
+                type="button"
+                aria-label="Dismiss notification"
+              >
+                ×
+              </button>
+            </div>
+            <div class="canvas-scroll">
+              <div class="email" id="email">
+                <div class="dropzone" id="dropzone">
+                  <div class="empty" id="empty">
+                    Drag an approved component from the right panel into this
+                    area.<br />Or click a component to add it.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <aside class="library">
+            <div class="library-main">
+              <div id="catalog">
+                <h3>Design System Components</h3>
+                <p class="hint">
+                  Components are organized in newsletter reading order. Drag or
+                  click to insert, then edit on the canvas or in Properties.
+                </p>
+                <p class="hint">
+                  Drag components onto the canvas, or click to add. Only
+                  approved KeelWorks components are available. Select a block to
+                  adjust alignment, palette colors, or upload images and icons.
+                </p>
+                <div class="tiles" id="tiles"></div>
+                <p class="hint" style="margin-top: 20px">
+                  Tip: click the text inside a Heading or Paragraph to edit it
+                  in place. Select a component on the canvas to edit its
+                  properties. Use ↑ and ↓ to change its order.
+                </p>
+              </div>
+              <div class="settings" id="settings">
+                <h3>Component Properties</h3>
+                <p class="hint" id="selectedType"></p>
+                <div id="fields"></div>
+                <button
+                  class="btn outline"
+                  id="remove"
+                  style="margin-top: 18px"
+                >
+                  Remove component
+                </button>
+              </div>
+              <div class="settings" id="bodySettings">
+                <h3>Newsletter Body</h3>
+                <p class="muted">
+                  Approved email width: 700px maximum in this prototype. All
+                  blocks use email-friendly layouts and KeelWorks brand colors.
+                </p>
+                <label>Canvas background</label
+                ><select id="bodyBg">
+                  <option value="#ffffff">White</option>
+                  <option value="#f7f7f7">Light gray</option>
+                </select>
+              </div>
+            </div>
+            <div class="rail">
+              <button class="active" data-tab="catalog">
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >dashboard_2</span
+                >Content</button
+              ><button data-tab="settings">
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >dashboard_2_edit</span
+                >Properties</button
+              ><button data-tab="bodySettings">
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >web_asset</span
+                >Body
+              </button>
+            </div>
+          </aside>
+        </div>
+        <div class="footer">
+          © 2026 KeelWorks Newsletter App · Interactive controlled-editor
+          prototype
+        </div>
+      </main>
+    </div>
+    <div class="notice" id="notice"></div>
+    <script>
+      const KW_LOGO =
+        "data:image/png;base64,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";
+      const KW_DONATE_BUTTON =
+        "data:image/png;base64,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";
+      const definitions = [
+        ["header", "Header", "page_header"],
+        ["hero", "Hero Message", "campaign"],
+        ["text", "Text Section", "text_fields"],
+        ["image", "Hero Image", "insert_photo"],
+        ["imageLeft", "Image + Text (Left)", "format_image_left"],
+        ["imageRight", "Image + Text (Right)", "format_image_right"],
+        ["donation", "Donation Section", "volunteer_activism"],
+        ["divider", "Divider", "horizontal_rule"],
+        ["footer", "Footer", "page_footer"],
+        ["h1", "Heading (H1)", "format_h1"],
+        ["h2", "Heading (H2)", "format_h2"],
+        ["paragraph", "Paragraph", "notes"],
+        ["button", "Button", "call_to_action"],
+        ["browserLink", "Browser Link", "open_in_new"],
+        ["hyperlink", "Hypertext Link", "add_link"],
+        ["thumbnail", "Thumbnail Image", "image_mode"],
+      ];
+      const defaults = {
+        header: { logo: KW_LOGO, month: "November", year: "2026" },
+        hero: {
+          title: "Hero Message Section Title",
+          text: "Content paragraph text...",
+        },
+        text: {
+          title: "Section Title",
+          text: "Content paragraph text...",
+        },
+        image: { caption: "Newsletter image", url: "" },
+        imageLeft: {
+          title: "Section Title",
+          text: "Content paragraph text...",
+          url: "",
+        },
+        imageRight: {
+          title: "Section Title",
+          text: "Content paragraph text...",
+          url: "",
+        },
+        donation: {
+          title: "Your Support Makes A Difference",
+          text:
+            "The work we do wouldn't be possible without the generosity of our supporters. Your donation helps us get people to work.\n\nEvery.org is KeelWorks' secure donation platform. Thank you for your support!",
+          button: "Donate",
+          url: "https://www.every.org/keelworks-foundation?donateTo=keelworks-foundation#/donate/card",
+        },
+        divider: {},
+        footer: {
+          text: "© 2026 KeelWorks. All rights reserved.",
+          address: "2398 West Beach Road, Oak Harbor, WA 98277 USA",
+        },
+        h1: { text: "Section Title" },
+        h2: { text: "Section Title" },
+        paragraph: { text: "Content paragraph text..." },
+        button: {
+          text: "Learn More",
+          url: "https://keelworks.org",
+          newTab: true,
+        },
+        browserLink: {
+          text: "View this newsletter in your browser",
+          url: "",
+          newTab: true,
+        },
+        hyperlink: {
+          text: "Hypertext link",
+          url: "https://keelworks.org",
+          color: "#006699",
+          newTab: true,
+        },
+        thumbnail: {
+          url: "",
+          caption: "Thumbnail image",
+          width: "240",
+          height: "160",
+        },
+      };
+      let blocks = [],
+        selected = null,
+        selectedAction = null,
+        dragging = null,
+        previewing = false;
+      const $ = (id) => document.getElementById(id),
+        escapeHtml = (s) =>
+          String(s ?? "").replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+      function safeLinkUrl(value) {
+        let url = String(value || "").trim();
+        if (!url) return "";
+        if (!/^(https?:|mailto:|tel:)/i.test(url)) url = "https://" + url;
+        try {
+          const parsed = new URL(url);
+          return ["http:", "https:", "mailto:", "tel:"].includes(
+            parsed.protocol,
+          )
+            ? url
+            : "";
+        } catch {
+          return "";
+        }
+      }
+      function sanitizeInlineHtml(html) {
+        const template = document.createElement("template");
+        template.innerHTML = String(html || "");
+        const serialize = (node) => {
+          if (node.nodeType === Node.TEXT_NODE)
+            return escapeHtml(node.nodeValue);
+          if (node.nodeType !== Node.ELEMENT_NODE) return "";
+          if (node.tagName === "BR") return "<br>";
+          const children = [...node.childNodes].map(serialize).join("");
+          if (
+            node.tagName === "SPAN" &&
+            node.style.display === "block" &&
+            node.style.marginTop === "20px"
+          )
+            return `<span style="display:block;margin-top:20px">${children}</span>`;
+          if (node.tagName === "A") {
+            const href = safeLinkUrl(node.getAttribute("href"));
+            if (!href) return children;
+            const blank = node.getAttribute("target") === "_blank";
+            return `<a href="${escapeHtml(href)}" style="color:#006699;text-decoration:underline;cursor:pointer"${blank ? ' target="_blank" rel="noopener noreferrer"' : ""}>${children}</a>`;
+          }
+          return children;
+        };
+        return [...template.content.childNodes].map(serialize).join("");
+      }
+      function toast(t) {
+        const msg = $("exportMessage");
+        $("exportMessageText").textContent = t;
+        msg.hidden = false;
+        msg.classList.toggle(
+          "error",
+          /error|failed|cannot|unable|invalid/i.test(t),
+        );
+      }
+      $("dismissExportMessage").onclick = () => {
+        $("exportMessage").hidden = true;
+      };
+      function make(type, index = blocks.length) {
+        blocks.splice(index, 0, {
+          id: Date.now() + Math.random(),
+          type,
+          data: { ...defaults[type] },
+        });
+        selected = blocks[index].id;
+        selectedAction = null;
+        render();
+        tab("settings");
+      }
+      const catalogGroups = [
+        ["Newsletter structure", ["browserLink", "header", "image", "hero"]],
+        [
+          "Body content",
+          [
+            "text",
+            "h1",
+            "h2",
+            "paragraph",
+            "imageLeft",
+            "imageRight",
+            "hyperlink",
+            "button",
+          ],
+        ],
+        ["Closing sections", ["donation", "footer"]],
+      ];
+      const iconOverrides = {
+        image: "image_inset",
+        hero: "text_ad",
+        thumbnail: "imagesmode",
+      };
+      const showToast = toast;
+      toast = (t) => {
+        if (t !== "Image loaded. Use Crop image to adjust.") showToast(t);
+      };
+      $("tiles").innerHTML = catalogGroups
+        .map(
+          ([group, types]) =>
+            `<div class="catalog-group">${group}</div>` +
+            types
+              .map((type) => {
+                const def = definitions.find((d) => d[0] === type);
+                return `<div class="tile" role="button" tabindex="0" draggable="true" data-type="${type}"><span class="material-symbols-outlined symbol" aria-hidden="true">${iconOverrides[type] || def[2]}</span><span>${def[1]}</span></div>`;
+              })
+              .join(""),
+        )
+        .join("");
+      document.querySelectorAll(".tile").forEach((t) => {
+        t.addEventListener("click", () => make(t.dataset.type));
+        t.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") make(t.dataset.type);
+        });
+        t.addEventListener("dragstart", (e) => {
+          dragging = { type: t.dataset.type };
+          e.dataTransfer.setData("text/plain", t.dataset.type);
+          e.dataTransfer.effectAllowed = "copy";
+        });
+      });
+      const palettes = {
+        text: [
+          "#212121",
+          "#066A71",
+          "#00535C",
+          "#006699",
+          "#825E8B",
+          "#FFFFFF",
+        ],
+        background: [
+          "#FFFFFF",
+          "#F7F7F7",
+          "#EBEBEB",
+          "#EAF5F5",
+          "#F6F2F7",
+          "#D0BCD5",
+          "#666A6F",
+          "#323236",
+          "#00929C",
+          "#825E8B",
+        ],
+        button: ["#825E8B", "#00929C", "#066A71", "#00535C"],
+        link: ["#006699", "#066A71"],
+      };
+      const allowedImage = (url) =>
+        /^(https?:\/\/|data:image\/(png|jpeg|gif|webp|svg\+xml);base64,)/i.test(
+          url || "",
+        );
+      function content(b) {
+        const d = b.data,
+          h = (x) => escapeHtml(x),
+          p = (x) => h(x).replace(/\n/g, "<br>"),
+          align = ["left", "center", "right"].includes(d.align)
+            ? d.align
+            : "left",
+          bg = palettes.background.includes(d.bg)
+            ? d.bg
+            : b.type === "footer"
+              ? "#666A6F"
+              : b.type === "hero"
+                ? "#EAF5F5"
+                : b.type === "donation"
+                  ? "#D0BCD5"
+                  : "#FFFFFF",
+          ink = palettes.text.includes(d.color)
+            ? d.color
+            : b.type === "h2"
+              ? "#066A71"
+              : "#212121",
+          btn = palettes.button.includes(d.buttonColor)
+            ? d.buttonColor
+            : "#825E8B",
+          size =
+            b.type === "icon"
+              ? Math.max(16, Math.min(160, Number(d.size) || 48))
+              : 0;
+        const typeStyle = (key, defaultSize, defaultColor) => {
+          const n = Math.max(
+            10,
+            Math.min(48, Number(d["fontSize_" + key]) || defaultSize),
+          );
+          const c = palettes.text.includes(d["fontColor_" + key])
+            ? d["fontColor_" + key]
+            : defaultColor;
+          return `font-size:${n}px!important;color:${c}!important;`;
+        };
+        const rich = (key) =>
+          d.richText?.[key]
+            ? sanitizeInlineHtml(d.richText[key])
+            : h(d[key] || "");
+        const paragraphRich = (key) => {
+          const value = rich(key);
+          if (d.richText?.[key]) return value;
+          return value
+            .split(/\n\s*\n/)
+            .map((paragraph, index) =>
+              index
+                ? `<span style="display:block;margin-top:20px">${paragraph}</span>`
+                : paragraph,
+            )
+            .join("");
+        };
+        const editable = (key, tag, style) =>
+          `<${tag} data-edit="${key}" contenteditable="${!previewing}" spellcheck="true" style="${style};${typeStyle(key, tag === "p" ? 16 : 24, ink)}">${rich(key)}</${tag}>`;
+        const paragraphEditable = (key, style = "") =>
+          `<p data-edit="${key}" contenteditable="${!previewing}" spellcheck="true" style="font:400 16px/24px Arial,sans-serif;color:${ink};white-space:pre-wrap;margin:0 0 20px;${style};${typeStyle(key, 16, ink)}">${paragraphRich(key)}</p>`;
+        const image = () => {
+          if (!allowedImage(d.url))
+            return `<div class="placeholder">▧ &nbsp; ${b.type === "icon" ? "Icon" : "Image"} placeholder<small style="display:block">Use URL or upload a local file in Properties</small></div>`;
+          const img = `<img src="${h(d.url)}" alt="${h(d.alt ?? "")}" style="display:block;max-width:100%;width:${b.type === "icon" ? size + "px" : b.type === "thumbnail" ? Math.min(400, Math.max(80, Number(d.width) || 240)) + "px" : "100%"};height:${b.type === "thumbnail" ? Math.min(320, Math.max(60, Number(d.height) || 160)) + "px" : "auto"};object-fit:${b.type === "thumbnail" ? "cover" : "contain"};${b.type === "icon" ? "margin:0 auto;" : ""}">`,
+            href = safeLinkUrl(d.linkUrl);
+          return href
+            ? `<a href="${h(href)}"${d.linkNewTab !== false ? ' target="_blank" rel="noopener noreferrer"' : ""} style="display:inline-block;max-width:100%;text-decoration:none;cursor:pointer">${img}</a>`
+            : img;
+        };
+        const nestedActions = Array.isArray(d.actions) ? d.actions : [];
+        const nestedMarkup = () =>
+          `<div class="nested-actions">${nestedActions
+            .map((a) => {
+              const aAlign = ["left", "center", "right"].includes(a.align)
+                  ? a.align
+                  : "left",
+                href = safeLinkUrl(a.url) || "#",
+                isButton = a.type === "button",
+                aColor = isButton
+                  ? palettes.button.includes(a.buttonColor)
+                    ? a.buttonColor
+                    : "#825E8B"
+                  : palettes.link.includes(a.color)
+                    ? a.color
+                    : "#006699",
+                style = isButton
+                  ? `display:inline-block;background:${aColor};color:#FFFFFF;border-radius:5px;padding:12px 24px;text-decoration:none;cursor:pointer;font:700 16px Arial,sans-serif`
+                  : `color:${aColor};text-decoration:underline;cursor:pointer;font:16px/24px Arial,sans-serif`;
+              return `<div class="nested-action${a.id === selectedAction ? " selected" : ""}" data-nested-action="${h(a.id)}" style="text-align:${aAlign};margin:10px 0"><a href="${h(href)}"${a.newTab !== false ? ' target="_blank" rel="noopener noreferrer"' : ""} data-nested-edit="text" contenteditable="${!previewing}" style="${style}">${h(a.text || (isButton ? "Learn More" : "Hypertext link"))}</a></div>`;
+            })
+            .join(
+              "",
+            )}</div>${previewing ? "" : `<div class="nested-drop" data-nested-drop="${h(b.id)}">Drag a Button or Hypertext Link into this section</div>`}`;
+        let body = "";
+        switch (b.type) {
+          case "h1":
+            body = editable(
+              "text",
+              "h1",
+              `font:700 24px/1.35 Arial,sans-serif;color:${ink};margin:8px 0`,
+            );
+            break;
+          case "h2":
+            body = editable(
+              "text",
+              "h2",
+              `font:700 24px/1.35 Arial,sans-serif;color:${ink};margin:8px 0`,
+            );
+            break;
+          case "paragraph":
+            body = paragraphEditable("text");
+            break;
+          case "button": {
+            const href = safeLinkUrl(d.url) || "#";
+            body = `<a href="${h(href)}"${d.newTab !== false ? ' target="_blank" rel="noopener noreferrer"' : ""} data-edit="text" contenteditable="${!previewing}" style="display:inline-block;background:${btn};color:#FFFFFF;border-radius:5px;padding:12px 24px;text-decoration:none;cursor:pointer;font:700 16px Arial,sans-serif;${typeStyle("text", 16, "#FFFFFF")}">${h(d.text)}</a>`;
+            break;
+          }
+          case "browserLink": {
+            const href = safeLinkUrl(d.url) || "#";
+            body = `<a href="${h(href)}"${d.newTab !== false ? ' target="_blank" rel="noopener noreferrer"' : ""} data-edit="text" contenteditable="${!previewing}" style="color:${palettes.link.includes(d.color) ? d.color : "#006699"};text-decoration:underline;cursor:pointer;font:12px Arial,sans-serif;${typeStyle("text", 12, "#006699")}">${h(d.text || "View this newsletter in your browser")}</a>`;
+            break;
+          }
+          case "hyperlink": {
+            const href = safeLinkUrl(d.url) || "#";
+            body = `<a href="${h(href)}"${d.newTab !== false ? ' target="_blank" rel="noopener noreferrer"' : ""} data-edit="text" contenteditable="${!previewing}" style="color:${palettes.link.includes(d.color) ? d.color : "#006699"};text-decoration:underline;cursor:pointer;font:16px/24px Arial,sans-serif;${typeStyle("text", 16, "#006699")}">${h(d.text || "Hypertext link")}</a>`;
+            break;
+          }
+          case "header":
+            body = `<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse"><tr><td width="60%" align="left" style="vertical-align:middle"><img src="${h(d.logo || KW_LOGO)}" alt="The KeelWorks Current" width="180" style="display:block;width:180px;max-width:100%;height:auto"></td><td width="40%" align="right" style="vertical-align:middle;color:#00929C;font:bold 19px/31px Arial,sans-serif">${h((d.month || $("month").value).slice(0, 3).toUpperCase())} '${h(String(d.year || $("year").value).slice(-2))}</td></tr></table>`;
+            break;
+          case "hero":
+            body = `${editable("title", "h1", "font:700 24px/33px Arial,sans-serif;color:#066A71;margin:0 0 12px")}${paragraphEditable("text")}`;
+            break;
+          case "text":
+            body = `${editable("title", d.headingLevel === "h1" ? "h1" : "h2", "font:700 24px/31px Arial,sans-serif;color:#066A71;margin:0 0 12px")}${paragraphEditable("text")}`;
+            break;
+          case "image":
+            body = `${image()}${d.showCaption && d.caption ? `<p style="text-align:center;font:12px Arial;color:#666;margin:8px 0">${h(d.caption)}</p>` : ""}`;
+            break;
+          case "icon":
+            body = image();
+            break;
+          case "thumbnail":
+            body = image();
+            break;
+          case "imageLeft":
+            body = `<div class="image-row">${editable("title", "h2", "font:700 24px/31px Arial,sans-serif;color:#066A71;margin:0 0 12px")}<div class="image-row-media">${image()}</div>${paragraphEditable("text")}</div>`;
+            break;
+          case "imageRight":
+            body = `<div class="image-row reverse">${editable("title", "h2", "font:700 24px/31px Arial,sans-serif;color:#066A71;margin:0 0 12px")}<div class="image-row-media">${image()}</div>${paragraphEditable("text")}</div>`;
+            break;
+          case "donation": {
+            const donationUrl = h(d.url || defaults.donation.url);
+            if (d.detail) {
+              if (!String(d.text || "").includes(d.detail))
+                d.text = `${d.text || defaults.donation.text}\n\n${d.detail}`;
+              delete d.detail;
+            }
+            const donationCopy = String(d.text || defaults.donation.text),
+              donationParagraphs = donationCopy
+                .split(/\n\s*\n/)
+                .filter(Boolean)
+                .map((paragraph) =>
+                  h(paragraph).replace(
+                    "Every.org",
+                    `<a href="${donationUrl}" target="_blank" rel="noopener noreferrer" style="color:#006699;text-decoration:underline;cursor:pointer">Every.org</a>`,
+                  ),
+                )
+                .map(
+                  (paragraph, index, all) =>
+                    `<p style="font:16px/24px Arial,sans-serif;color:#212121;margin:0 0 20px;${typeStyle("text", 16, "#212121")}">${paragraph}</p>`,
+                )
+                .join(""),
+              buttonLabel = h(d.button || defaults.donation.button);
+            body = `${editable("title", "h2", "font:bold 24px/31px Arial,sans-serif;color:#212121;margin:0 0 12px")}<div data-edit="text" contenteditable="${!previewing}" spellcheck="true">${donationParagraphs}</div><a href="${donationUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 18px;background:#825e8b;color:#FFFFFF;line-height:20px;border-radius:9px;text-decoration:none;font-family:Arial,sans-serif;font-size:16px;cursor:pointer"><img src="images/hand_donate_white.png" alt="" width="20" height="20" style="display:inline-block;width:20px;height:20px;vertical-align:middle;border:0;margin-right:8px"><span style="color:#FFFFFF;vertical-align:middle">${buttonLabel}</span></a>`;
+            break;
+          }
+          case "divider":
+            body = '<hr style="border:0;border-top:1px solid #d5d5d5">';
+            break;
+          case "footer":
+            body = `<div style="text-align:left;font:16px/24px Arial,sans-serif;color:#fff"><p style="margin:0 0 26px"><a style="color:#fff" href="https://keelworks.org">Visit us</a> &nbsp;|&nbsp; <a style="color:#fff" href="https://www.every.org/keelworks-foundation">Donate</a> &nbsp;|&nbsp; <a style="color:#fff" href="https://keelworks.org/getinvolved">Get involved</a></p><p style="margin:0 0 30px">${[
+              [
+                "Facebook",
+                "https://www.facebook.com/TheKeelWorks",
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAhBQTFRFAAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////YKLGdAAAALB0Uk5TAAwwT2ZwcWlVORQBK3264vz/7MWPQQIck97tqTc7ufvPYAO+2UoLhvH6rB/Q5gkIaO74FQ7+ryAPliT9wRsGnRJT739h6uXn6/B09MAsHhkac6Uvwz8HTVeRmhCqRIopxOScUfk9lRgFkqKjv+Dp04P1NQD2ezO4sjJQZSPdR6Al0g2fZwod8yraPLvYFoLC19WbMdZDvWtIZCZJVHWk4UIis5gufC1jy9wRdyGZsYHYWCAsAAADrklEQVR4nKXXe0hTURgA8O/LCE1LcuFKDNlakg+SyiAsVuGfJT0kKwzLhOajtJJKyjR6mD0MbFRmLx8VJVH2ohKkYVBJiVhpQmKrLMvMykdp4Wy7d497tnOO2zz/3H33nO/HtnvuOedDYDe0tT72IMZ9HyGPoDqcB+SI/Q43vRDbnAOmIHbTv5YvYuuwgI+8i54tNBm+5QPBiF85+QCTEBvZgPJ9yCduuqkFNoe8ZAARiPph8wEUH4LqqEBkj/c7J/IBVIi1FGAuvmFNCofmJ3/iAATLRjU5mw8Qho/tAPXTAMbDp7cZqCMA/zCsdyUfQj07G6RA4ATaNOU1hd/LDhsw+1vPsAkybA8wTjOPFvMNQ4/BCiin/+L/gVHYGG58H793+cpG6yw3F90csgCxPc956aGTESsswaoqy6dJEVctwJoH3Pygyt+2yAZA9P0+EYhv0vOAxW06SSQBQpXlIpBwh5ePMaXSUALA0hIBUE+t5AHLdcQiIgXGfzSYgKQbvPxYPEvEUgBWFpuA0HYesGzMGfFDckmiaZXFy5LOtRf6EJRLynlAQrv5CW7BEodOVZ0BYdtFXj5EBxUI17Gp5ym9s6oRtp/jAoPml3THWVrvxsMIWWe4wLgP4nVKL613ThVCRtkIANULhJn6EQCQjOo/LdQeJ4EU1FRQO5wFUjH7JCNzEwoT7Iv5RYk071gbThCjenFvIQPYgjmUu8rE43aA/K9LQPxjcvHLxIPHXALyvpJP/Q/CoSOuAPnX9ETcj3A43xXgyCEyHkA4mucKsPohEXp9RuaCtvvVD9NlQaYYxonniqT9xKCcrQg5WjqgSBBWbEwXQ624Bd2tJQZ5dCIEJzL+RbHxZ+KBNKN7arfbAIbXGIHTu9wGFl8yLaoLvZ65CaiSkoWNZcUjNwGZoVUAovo5hysekK8xb668nYEDZN2rMQMnu9lPkg2oGkwvsgDEya66AUT/u2UBoPjvHpeBHRObC6yAd2Ezbd/hAap5/UVgBUC9bh/jmMgCCsp0IAGMB91ml4CwhQeAAGDpa3qhQQeO9+oL7ADI1pGVBA8wFKZZ6jjJAb0UtZRNigbkNl6x1oHSE75mft4XJwBV4niNrY4kSoTg3M1DwwKKmAbpocyuxrjypN7u0GsPZO0aJPrtixTlzusvOICibxzZTSk8MaNaevSXAusH2m47DHcAjNMyBbXWH2IDioo1cY6DGXVW3rTM3iEC0IRvpo5kF2r+p356eaZrcTlzhND+A0XFKWgspy4DAAAAAElFTkSuQmCC",
+              ],
+              [
+                "YouTube",
+                "https://www.youtube.com/@thekeelworksfoundation8668",
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAeNQTFRFAAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////sQ4a9gAAAKF0Uk5TACRonr/Y6/j9/vfq172cZCABS6bj/9+iQxeO5eCFERj285UDg+1zAjXMJnf0YQSpC8SxB7nFro14WDbGhO6few/18meoOwoOQrjbSvxTAGYzXH/DgRlpLEchCTFxFqCG8X0GTuK8JfmUDXWhG8s43tZdwRCamTJrYi9BHV+KE93S4W+PdD9uKlkUY9DNglqS5HJR70Z2BZaMV7JsWzDTRXCsKvshAAADfElEQVR4nJ2Xa0hUQRTH5+xq5qqpJep+EEtD7eEqSBhlJiVJCCVZIpZJmkVpDxQzMR9YVkbS015QSVFmgokfhAwphbJCKdISwUealdHDfFRYiu1VV++5d2buXf+fds49/9/dy5w5MwOEIZDoJyuPFnQUHHLgcJ86gB7gL/VlVgDdygD3HrdfVLsgWxiRIiQATxgdYtoFOQC0cgA+PdZcuyAneMcELGmbo+gnxAWa6AADfFJhF2QH7RSAP/So9BPiBo0ygP/wN9V+41yNmQgmgMHqvRl+QhZ8b8cAP7Xfb5LHCwRY3s5OZWhhvQiwolHN/GG5vB2bAhhaHMz2E+LV224CBLUq5NLl2jQJcNfw658ln67uCUBwy4z8hCyuHQfordjrly9b9ycCILBD9mQprVF1yN9jqDECHHWS/uMHUE19YRhAA44sq+8DEv4SxQIBKpn/eQM8tEOBlRVA5mlQKOgB0y5oNeomZFU5GDuMOBLczK8J74+oZ/0ZAnBCCZMVztbmWjQMgajHKLCmVAHgOoqGa0E7FwVCS6Z/x9ylALbiGQoDC0cU+CfawoJm628rAdaDJV6IYkBcVTjADT7AC2bZcwDGUtFf5wI2ghVuJVIAIRFwjQNwAWtbBQDZBHCZCRhUARhIaBOZJIBA0NkoAKLgIucTfMFGxwVEw3n0XAqIgYN3OID+pJo32C8FxEJiBRMQ1BVVSKSSAOIgrRgFxKUcLy0iQYduomE8HMaFsvMExSRWdA0aJkImKhOy+5gCIOsKGu4BknNJHEgq4TcUQySaVKcWkO4K+7K5gKN4Vg8cAZJ/FoUGs59zmuqPBtxUUzKMbX27pG/Mj/wqnz1BBQCncCS9rtLYUQtPylIHtBR/bLkslJEi7EwhmiZKuhr1h1SPb65njs8QEF8wsTunVrLO8nxlVlVPHjDOKVUPXVn7ySTAe929GfjdOvtMALLr2Rez/dl1ZWQKQHx7zQbkJBMRgHgMmunPTSII4Gn/wSy/nWUrBpAA5wZWMkWLovcSCYAEaDtV+/PGTH7xhcMzLUul33lkummg48nVC2pmMxuSRSN8ngN/5VtL/qMyZMFPvbeU8tdFpiYH319lJ8rUpzr26u4vKnotCVGOpCGvRum3R6fU+/ITKP3yffpWXLrUPbqjntYsqQBB7rmQYIgo/hz6u3mbRqu1yGPk/Qf95erNybqxugAAAABJRU5ErkJggg==",
+              ],
+              [
+                "LinkedIn",
+                "https://www.linkedin.com/company/keelworks-foundation/",
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAkBQTFRFAAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////88ydDgAAAMB0Uk5TAAsvTmVvcWlVORQBKHq54fv/68WPQQIakdztqTc4ts9fKr3YSYXx+qwfA1DQ5nAJCO74FQ6H/q4gD5b8viMMlcAbBpwSU+9/YeIxc/26javspi3j2wAiyVf3TBjDEaFEewWdME1FFuXMt+Do35t8kDJ59rixr5L5ihdkwtJcJPCn8oxIEOTHPRzUZ4OAstnRbQrWiMrBjkK7aEai12Kq8wdy9CbVVHWjGSG0mKC/2k/pgfUdYMh9dOrEiVKwnoRdHpZDGQAAA/dJREFUeJyll3lMFFccx3/feKF44LVGkCjGrRFTwDMYxDMxJNQLC41uUrtIjEWtWohxFTHKegVFDB4VswKlKoqNZ0ixjQdeTaymnthIlJiqyEZNNCgYBWfe7s7O25nZmV2/f8yb+b3f7zPvzfzeBdIWvGrSdtKwd2VxHKrROKAf0Kwwdgb+NwaIxBuNdnXHO0UzFK5ReK0ezdQLdf4BGAKnn3giE1CrDYgGnvoNFzUAuKUBiKuNrteNFzr5ZOANVcBofHpsIJ7IDPytAhgH3DcUL2g4LikAE/DRcDxRLM77AKZc7qKVlKoaib84gCkW1wOJp+iuL/6VAyLD1NLUn6JMNxu9gFEP2wUYTxSPKglgGoMrUkXfocLIu2iAMOlljQeQgnOSeWprdVMqcFYfYBpR4QH0+SRZk3BILCzn3+sTko83uQCjn3m9x4eVs/L70/qAhN5lLsAY2RAdecc14n84qQ+g5N8YwNrgzWzqFnGNlenHDQDa5jhEQMbvMlvfifvFYiGOGgBQzEUREPFObvuuWhiS8ewD62tuWRPIlHqIM1qENDjzylA8mb92gJZffWjMW01jq0ErSo14Jj2YXKJiTt8OynZwpgzX6EAxJdQsEu8a+hen9XS+qSQb8KdvY9P2gXJ2c6Zv2V+gr5xkSssT73KBls3uyhBbIQ8wh4DC+aRVAtqva5Nq87b7TDvzYb3HN0sBsP9XLquefYEHhMNSxVsUAF7z6vj3vUXi3YAAwz7wKRKJ3CJdQFTM2GOpsLH7OCeXtwJgy1Y9QOI3W4TrT8+L2dOGHZy7DbFP9AD5lazba7LZU7f2nPt70Hr+1yoB0y+zIieLFR1DOfdmUAH/qRQAa8wGZhFnD0GF6zn3FlB3fkZXAHZiHbNMO6ICmHgCVJRrDJC3RAVgXwyaf+oLABszQbEphcEDNv0ojI1fbEEDEHdOAOxbFTSgy1NxUrXXXA8SYM5YyBaW/SuDBOSvbmSAtLrHwQG2LXAvrgeyggKsvVPiBuwN+TkIgLn5NrkBpataJEDhM1ZELKO2NR/Fu0cdDrs67NoDN/zq8cysP+gBUDmWUqAq2DiiUgKEFt9QWzb8yZx6n4W4Z+kpGZkBbROJ9jhcG0VPmL2qVttZRfYK92ZXem/FrnsBxLcmhFb6ACix3S0Nb6XiZ2R7znGynh/BNoMLfb7TLp0D5Z/OMitH/Wjno571nb3nSO7bY+kx/e1h1OrFL+QxfG2KpeQK+ZUDs7ln378fndXb6u/1b3v8w1uU6bNzUI7W1r/sQ6fpvja1/LPOwSaV48/U9MPlSqtGAk9eeWrmXNlzQTiSWlU9tUeAaXDeweTlZX+c2Q0U9dAca58B3gtSLpgbAOsAAAAASUVORK5CYII=",
+              ],
+              [
+                "Instagram",
+                "https://www.instagram.com/thekeelworks/",
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAqNQTFRFAAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////h3p+VgAAAOF0Uk5TAAEeUnuZqbGyrJ6EXSwFFG606f/ywinB+/7UcQoDatzujQ9G2jGo+P3HSwYEWtvtfAsI8fqWFoWuHYy3HAeDE1n3AELs/N5OPDtHZtX2bcjARBIwo/TrPYnwYTnduxXvVg4kJigqKyclIAIyb6839fPfvU9BsxAJG4B/+UkY5BdQ0Uq2kJVjisZD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",
+              ],
+            ]
+              .map(
+                ([name, url, img]) =>
+                  `<a href="${url}" title="${name}" style="display:inline-block;margin-right:12px;color:#fff"><img src="${img}" alt="${name}" width="32" height="32" style="display:inline-block;border:0"></a>`,
+              )
+              .join(
+                "",
+              )}</p><p style="margin:0 0 24px"><a style="color:#fff" href="https://newsletters.keelworks.org/unsubscribe">Unsubscribe</a> &nbsp;|&nbsp; <a style="color:#fff" href="https://keelworks.org/privacy_policy">Privacy policy</a></p><p style="margin:0 0 4px;color:#fff;font:14px/20px Arial,sans-serif">${h(d.text)}</p><p style="margin:0;color:#fff;font:14px/20px Arial,sans-serif">${h(d.address)}</p></div>`;
+            break;
+        }
+        return `<div style="background:${bg};text-align:${align};padding:${["browserLink", "hyperlink"].includes(b.type) ? "6px 16px" : "20px"};color:${ink}">${body}</div>`;
+      }
+      function render() {
+        const dz = $("dropzone");
+        dz.innerHTML = blocks.length
+          ? ""
+          : '<div class="empty" id="empty">Drag an approved component from the right panel into this area.<br>Or click a component to add it.</div>';
+        blocks.forEach((b, i) => {
+          const ins = document.createElement("div");
+          ins.className = "insert";
+          ins.dataset.index = i;
+          dz.append(ins);
+          const el = document.createElement("div");
+          el.className = "block" + (b.id === selected ? " selected" : "");
+          el.dataset.id = b.id;
+          el.draggable = !previewing;
+          el.innerHTML =
+            content(b) +
+            (previewing
+              ? ""
+              : `<div class="block-actions"><button data-action="up" title="Move up">↑</button><button data-action="down" title="Move down">↓</button><button data-action="delete" title="Remove">✕</button></div>`);
+          el.addEventListener("input", (e) => {
+            const nestedEditable = e.target.closest("[data-nested-edit]");
+            const nestedHost = e.target.closest("[data-nested-action]");
+            if (nestedEditable && nestedHost) {
+              const nested = (b.data.actions || []).find(
+                (a) => String(a.id) === nestedHost.dataset.nestedAction,
+              );
+              if (nested)
+                nested[nestedEditable.dataset.nestedEdit] =
+                  nestedEditable.innerText;
+              return;
+            }
+            const editable = e.target.closest("[data-edit]");
+            if (!editable) return;
+            b.data[editable.dataset.edit] = editable.innerText;
+            const field = [
+              ...document.querySelectorAll("#fields input,#fields textarea"),
+            ].find((x) => x.dataset.key === editable.dataset.edit);
+            if (field && selected === b.id)
+              field.value = b.data[editable.dataset.edit];
+          });
+          el.onclick = (e) => {
+            if (e.target.closest("a") && !previewing) e.preventDefault();
+            if (previewing) return;
+            const nestedHost = e.target.closest("[data-nested-action]");
+            if (nestedHost) {
+              e.stopPropagation();
+              selected = b.id;
+              selectedAction = nestedHost.dataset.nestedAction;
+              render();
+              tab("settings");
+              return;
+            }
+            if (e.target.closest("[data-edit]")) {
+              selected = b.id;
+              selectedAction = null;
+              document
+                .querySelectorAll(".block")
+                .forEach((x) =>
+                  x.classList.toggle("selected", x.dataset.id == b.id),
+                );
+              tab("settings");
+              return;
+            }
+            const action = e.target.closest("[data-action]")?.dataset.action;
+            if (action) {
+              e.stopPropagation();
+              if (action === "delete") {
+                blocks.splice(i, 1);
+                selected = null;
+                selectedAction = null;
+              } else if (action === "up" && i > 0) {
+                [blocks[i - 1], blocks[i]] = [blocks[i], blocks[i - 1]];
+              } else if (action === "down" && i < blocks.length - 1) {
+                [blocks[i + 1], blocks[i]] = [blocks[i], blocks[i + 1]];
+              }
+              render();
+              showFields();
+              return;
+            }
+            selected = b.id;
+            selectedAction = null;
+            render();
+            tab("settings");
+          };
+          el.addEventListener("dragstart", (e) => {
+            if (
+              e.target.closest("[contenteditable]") ||
+              e.target.closest("[data-nested-action]") ||
+              e.target.closest("[data-nested-drop]")
+            ) {
+              e.preventDefault();
+              return;
+            }
+            dragging = { id: b.id };
+            e.dataTransfer.setData("text/plain", "move");
+            e.dataTransfer.effectAllowed = "move";
+          });
+          dz.append(el);
+        });
+        const end = document.createElement("div");
+        end.className = "insert";
+        end.dataset.index = blocks.length;
+        dz.append(end);
+        showFields();
+      }
+      function showFields() {
+        const b = blocks.find((x) => x.id === selected);
+        $("selectedType").textContent = b
+          ? definitions.find((x) => x[0] === b.type)[1]
+          : "Select a component in the canvas to edit it.";
+        const wrap = $("fields");
+        wrap.innerHTML = "";
+        if (!b) return;
+        const label = (name) => {
+          const l = document.createElement("label");
+          l.textContent = name;
+          wrap.append(l);
+        };
+        const refresh = () => {
+          const el = [...document.querySelectorAll(".block")].find(
+            (x) => x.dataset.id == b.id,
+          );
+          if (el) {
+            const actions = el.querySelector(".block-actions");
+            el.innerHTML = content(b);
+            if (actions) el.append(actions);
+          }
+        };
+        const field = (name, key, type = "text") => {
+          label(name);
+          const el =
+            type === "textarea"
+              ? document.createElement("textarea")
+              : document.createElement("input");
+          if (type !== "textarea") el.type = type;
+          el.value = b.data[key] ?? "";
+          el.dataset.key = key;
+          el.oninput = () => {
+            b.data[key] = el.value;
+            if (b.data.richText?.[key]) delete b.data.richText[key];
+            refresh();
+          };
+          wrap.append(el);
+        };
+        const nested = (b.data.actions || []).find(
+          (a) => String(a.id) === String(selectedAction),
+        );
+        if (nested) {
+          $("selectedType").textContent =
+            nested.type === "button"
+              ? "Button inside text section"
+              : "Hypertext Link inside text section";
+          const nestedField = (name, key) => {
+            label(name);
+            const input = document.createElement("input");
+            input.type = key === "url" ? "url" : "text";
+            input.value = nested[key] || "";
+            input.oninput = () => {
+              nested[key] = input.value;
+              refresh();
+            };
+            wrap.append(input);
+          };
+          nestedField("Text / label", "text");
+          nestedField("Destination URL", "url");
+          const newTabLabel = document.createElement("label");
+          newTabLabel.style.cssText =
+            "display:flex;align-items:center;gap:8px;margin-top:12px";
+          const newTab = document.createElement("input");
+          newTab.type = "checkbox";
+          newTab.style.width = "auto";
+          newTab.checked = nested.newTab !== false;
+          newTab.onchange = () => {
+            nested.newTab = newTab.checked;
+            refresh();
+          };
+          newTabLabel.append(
+            newTab,
+            document.createTextNode("Open destination in a new browser tab"),
+          );
+          wrap.append(newTabLabel);
+          label("Alignment within section");
+          const alignment = document.createElement("select");
+          [
+            ["left", "Left"],
+            ["center", "Center"],
+            ["right", "Right"],
+          ].forEach(([value, title]) =>
+            alignment.add(new Option(title, value)),
+          );
+          alignment.value = nested.align || "left";
+          alignment.onchange = () => {
+            nested.align = alignment.value;
+            refresh();
+          };
+          wrap.append(alignment);
+          label(
+            nested.type === "button"
+              ? "Button background · approved palette"
+              : "Link color · approved palette",
+          );
+          const color = document.createElement("select");
+          const choices =
+            nested.type === "button" ? palettes.button : palettes.link;
+          choices.forEach((value) => color.add(new Option(value, value)));
+          color.value =
+            nested.type === "button"
+              ? nested.buttonColor || "#825E8B"
+              : nested.color || "#006699";
+          color.onchange = () => {
+            nested[nested.type === "button" ? "buttonColor" : "color"] =
+              color.value;
+            refresh();
+          };
+          wrap.append(color);
+          const note = document.createElement("p");
+          note.className = "hint";
+          note.style.marginTop = "14px";
+          note.textContent =
+            "This action belongs to the selected text section and will remain inside it in the exported email.";
+          wrap.append(note);
+          return;
+        }
+        Object.entries(b.data)
+          .filter(
+            ([k]) =>
+              ![
+                "align",
+                "bg",
+                "color",
+                "buttonColor",
+                "size",
+                "width",
+                "height",
+                "cropSource",
+                "alt",
+                "showCaption",
+                "headingLevel",
+                "richText",
+                "linkUrl",
+                "linkNewTab",
+                "newTab",
+                "actions",
+              ].includes(k) &&
+              !k.startsWith("fontSize_") &&
+              !k.startsWith("fontColor_"),
+          )
+          .forEach(([key]) => {
+            if (
+              key === "url" &&
+              [
+                "image",
+                "icon",
+                "imageLeft",
+                "imageRight",
+                "thumbnail",
+              ].includes(b.type)
+            )
+              return;
+            if (key === "logo" && b.type === "header") return;
+            field(
+              {
+                title:
+                  b.type === "hero"
+                    ? "Hero Message Title"
+                    : ["text", "imageLeft", "imageRight", "donation"].includes(
+                          b.type,
+                        )
+                      ? "Section Title"
+                      : "Heading",
+                subtitle: "Subtitle",
+                text: [
+                  "hero",
+                  "text",
+                  "imageLeft",
+                  "imageRight",
+                  "donation",
+                  "paragraph",
+                ].includes(b.type)
+                  ? "Content Paragraph Text"
+                  : "Text / label",
+                url:
+                  b.type === "browserLink"
+                    ? "Published Newsletter HTML URL"
+                    : "Destination URL",
+                caption: "Image alt text / caption",
+                button: "Button label",
+              }[key] || key,
+              key,
+              key === "text" ? "textarea" : "text",
+            );
+          });
+        if (b.type === "text") {
+          label("Section heading level");
+          const headingLevel = document.createElement("select");
+          headingLevel.add(new Option("H1 — Main heading", "h1"));
+          headingLevel.add(new Option("H2 — Section heading", "h2"));
+          headingLevel.value = b.data.headingLevel || "h2";
+          headingLevel.onchange = () => {
+            b.data.headingLevel = headingLevel.value;
+            refresh();
+          };
+          wrap.append(headingLevel);
+          const help = document.createElement("p");
+          help.className = "hint";
+          help.textContent =
+            "Choose H1 or H2 within this section. Edit the heading and paragraph directly on the canvas.";
+          wrap.append(help);
+        }
+        if (["button", "browserLink", "hyperlink"].includes(b.type)) {
+          const newTabLabel = document.createElement("label");
+          newTabLabel.style.cssText =
+            "display:flex;align-items:center;gap:8px;margin-top:10px";
+          const newTab = document.createElement("input");
+          newTab.type = "checkbox";
+          newTab.style.width = "auto";
+          newTab.checked = b.data.newTab !== false;
+          newTab.onchange = () => {
+            b.data.newTab = newTab.checked;
+            refresh();
+          };
+          newTabLabel.append(
+            newTab,
+            document.createTextNode("Open destination in a new browser tab"),
+          );
+          wrap.append(newTabLabel);
+          if (b.type === "browserLink") {
+            const browserLinkHelp = document.createElement("p");
+            browserLinkHelp.className = "hint";
+            browserLinkHelp.textContent =
+              "After the exported HTML is uploaded to the newsletter website, paste its public URL above. The link will open that web-version HTML page in a new browser tab.";
+            wrap.append(browserLinkHelp);
+          }
+        }
+        if (b.type === "header") {
+          label("Header logo · supplied KeelWorks logo");
+          const img = document.createElement("img");
+          img.src = b.data.logo || KW_LOGO;
+          img.style.cssText = "width:180px;max-width:100%;margin:8px 0";
+          wrap.append(img);
+          const note = document.createElement("p");
+          note.className = "hint";
+          note.textContent =
+            "Month and year are editable above. The supplied logo is embedded in HTML exports.";
+          wrap.append(note);
+        }
+        if (b.type === "donation") {
+          const note = document.createElement("p");
+          note.className = "hint";
+          note.textContent =
+            "The purple Donate button uses the supplied artwork and links to Every.org. The button is a preset component.";
+          wrap.append(note);
+        }
+        if (b.type === "footer") {
+          const note = document.createElement("p");
+          note.className = "hint";
+          note.textContent =
+            "Navigation, social media, unsubscribe, and privacy links are preset from August26.html.";
+          wrap.append(note);
+        }
+        const imageType = [
+          "image",
+          "icon",
+          "imageLeft",
+          "imageRight",
+          "thumbnail",
+        ].includes(b.type);
+        if (imageType) {
+          field("Image / icon URL (https://)", "url");
+          label("Or upload from your computer");
+          const upload = document.createElement("input");
+          upload.type = "file";
+          upload.accept =
+            "image/png,image/jpeg,image/gif,image/webp,image/svg+xml";
+          upload.setAttribute("aria-label", "Upload image or icon");
+          const uploadError = (message) => {
+            wrap.querySelectorAll(".field-error").forEach((x) => x.remove());
+            const e = document.createElement("div");
+            e.className = "field-error";
+            e.setAttribute("role", "alert");
+            e.textContent = message;
+            upload.insertAdjacentElement("afterend", e);
+            upload.focus();
+          };
+          upload.onchange = async () => {
+            const file = upload.files?.[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+              uploadError("Image exceeds 2 MB. Please choose a smaller file.");
+              return;
+            }
+            if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
+              uploadError("Unsupported file type. Use PNG, JPG, WebP, or GIF.");
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+              const img = new Image();
+              img.onload = () => {
+                if (img.width > 4000 || img.height > 4000) {
+                  uploadError(
+                    "Image dimensions exceed 4000 × 4000 px. Please resize it first.",
+                  );
+                  return;
+                }
+                b.data.cropSource = reader.result;
+                b.data.url = reader.result;
+                refresh();
+                showFields();
+                toast("Image loaded. Use Crop image to adjust.");
+              };
+              img.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+          };
+          upload.title =
+            "PNG, JPG, WebP or GIF • Maximum 2 MB • Maximum 4000 × 4000 px";
+          upload.setAttribute("aria-describedby", "imageUploadHelp");
+          const uploadHint = document.createElement("div");
+          uploadHint.className = "upload-guidance";
+          uploadHint.id = "imageUploadHelp";
+          uploadHint.textContent =
+            "PNG, JPG, WebP or GIF · Max 2 MB · 4000 × 4000 px";
+          wrap.append(upload, uploadHint);
+          if (
+            ["image", "thumbnail", "icon", "imageLeft", "imageRight"].includes(
+              b.type,
+            )
+          ) {
+            label("Alternative text (alt) · accessibility");
+            const alt = document.createElement("input");
+            alt.type = "text";
+            alt.maxLength = 250;
+            alt.value = b.data.alt ?? "";
+            alt.placeholder = "Describe the image for screen reader users";
+            alt.oninput = () => {
+              b.data.alt = alt.value;
+              refresh();
+            };
+            wrap.append(alt);
+            const help = document.createElement("div");
+            help.className = "field-note";
+            help.textContent =
+              "Describe meaningful images. Leave empty only for decorative images.";
+            wrap.append(help);
+          }
+          if (
+            ["image", "thumbnail", "imageLeft", "imageRight"].includes(b.type)
+          ) {
+            label("Image link · destination URL");
+            const imageLink = document.createElement("input");
+            imageLink.type = "url";
+            imageLink.inputMode = "url";
+            imageLink.placeholder = "https://example.org";
+            imageLink.value = b.data.linkUrl || "";
+            imageLink.oninput = () => {
+              b.data.linkUrl = imageLink.value;
+              refresh();
+            };
+            wrap.append(imageLink);
+            const linkHelp = document.createElement("div");
+            linkHelp.className = "field-note";
+            linkHelp.textContent =
+              "Optional. Leave empty when the image should not be clickable.";
+            wrap.append(linkHelp);
+            const newTabLabel = document.createElement("label");
+            newTabLabel.style.cssText =
+              "display:flex;align-items:center;gap:8px;margin-top:10px";
+            const newTab = document.createElement("input");
+            newTab.type = "checkbox";
+            newTab.style.width = "auto";
+            newTab.checked = b.data.linkNewTab !== false;
+            newTab.onchange = () => {
+              b.data.linkNewTab = newTab.checked;
+              refresh();
+            };
+            newTabLabel.append(
+              newTab,
+              document.createTextNode("Open image link in a new tab"),
+            );
+            wrap.append(newTabLabel);
+          }
+          if (b.type === "thumbnail") {
+            label("Thumbnail width (80–400 px)");
+            const w = document.createElement("input");
+            w.type = "number";
+            w.min = 80;
+            w.max = 400;
+            w.value = b.data.width || 240;
+            w.onchange = () => {
+              b.data.width = String(
+                Math.max(80, Math.min(400, Number(w.value) || 240)),
+              );
+              refresh();
+            };
+            wrap.append(w);
+            label("Thumbnail height (60–320 px)");
+            const ht = document.createElement("input");
+            ht.type = "number";
+            ht.min = 60;
+            ht.max = 320;
+            ht.value = b.data.height || 160;
+            ht.onchange = () => {
+              b.data.height = String(
+                Math.max(60, Math.min(320, Number(ht.value) || 160)),
+              );
+              refresh();
+            };
+            wrap.append(ht);
+          }
+          if (allowedImage(b.data.cropSource || b.data.url)) {
+            const cropButton = document.createElement("button");
+            cropButton.className = "btn outline";
+            cropButton.style.marginTop = "12px";
+            cropButton.innerHTML =
+              '<span class="material-symbols-outlined" aria-hidden="true">crop</span><span>Crop image</span>';
+            cropButton.setAttribute("aria-expanded", "false");
+            cropButton.classList.add("crop-toggle");
+            wrap.append(cropButton);
+            cropButton.onclick = () => openCrop(b, wrap, refresh, cropButton);
+          }
+          if (b.type === "icon") {
+            label("Icon width");
+            const sel = document.createElement("select");
+            [24, 32, 48, 64, 96, 128].forEach((v) =>
+              sel.add(new Option(v + " px", v)),
+            );
+            sel.value = b.data.size || "48";
+            sel.onchange = () => {
+              b.data.size = sel.value;
+              refresh();
+            };
+            wrap.append(sel);
+          }
+        }
+        const selector = (name, key, choices, def) => {
+          label(name);
+          const el = document.createElement("select");
+          choices.forEach(([value, title]) => el.add(new Option(title, value)));
+          el.value = b.data[key] || def;
+          el.onchange = () => {
+            b.data[key] = el.value;
+            refresh();
+          };
+          wrap.append(el);
+        };
+        selector(
+          "Alignment",
+          "align",
+          [
+            ["left", "Left"],
+            ["center", "Center"],
+            ["right", "Right"],
+          ],
+          ["hero", "button", "browserLink", "icon", "hyperlink"].includes(
+            b.type,
+          )
+            ? "center"
+            : "left",
+        );
+        selector(
+          "Background color · approved palette",
+          "bg",
+          palettes.background.map((x) => [x, x]),
+          b.type === "footer"
+            ? "#666A6F"
+            : b.type === "hero"
+              ? "#EAF5F5"
+              : b.type === "donation"
+                ? "#D0BCD5"
+                : "#FFFFFF",
+        );
+        if (
+          ["h1", "h2", "paragraph", "browserLink", "hyperlink"].includes(b.type)
+        )
+          selector(
+            "Text color · approved palette",
+            "color",
+            (["browserLink", "hyperlink"].includes(b.type)
+              ? palettes.link
+              : palettes.text
+            ).map((x) => [x, x]),
+            b.type === "h2"
+              ? "#066A71"
+              : ["browserLink", "hyperlink"].includes(b.type)
+                ? "#006699"
+                : "#212121",
+          );
+        if (["button", "donation"].includes(b.type))
+          selector(
+            "Button background · approved palette",
+            "buttonColor",
+            palettes.button.map((x) => [x, x]),
+            "#825E8B",
+          );
+        const typographyKeys =
+          {
+            h1: ["text"],
+            h2: ["text"],
+            paragraph: ["text"],
+            button: ["text"],
+            browserLink: ["text"],
+            hyperlink: ["text"],
+            hero: ["title", "text"],
+            text: ["title", "text"],
+            imageLeft: ["title", "text"],
+            imageRight: ["title", "text"],
+            donation: ["title", "text"],
+          }[b.type] || [];
+        if (typographyKeys.length) {
+          const title = document.createElement("h4");
+          title.textContent = "Typography";
+          title.style.cssText = "margin:22px 0 5px;color:#066a71";
+          wrap.append(title);
+          const note = document.createElement("p");
+          note.className = "hint";
+          note.textContent =
+            "Defaults follow the KeelWorks Design System. Choose a font size and approved color for each text element.";
+          wrap.append(note);
+          for (const key of typographyKeys) {
+            const isTitle =
+              key === "title" || b.type === "h1" || b.type === "h2";
+            const defaultSize = isTitle
+              ? 24
+              : b.type === "browserLink"
+                ? 12
+                : 16;
+            const isLink = ["browserLink", "hyperlink"].includes(b.type);
+            const defaultColor =
+              b.type === "button"
+                ? "#FFFFFF"
+                : isTitle && b.type !== "h1"
+                  ? "#066A71"
+                  : isLink
+                    ? "#006699"
+                    : "#212121";
+            label(
+              (key === "title"
+                ? "Heading"
+                : key === "detail"
+                  ? "Supporting text"
+                  : key === "text"
+                    ? "Body / label"
+                    : key) + " · font size",
+            );
+            const size = document.createElement("select");
+            [
+              10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48,
+            ].forEach((v) => size.add(new Option(v + " px", v)));
+            size.value = String(b.data["fontSize_" + key] || defaultSize);
+            size.onchange = () => {
+              b.data["fontSize_" + key] = Number(size.value);
+              refresh();
+            };
+            wrap.append(size);
+            label(
+              (key === "title"
+                ? "Heading"
+                : key === "detail"
+                  ? "Supporting text"
+                  : "Text") + " · color",
+            );
+            const color = document.createElement("select");
+            (isLink ? palettes.link : palettes.text).forEach((c) =>
+              color.add(new Option(c, c)),
+            );
+            color.value = b.data["fontColor_" + key] || defaultColor;
+            color.onchange = () => {
+              b.data["fontColor_" + key] = color.value;
+              refresh();
+            };
+            wrap.append(color);
+          }
+        }
+        const info = document.createElement("p");
+        info.className = "hint";
+        info.style.marginTop = "14px";
+        info.textContent =
+          "Font family: Arial (email-safe). Use approved colors and keep body text readable.";
+        wrap.append(info);
+      }
+      function tab(name) {
+        document
+          .querySelectorAll(".rail button")
+          .forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+        ["catalog", "settings", "bodySettings"].forEach((id) =>
+          $(id).classList.toggle("active", id === name),
+        );
+        $("catalog").style.display = name === "catalog" ? "block" : "none";
+      }
+      document
+        .querySelectorAll(".rail button")
+        .forEach((b) => (b.onclick = () => tab(b.dataset.tab)));
+      $("dropzone").addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = dragging?.id ? "move" : "copy";
+        const nestedTarget = e.target.closest(".nested-drop");
+        const target = e.target.closest(".insert");
+        document
+          .querySelectorAll(".nested-drop")
+          .forEach((x) =>
+            x.classList.toggle(
+              "over",
+              x === nestedTarget &&
+                ["button", "hyperlink"].includes(dragging?.type),
+            ),
+          );
+        document
+          .querySelectorAll(".insert")
+          .forEach((x) => x.classList.toggle("over", x === target));
+        $("dropzone").classList.toggle("over", !target && !nestedTarget);
+      });
+      $("dropzone").addEventListener("dragleave", (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          $("dropzone").classList.remove("over");
+          document
+            .querySelectorAll(".insert")
+            .forEach((x) => x.classList.remove("over"));
+          document
+            .querySelectorAll(".nested-drop")
+            .forEach((x) => x.classList.remove("over"));
+        }
+      });
+      $("dropzone").addEventListener("drop", (e) => {
+        e.preventDefault();
+        const nestedTarget = e.target.closest(".nested-drop");
+        const nestedType =
+          dragging?.type || e.dataTransfer.getData("text/plain");
+        if (
+          nestedTarget &&
+          ["button", "hyperlink"].includes(nestedType) &&
+          !dragging?.id
+        ) {
+          const parent = blocks.find(
+            (b) => String(b.id) === nestedTarget.dataset.nestedDrop,
+          );
+          if (parent && ["text", "paragraph"].includes(parent.type)) {
+            const nested = {
+              id: String(Date.now() + Math.random()),
+              type: nestedType,
+              ...defaults[nestedType],
+              align: "left",
+            };
+            parent.data.actions = Array.isArray(parent.data.actions)
+              ? parent.data.actions
+              : [];
+            parent.data.actions.push(nested);
+            selected = parent.id;
+            selectedAction = nested.id;
+            dragging = null;
+            render();
+            tab("settings");
+            return;
+          }
+        }
+        const target = e.target.closest(".insert");
+        let index = target ? Number(target.dataset.index) : blocks.length;
+        if (dragging?.id) {
+          const old = blocks.findIndex((x) => x.id === dragging.id);
+          if (old >= 0) {
+            const [b] = blocks.splice(old, 1);
+            if (index > old) index--;
+            blocks.splice(index, 0, b);
+            selected = b.id;
+            selectedAction = null;
+          }
+        } else {
+          const type = dragging?.type || e.dataTransfer.getData("text/plain");
+          if (defaults[type]) {
+            make(type, index);
+            dragging = null;
+            return;
+          }
+        }
+        dragging = null;
+        render();
+      });
+      $("dropzone").addEventListener("dragend", () => (dragging = null));
+      $("desktop").onclick = () => {
+        $("canvas-panel").classList.remove("mobile");
+        $("desktop").classList.add("active");
+        $("desktop").setAttribute("aria-pressed", "true");
+        $("mobile").classList.remove("active");
+        $("mobile").setAttribute("aria-pressed", "false");
+      };
+      $("mobile").onclick = () => {
+        $("canvas-panel").classList.add("mobile");
+        $("mobile").classList.add("active");
+        $("mobile").setAttribute("aria-pressed", "true");
+        $("desktop").classList.remove("active");
+        $("desktop").setAttribute("aria-pressed", "false");
+      };
+      $("remove").onclick = () => {
+        if (selectedAction) {
+          const parent = blocks.find((b) => b.id === selected);
+          if (parent) {
+            parent.data.actions = (parent.data.actions || []).filter(
+              (a) => String(a.id) !== String(selectedAction),
+            );
+          }
+          selectedAction = null;
+          render();
+          tab("settings");
+          return;
+        }
+        blocks = blocks.filter((b) => b.id !== selected);
+        selected = null;
+        render();
+        tab("catalog");
+      };
+      $("bodyBg").onchange = (e) =>
+        ($("email").style.background = e.target.value);
+      let savedSnapshot = "";
+      function draftSnapshot() {
+        return JSON.stringify({
+          name: $("name").value,
+          month: $("month").value,
+          year: $("year").value,
+          bodyBg: $("bodyBg").value,
+          blocks,
+        });
+      }
+      function save() {
+        localStorage.setItem(
+          "kwControlledEditorDraft",
+          JSON.stringify({
+            name: $("name").value,
+            month: $("month").value,
+            year: $("year").value,
+            bodyBg: $("bodyBg").value,
+            blocks,
+          }),
+        );
+        savedSnapshot = draftSnapshot();
+        toast("Draft saved in this browser");
+      }
+      $("save").onclick = save;
+      $("cancel").onclick = () => {
+        if (
+          draftSnapshot() !== savedSnapshot &&
+          !confirm("Discard unsaved changes and leave the editor?")
+        )
+          return;
+        if (history.length > 1) history.back();
+        else
+          toast(
+            "No previous page available. Your changes have not been saved.",
+          );
+      };
+      function cleanContent(b) {
+        return String(content(b) || "")
+          .replace(/ contenteditable="(?:true|false)"/g, "")
+          .replace(/ data-edit="[^"]+"/g, "")
+          .replace(/ spellcheck="true"/g, "");
+      }
+      function emailBlockHtml(b) {
+        const holder = document.createElement("div");
+        holder.innerHTML = cleanContent(b);
+        holder.querySelectorAll(".nested-drop").forEach((el) => el.remove());
+        holder
+          .querySelectorAll("[data-nested-action],[data-nested-edit]")
+          .forEach((el) => {
+            el.removeAttribute("data-nested-action");
+            el.removeAttribute("data-nested-edit");
+            el.classList.remove("selected");
+          });
+        // Convert CSS grid image/text layouts into presentation tables for email clients.
+        // Mobile CSS exposes a duplicate heading above the table, then orders image before body copy.
+        const row = holder.querySelector(".image-row");
+        if (row) {
+          const isRight = b.type === "imageRight";
+          const imageNode = row.querySelector(".image-row-media"),
+            titleNode = row.querySelector('[data-edit="title"]'),
+            textNode = row.querySelector('[data-edit="text"]');
+          const imgHtml = imageNode?.innerHTML || "";
+          const titleHtml = titleNode?.outerHTML || "";
+          const txtHtml = textNode?.outerHTML || "";
+          const imgCell = `<td class="stack image-cell" width="45%" valign="top" style="width:45%;vertical-align:top;${isRight ? "padding-left:10px" : "padding-right:10px"}">${imgHtml}</td>`;
+          const txtCell = `<td class="stack text-cell" width="55%" valign="top" style="width:55%;vertical-align:top;${isRight ? "padding-right:10px" : "padding-left:10px"}"><div class="desktop-image-title">${titleHtml}</div>${txtHtml}</td>`;
+          row.outerHTML = `<div class="mobile-image-title">${titleHtml}</div><table class="image-text-table" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;table-layout:fixed"><tr>${isRight ? txtCell + imgCell : imgCell + txtCell}</tr></table>`;
+        }
+        // Remove editing-only placeholder text from exported newsletters.
+        holder.querySelectorAll(".placeholder").forEach((el) => el.remove());
+        return holder.innerHTML;
+      }
+      function buildHtml(withFooter) {
+        const chosen = withFooter
+          ? blocks
+          : blocks.filter((b) => !["footer", "browserLink"].includes(b.type));
+        const exportBlocks = [...chosen];
+        if (withFooter && !exportBlocks.some((b) => b.type === "footer"))
+          exportBlocks.push({ type: "footer", data: { ...defaults.footer } });
+        const sections = exportBlocks
+          .map((b, i) => {
+            const adjacentClosing =
+              i > 0 &&
+              exportBlocks[i - 1].type === "donation" &&
+              b.type === "footer";
+            const bg = palettes.background.includes(b.data.bg)
+              ? b.data.bg
+              : b.type === "footer"
+                ? "#666A6F"
+                : b.type === "donation"
+                  ? "#D0BCD5"
+                  : b.type === "hero"
+                    ? "#EAF5F5"
+                    : "#FFFFFF";
+            // Each section gets its own 20px inset; no exterior white gutter between donation/footer.
+            return `<tr><td style="padding:0;background:${bg};vertical-align:top"><div style="margin:0;padding:0">${emailBlockHtml(b)}</div></td></tr>`;
+          })
+          .join("");
+        return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml($("name").value)}</title><style>body,table,td{margin:0;padding:0}img{border:0;max-width:100%;height:auto}p{line-height:24px}h1,h2{line-height:1.3}.mobile-image-title{display:none}@media only screen and (max-width:640px){.mobile-image-title{display:block!important;width:100%!important;text-align:left!important}.mobile-image-title h1,.mobile-image-title h2{width:100%!important;text-align:left!important}.desktop-image-title{display:none!important}.image-text-table tr{display:flex!important;flex-direction:column!important;width:100%!important}.stack{display:block!important;width:100%!important;max-width:100%!important;padding:8px 0!important}.image-cell{order:2!important}.text-cell{order:3!important}table{max-width:100%!important}}@media print{@page{size:A4;margin:14mm}body{background:#fff!important}}</style></head><body style="margin:0;padding:20px;background:#f7f7f7;font-family:Arial,sans-serif;color:#212121"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="center"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="width:100%;max-width:640px;border-collapse:collapse;background:${escapeHtml($("bodyBg").value)};border:1px solid #e5e7eb">${sections}</table></td></tr></table><\/body><\/html>`;
+      }
+      function downloadBlob(blob, filename) {
+        const a = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = filename;
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      }
+      async function exportPdf(withFooter, base) {
+        const chosen = withFooter
+          ? blocks
+          : blocks.filter((b) => !["footer", "browserLink"].includes(b.type));
+        if (withFooter && !chosen.some((b) => b.type === "footer"))
+          chosen.push({ type: "footer", data: { ...defaults.footer } });
+        const W = 1240,
+          H = 1754,
+          margin = 95,
+          contentWidth = W - 2 * margin;
+        let pages = [],
+          pageLinks = [],
+          canvas,
+          ctx,
+          y;
+        function page() {
+          canvas = document.createElement("canvas");
+          canvas.width = W;
+          canvas.height = H;
+          ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, W, H);
+          y = margin;
+          pages.push(canvas);
+          pageLinks.push([]);
+        }
+        function room(h) {
+          if (y + h > H - margin) page();
+        }
+        function rect(color, height) {
+          room(height);
+          ctx.fillStyle = color;
+          ctx.fillRect(margin - 18, y - 16, contentWidth + 36, height);
+        }
+        function wrapText(
+          str,
+          size = 30,
+          bold = false,
+          color = "#212121",
+          maxWidth = contentWidth,
+        ) {
+          const text = String(str || "")
+            .replace(/<[^>]+>/g, " ")
+            .replace(/&amp;/g, "&");
+          ctx.font = (bold ? "bold " : "") + size + "px Arial";
+          ctx.fillStyle = color;
+          const lines = [];
+          for (const para of text.split("\n")) {
+            let line = "";
+            for (const word of para.split(/\s+/)) {
+              const next = line ? line + " " + word : word;
+              if (ctx.measureText(next).width > maxWidth && line) {
+                lines.push(line);
+                line = word;
+              } else line = next;
+            }
+            lines.push(line);
+          }
+          const lh = size * 1.34;
+          for (const line of lines) {
+            room(lh);
+            ctx.font = (bold ? "bold " : "") + size + "px Arial";
+            ctx.fillStyle = color;
+            ctx.fillText(line, margin, y + size);
+            y += lh;
+          }
+          y += 6;
+        }
+        function pdfLink(
+          label,
+          url,
+          size = 23,
+          color = "#006699",
+          bold = false,
+        ) {
+          if (!url) return;
+          room(size * 1.65 + 10);
+          ctx.font = (bold ? "bold " : "") + size + "px Arial";
+          ctx.fillStyle = color;
+          ctx.fillText(label, margin, y + size);
+          const width = Math.min(contentWidth, ctx.measureText(label).width);
+          pageLinks[pageLinks.length - 1].push({
+            x: margin,
+            y: y + 2,
+            w: width,
+            h: size * 1.45,
+            url,
+          });
+          y += size * 1.6 + 8;
+        }
+        async function drawImg(src, maxH = 400) {
+          if (!src) return;
+          try {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            await new Promise((res, rej) => {
+              img.onload = res;
+              img.onerror = rej;
+              img.src = src;
+            });
+            const ratio = Math.min(contentWidth / img.width, maxH / img.height);
+            const w = img.width * ratio,
+              h = img.height * ratio;
+            room(h + 24);
+            ctx.drawImage(img, margin, y, w, h);
+            y += h + 24;
+          } catch (e) {
+            wrapText(
+              "[Image unavailable in PDF: use a locally uploaded image]",
+              20,
+              false,
+              "#8b4a4a",
+            );
+          }
+        }
+        page();
+        for (const b of chosen) {
+          const d = b.data || {};
+          room(65);
+          if (b.type === "divider") {
+            y += 16;
+            ctx.fillStyle = "#ddd";
+            ctx.fillRect(margin, y, contentWidth, 2);
+            y += 35;
+            continue;
+          }
+          if (b.type === "header") {
+            await drawImg(d.logo || KW_LOGO, 115);
+            wrapText(
+              (d.month || "") + " " + (d.year || ""),
+              25,
+              true,
+              "#00929c",
+            );
+            continue;
+          }
+          if (b.type === "browserLink") {
+            pdfLink(
+              d.text || "View in browser",
+              d.url || "https://newsletters.keelworks.org/",
+              22,
+            );
+            continue;
+          }
+          if (b.type === "hyperlink") {
+            pdfLink(
+              d.text || "Hypertext link",
+              d.url || "https://keelworks.org",
+              22,
+              "#006699",
+            );
+            continue;
+          }
+          if (b.type === "hero") {
+            rect(d.bg || "#e9f4f4", 150);
+            wrapText(d.title, 46, true, "#006a74");
+            wrapText(d.text, 31);
+            y += 30;
+            continue;
+          }
+          if (b.type === "donation") {
+            const sectionStart = y;
+            wrapText(d.title, 34, true);
+            wrapText(d.text, 25);
+            room(78);
+            ctx.fillStyle = "#825e8b";
+            ctx.fillRect(margin, y, 195, 56);
+            ctx.fillStyle = "white";
+            ctx.font = "bold 26px Arial";
+            ctx.fillText("♥ Donate", margin + 22, y + 38);
+            pageLinks[pageLinks.length - 1].push({
+              x: margin,
+              y,
+              w: 195,
+              h: 56,
+              url: d.url || "https://www.every.org/keelworks-foundation",
+            });
+            y += 84;
+            ctx.save();
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.fillStyle = "#d0bcd5";
+            ctx.fillRect(
+              margin - 20,
+              sectionStart - 14,
+              contentWidth + 40,
+              y - sectionStart + 20,
+            );
+            ctx.restore();
+            y += 20;
+            continue;
+          }
+          if (b.type === "footer") {
+            const sectionStart = y;
+            for (const [label, url] of [
+              ["Visit us", "https://keelworks.org"],
+              ["Donate", "https://www.every.org/keelworks-foundation"],
+              ["Get involved", "https://keelworks.org/getinvolved"],
+              ["Facebook", "https://www.facebook.com/TheKeelWorks"],
+              [
+                "YouTube",
+                "https://www.youtube.com/@thekeelworksfoundation8668",
+              ],
+              [
+                "LinkedIn",
+                "https://www.linkedin.com/company/keelworks-foundation/",
+              ],
+              ["Instagram", "https://www.instagram.com/thekeelworks/"],
+              ["Unsubscribe", "https://newsletters.keelworks.org/unsubscribe"],
+              ["Privacy policy", "https://keelworks.org/privacy_policy"],
+            ])
+              pdfLink(label, url, 22, "#ffffff");
+            wrapText(d.text || defaults.footer.text, 22, false, "#ffffff");
+            wrapText(
+              d.address || defaults.footer.address,
+              20,
+              false,
+              "#ffffff",
+            );
+            ctx.save();
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.fillStyle = "#666a6f";
+            ctx.fillRect(
+              margin - 20,
+              sectionStart - 14,
+              contentWidth + 40,
+              y - sectionStart + 30,
+            );
+            ctx.restore();
+            y += 25;
+            continue;
+          }
+          if (["image", "thumbnail", "icon"].includes(b.type)) {
+            await drawImg(
+              d.url,
+              b.type === "icon" ? 90 : b.type === "thumbnail" ? 250 : 520,
+            );
+            if (d.caption) wrapText(d.caption, 21);
+            continue;
+          }
+          if (["imageLeft", "imageRight"].includes(b.type)) {
+            await drawImg(d.url, 360);
+            wrapText(d.title, 35, true);
+            wrapText(d.text, 26);
+            continue;
+          }
+          if (b.type === "h1" || b.type === "h2") {
+            wrapText(d.text, 39, true);
+            continue;
+          }
+          if (b.type === "paragraph") {
+            wrapText(d.text, 27);
+            continue;
+          }
+          if (b.type === "button") {
+            pdfLink(d.text || "Button", d.url, 25, "#825e8b", true);
+            continue;
+          }
+          if (b.type === "text") {
+            wrapText(d.title, 36, true);
+            wrapText(d.text, 27);
+            continue;
+          }
+        }
+        // Encode every canvas as a JPEG XObject in a standards-compliant, directly downloadable PDF.
+        const enc = new TextEncoder(),
+          parts = [],
+          offsets = [0];
+        let size = 0;
+        function append(bytes) {
+          parts.push(bytes);
+          size += bytes.length;
+        }
+        function str(t) {
+          append(enc.encode(t));
+        }
+        function obj(n, body) {
+          offsets[n] = size;
+          str(n + " 0 obj\n" + body + "\nendobj\n");
+        }
+        str("%PDF-1.4\n");
+        const pageRefs = [];
+        let n = 3;
+        const annotationObjects = [];
+        for (const [pageIndex, c] of pages.entries()) {
+          const cx = c.getContext("2d");
+          cx.save();
+          cx.globalCompositeOperation = "destination-over";
+          cx.fillStyle = "#ffffff";
+          cx.fillRect(0, 0, W, H);
+          cx.restore();
+          const url = c.toDataURL("image/jpeg", 0.87);
+          const binary = atob(url.split(",")[1]);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++)
+            bytes[i] = binary.charCodeAt(i);
+          const p = n++,
+            contents = n++,
+            img = n++;
+          const annotations = pageLinks[pageIndex].map((link) => ({
+            id: n++,
+            link,
+          }));
+          annotationObjects.push(...annotations);
+          pageRefs.push(p + " 0 R");
+          obj(
+            p,
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 " +
+              img +
+              " 0 R >> >> /Contents " +
+              contents +
+              " 0 R /Annots [" +
+              annotations.map((a) => a.id + " 0 R").join(" ") +
+              "] >>",
+          );
+          const commands = "q 595 0 0 842 0 0 cm /Im0 Do Q\n";
+          obj(
+            contents,
+            "<< /Length " +
+              enc.encode(commands).length +
+              " >>\nstream\n" +
+              commands +
+              "endstream",
+          );
+          offsets[img] = size;
+          str(
+            img +
+              " 0 obj\n<< /Type /XObject /Subtype /Image /Width " +
+              W +
+              " /Height " +
+              H +
+              " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " +
+              bytes.length +
+              " >>\nstream\n",
+          );
+          append(bytes);
+          str("\nendstream\nendobj\n");
+        }
+        for (const a of annotationObjects) {
+          const l = a.link,
+            scaleX = 595 / W,
+            scaleY = 842 / H;
+          const x1 = (l.x * scaleX).toFixed(2),
+            x2 = ((l.x + l.w) * scaleX).toFixed(2),
+            y1 = (842 - (l.y + l.h) * scaleY).toFixed(2),
+            y2 = (842 - l.y * scaleY).toFixed(2);
+          const url = String(l.url)
+            .replace(/[^\x20-\x7e]/g, "")
+            .replace(/\\/g, "\\\\")
+            .replace(/\(/g, "\\(")
+            .replace(/\)/g, "\\)");
+          obj(
+            a.id,
+            "<< /Type /Annot /Subtype /Link /Rect [" +
+              [x1, y1, x2, y2].join(" ") +
+              "] /Border [0 0 0] /A << /S /URI /URI (" +
+              url +
+              ") >> >>",
+          );
+        }
+        obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+        obj(
+          2,
+          "<< /Type /Pages /Kids [" +
+            pageRefs.join(" ") +
+            "] /Count " +
+            pageRefs.length +
+            " >>",
+        );
+        const xref = size;
+        str("xref\n0 " + n + "\n0000000000 65535 f \n");
+        for (let i = 1; i < n; i++)
+          str(String(offsets[i]).padStart(10, "0") + " 00000 n \n");
+        str(
+          "trailer\n<< /Size " +
+            n +
+            " /Root 1 0 R >>\nstartxref\n" +
+            xref +
+            "\n%%EOF",
+        );
+        downloadBlob(
+          new Blob(parts, { type: "application/pdf" }),
+          base + ".pdf",
+        );
+        toast("PDF downloaded");
+      }
+      async function exportFile() {
+        const choice = $("exportFormat").value;
+        if (!choice) return;
+        const withFooter = choice.endsWith("with"),
+          base =
+            ($("name").value.replace(/[^a-z0-9-_]+/gi, "-") || "newsletter") +
+            (withFooter ? "-with-footer" : "-without-footer");
+        if (choice.startsWith("pdf")) {
+          const btn = $("export");
+          btn.disabled = true;
+          btn.textContent = "Creating PDF…";
+          try {
+            await exportPdf(withFooter, base);
+          } catch (error) {
+            console.error("PDF export failed", error);
+            toast("PDF export failed: " + error.message);
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Export";
+          }
+        } else {
+          try {
+            const html = buildHtml(withFooter);
+            downloadBlob(
+              new Blob([html], { type: "text/html" }),
+              base + ".html",
+            );
+            toast("HTML downloaded: " + base + ".html");
+          } catch (error) {
+            console.error("HTML export failed", error);
+            toast("Export failed: " + error.message);
+          }
+        }
+      }
+      $("export").onclick = exportFile;
+      function syncExportButton() {
+        const fmt = $("exportFormat").value;
+        $("export").disabled = ![
+          "html-with",
+          "html-without",
+          "pdf-with",
+          "pdf-without",
+        ].includes(fmt);
+      }
+      $("exportFormat").addEventListener("change", syncExportButton);
+      $("exportFormat").addEventListener("input", syncExportButton);
+      syncExportButton();
+      function openCrop(b, wrap, refresh, toggle) {
+        const previous = wrap.querySelector(".crop-panel");
+        if (previous) {
+          previous.remove();
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
+          return;
+        }
+        const src = b.data.cropSource || b.data.url;
+        const image = new Image();
+        image.crossOrigin = "anonymous";
+        image.onload = () => {
+          const panel = document.createElement("div");
+          panel.className = "crop-panel";
+          if (toggle) toggle.setAttribute("aria-expanded", "true");
+          const canvas = document.createElement("canvas");
+          const ratio =
+            b.type === "thumbnail"
+              ? (Number(b.data.width) || 240) / (Number(b.data.height) || 160)
+              : b.type === "icon"
+                ? 1
+                : 16 / 9;
+          canvas.width = Math.round(400);
+          canvas.height = Math.round(400 / ratio);
+          const zoom = document.createElement("input");
+          zoom.type = "range";
+          zoom.min = "1";
+          zoom.max = "3";
+          zoom.step = ".05";
+          zoom.value = "1";
+          const panX = document.createElement("input");
+          panX.type = "range";
+          panX.min = "-100";
+          panX.max = "100";
+          panX.value = "0";
+          const panY = document.createElement("input");
+          panY.type = "range";
+          panY.min = "-100";
+          panY.max = "100";
+          panY.value = "0";
+          const cropW = document.createElement("input");
+          cropW.type = "range";
+          cropW.min = "30";
+          cropW.max = "100";
+          cropW.value = "100";
+          cropW.step = "1";
+          const cropH = document.createElement("input");
+          cropH.type = "range";
+          cropH.min = "30";
+          cropH.max = "100";
+          cropH.value = "100";
+          cropH.step = "1";
+          function draw() {
+            const ctx = canvas.getContext("2d"),
+              cw = canvas.width,
+              ch = canvas.height,
+              z = Number(zoom.value);
+            const scale = Math.max(cw / image.width, ch / image.height) * z;
+            const sw = ((cw / scale) * Number(cropW.value)) / 100,
+              sh = ((ch / scale) * Number(cropH.value)) / 100;
+            const x = Math.max(
+              0,
+              Math.min(
+                image.width - sw,
+                ((image.width - sw) / 2) * (1 + Number(panX.value) / 100),
+              ),
+            );
+            const y = Math.max(
+              0,
+              Math.min(
+                image.height - sh,
+                ((image.height - sh) / 2) * (1 + Number(panY.value) / 100),
+              ),
+            );
+            ctx.clearRect(0, 0, cw, ch);
+            ctx.drawImage(image, x, y, sw, sh, 0, 0, cw, ch);
+          }
+          panel.innerHTML =
+            '<strong>Crop image</strong><p class="field-note">Drag sliders to zoom and reposition. Applied crop is embedded in HTML.</p>';
+          panel.append(canvas);
+          for (const [title, input] of [
+            ["Zoom", zoom],
+            ["Horizontal position", panX],
+            ["Vertical position", panY],
+            ["Crop width (%)", cropW],
+            ["Crop height (%)", cropH],
+          ]) {
+            const l = document.createElement("label");
+            l.textContent = title;
+            panel.append(l, input);
+            input.oninput = draw;
+          }
+          const actions = document.createElement("div");
+          actions.className = "crop-actions";
+          const apply = document.createElement("button");
+          apply.className = "btn primary";
+          apply.textContent = "Apply crop";
+          apply.onclick = () => {
+            try {
+              b.data.url = canvas.toDataURL("image/jpeg", 0.88);
+              refresh();
+              panel.remove();
+              if (toggle) toggle.setAttribute("aria-expanded", "false");
+              toast("Crop applied");
+            } catch (e) {
+              toast(
+                "Cannot crop remote images without CORS permission. Upload locally.",
+              );
+            }
+          };
+          const cancel = document.createElement("button");
+          cancel.className = "btn";
+          cancel.textContent = "Cancel";
+          cancel.onclick = () => {
+            panel.remove();
+            if (toggle) toggle.setAttribute("aria-expanded", "false");
+          };
+          actions.append(apply, cancel);
+          panel.append(actions);
+          toggle
+            ? toggle.insertAdjacentElement("afterend", panel)
+            : wrap.append(panel);
+          draw();
+        };
+        image.onerror = () =>
+          toast(
+            "Unable to load image for cropping. Upload a local image instead.",
+          );
+        image.src = src;
+      }
+
+      try {
+        const saved = JSON.parse(
+          localStorage.getItem("kwControlledEditorDraft"),
+        );
+        if (saved) {
+          blocks = saved.blocks || [];
+          // Replace earlier example copy only when it is still unchanged,
+          // so saved user-authored content is never overwritten.
+          const oldPlaceholderCopy = {
+            hero: {
+              title: ["Potential is everywhere.", "Hero Message Section Title"],
+              text: ["Opportunity should be too.", "Content paragraph text..."],
+            },
+            text: {
+              title: ["Section heading", "Section Title"],
+              text: [
+                "Add your newsletter story or announcement here.",
+                "Content paragraph text...",
+              ],
+            },
+            imageLeft: {
+              title: ["Community story", "Section Title"],
+              text: [
+                "Share an inspiring update with your readers.",
+                "Content paragraph text...",
+              ],
+            },
+            imageRight: {
+              title: ["Latest news", "Section Title"],
+              text: [
+                "Share a KeelWorks program update.",
+                "Content paragraph text...",
+              ],
+            },
+            h1: { text: ["Your newsletter heading", "Section Title"] },
+            h2: { text: ["Section heading", "Section Title"] },
+            paragraph: {
+              text: [
+                "Click here to write your newsletter content.",
+                "Content paragraph text...",
+              ],
+            },
+          };
+          blocks.forEach((block) => {
+            const replacements = oldPlaceholderCopy[block.type];
+            if (replacements)
+              Object.entries(replacements).forEach(
+                ([key, [oldText, newText]]) => {
+                  if (block.data?.[key] === oldText) {
+                    block.data[key] = newText;
+                    if (block.data.richText?.[key])
+                      delete block.data.richText[key];
+                  }
+                },
+              );
+            if (
+              block.type === "donation" &&
+              String(block.data?.text || "").includes(
+                "It does not save your credit card information.",
+              )
+            ) {
+              block.data.text = block.data.text
+                .replace(
+                  /\s*It does not save your credit card information\.\s*/,
+                  " ",
+                )
+                .trim();
+              if (block.data.richText?.text)
+                delete block.data.richText.text;
+            }
+            if (
+              block.type === "browserLink" &&
+              block.data?.url === "https://keelworks.org"
+            )
+              block.data.url = "";
+          });
+          $("name").value = saved.name || $("name").value;
+          $("month").value = saved.month || "November";
+          $("year").value = saved.year || "2026";
+          $("bodyBg").value = saved.bodyBg || "#ffffff";
+          $("email").style.background = $("bodyBg").value;
+        }
+      } catch {}
+      savedSnapshot = draftSnapshot();
+      render();
+      tab("catalog");
+
+      const sidebar = $("sidebar"),
+        sidebarToggle = $("sidebarToggle"),
+        toggleIcon = $("toggleIcon"),
+        mobileMenuBtn = $("mobileMenuBtn"),
+        sidebarBackdrop = $("sidebarBackdrop");
+      function mobileSidebarOpen() {
+        return sidebar?.classList.contains("mobile-open");
+      }
+      function setToggleState(collapsed) {
+        if (toggleIcon)
+          toggleIcon.textContent = collapsed
+            ? "arrow_menu_open"
+            : "arrow_menu_close";
+        if (sidebarToggle) {
+          sidebarToggle.title = collapsed
+            ? "Expand sidebar"
+            : "Collapse sidebar";
+          sidebarToggle.setAttribute("aria-label", sidebarToggle.title);
+        }
+        if (mobileMenuBtn)
+          mobileMenuBtn.setAttribute(
+            "aria-expanded",
+            mobileSidebarOpen() ? "true" : "false",
+          );
+      }
+      function openMobileSidebar() {
+        if (!sidebar || window.innerWidth > 760) return;
+        sidebar.classList.add("mobile-open");
+        sidebarBackdrop?.classList.add("visible");
+        document.body.classList.add("sidebar-mobile-open");
+        setToggleState(false);
+      }
+      function closeMobileSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove("mobile-open");
+        sidebarBackdrop?.classList.remove("visible");
+        document.body.classList.remove("sidebar-mobile-open");
+        setToggleState(
+          window.innerWidth <= 760 || sidebar.classList.contains("collapsed"),
+        );
+      }
+      function syncSidebar() {
+        if (!sidebar) return;
+        if (window.innerWidth <= 760) {
+          sidebar.classList.remove("collapsed");
+          closeMobileSidebar();
+        } else {
+          closeMobileSidebar();
+          const collapsed =
+            localStorage.getItem("kwSidebarCollapsed") === "true";
+          sidebar.classList.toggle("collapsed", collapsed);
+          setToggleState(collapsed);
+        }
+      }
+      sidebarToggle?.addEventListener("click", () => {
+        if (window.innerWidth <= 760) {
+          closeMobileSidebar();
+          return;
+        }
+        const collapsed = sidebar.classList.toggle("collapsed");
+        localStorage.setItem("kwSidebarCollapsed", String(collapsed));
+        setToggleState(collapsed);
+      });
+      mobileMenuBtn?.addEventListener("click", () =>
+        mobileSidebarOpen() ? closeMobileSidebar() : openMobileSidebar(),
+      );
+      sidebarBackdrop?.addEventListener("click", closeMobileSidebar);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileSidebarOpen()) {
+          closeMobileSidebar();
+          mobileMenuBtn?.focus();
+        }
+      });
+      window.addEventListener("resize", syncSidebar);
+      syncSidebar();
+    </script>
+    <script>
+      const inlineLinkToolbar = document.createElement("div");
+      inlineLinkToolbar.className = "inline-link-toolbar";
+      inlineLinkToolbar.setAttribute("role", "toolbar");
+      inlineLinkToolbar.setAttribute("aria-label", "Text formatting");
+      inlineLinkToolbar.innerHTML =
+        '<button type="button" id="inlineAddLink"><span class="material-symbols-outlined" aria-hidden="true">add_link</span><span>Add link</span></button>';
+      document.body.append(inlineLinkToolbar);
+      const inlineLinkEditor = document.createElement("div");
+      inlineLinkEditor.className = "inline-link-editor";
+      inlineLinkEditor.setAttribute("role", "dialog");
+      inlineLinkEditor.setAttribute("aria-label", "Add text link");
+      inlineLinkEditor.innerHTML =
+        '<label for="inlineLinkUrl">Link URL</label><input id="inlineLinkUrl" type="url" inputmode="url" placeholder="https://example.org"><div class="inline-link-error" id="inlineLinkError" aria-live="polite"></div><label class="link-check"><input id="inlineLinkBlank" type="checkbox" checked> Open in a new tab</label><div class="inline-link-actions"><button class="btn remove-link" id="inlineRemoveLink" type="button">Remove link</button><button class="btn" id="inlineLinkCancel" type="button">Cancel</button><button class="btn primary" id="inlineLinkApply" type="button">Apply link</button></div>';
+      document.body.append(inlineLinkEditor);
+      const inlineLinkBlockTypes = new Set([
+        "paragraph",
+        "text",
+        "hero",
+        "imageLeft",
+        "imageRight",
+      ]);
+      let inlineLinkState = { range: null, editable: null, anchor: null };
+      const hideInlineLink = () => {
+        inlineLinkToolbar.classList.remove("visible");
+        inlineLinkEditor.classList.remove("visible");
+      };
+      function syncInlineRichText(editable) {
+        const blockEl = editable?.closest(".block"),
+          b = blocks.find((x) => String(x.id) === blockEl?.dataset.id);
+        if (!b) return;
+        const key = editable.dataset.edit;
+        b.data[key] = editable.innerText;
+        b.data.richText = b.data.richText || {};
+        b.data.richText[key] = sanitizeInlineHtml(editable.innerHTML);
+      }
+      document.addEventListener("selectionchange", () => {
+        if (previewing || inlineLinkEditor.classList.contains("visible"))
+          return;
+        const selection = getSelection();
+        if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+          inlineLinkToolbar.classList.remove("visible");
+          return;
+        }
+        const range = selection.getRangeAt(0),
+          node =
+            range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
+              ? range.commonAncestorContainer
+              : range.commonAncestorContainer.parentElement,
+          editable = node?.closest?.('[contenteditable="true"][data-edit]'),
+          blockEl = editable?.closest(".block"),
+          b = blocks.find((x) => String(x.id) === blockEl?.dataset.id);
+        if (
+          !editable ||
+          !b ||
+          !inlineLinkBlockTypes.has(b.type) ||
+          editable.dataset.edit !== "text"
+        ) {
+          inlineLinkToolbar.classList.remove("visible");
+          return;
+        }
+        const rect = range.getBoundingClientRect();
+        if (!rect.width && !rect.height) return;
+        inlineLinkState = {
+          range: range.cloneRange(),
+          editable,
+          anchor: node.closest?.("a") || null,
+        };
+        inlineLinkToolbar.style.left =
+          Math.max(
+            8,
+            Math.min(innerWidth - 140, rect.left + rect.width / 2 - 62),
+          ) + "px";
+        inlineLinkToolbar.style.top = Math.max(8, rect.top - 48) + "px";
+        inlineLinkToolbar.classList.add("visible");
+      });
+      inlineLinkToolbar.addEventListener("mousedown", (e) =>
+        e.preventDefault(),
+      );
+      $("inlineAddLink").onclick = () => {
+        const anchor = inlineLinkState.anchor;
+        $("inlineLinkUrl").value = anchor?.getAttribute("href") || "";
+        $("inlineLinkBlank").checked = anchor
+          ? anchor.getAttribute("target") === "_blank"
+          : true;
+        $("inlineRemoveLink").style.display = anchor ? "inline-flex" : "none";
+        $("inlineLinkError").textContent = "";
+        const rect = inlineLinkToolbar.getBoundingClientRect();
+        inlineLinkEditor.style.left =
+          Math.max(12, Math.min(innerWidth - 372, rect.left)) + "px";
+        inlineLinkEditor.style.top =
+          Math.max(12, Math.min(innerHeight - 215, rect.bottom + 7)) + "px";
+        inlineLinkEditor.classList.add("visible");
+        inlineLinkToolbar.classList.remove("visible");
+        setTimeout(() => $("inlineLinkUrl").focus(), 0);
+      };
+      $("inlineLinkCancel").onclick = hideInlineLink;
+      $("inlineLinkApply").onclick = () => {
+        const href = safeLinkUrl($("inlineLinkUrl").value);
+        if (!href) {
+          $("inlineLinkError").textContent =
+            "Enter a valid web, email, or telephone URL.";
+          return;
+        }
+        const { range, editable, anchor } = inlineLinkState;
+        if (!range || !editable?.isConnected) return hideInlineLink();
+        let link = anchor;
+        if (!link) {
+          link = document.createElement("a");
+          link.append(range.extractContents());
+          range.insertNode(link);
+        }
+        link.href = href;
+        link.style.cssText =
+          "color:#006699;text-decoration:underline;cursor:pointer";
+        if ($("inlineLinkBlank").checked) {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        } else {
+          link.removeAttribute("target");
+          link.removeAttribute("rel");
+        }
+        syncInlineRichText(editable);
+        hideInlineLink();
+        toast("Text link added");
+      };
+      $("inlineRemoveLink").onclick = () => {
+        const { anchor, editable } = inlineLinkState;
+        if (anchor && editable) {
+          anchor.replaceWith(...anchor.childNodes);
+          syncInlineRichText(editable);
+          toast("Text link removed");
+        }
+        hideInlineLink();
+      };
+      document.addEventListener("mousedown", (e) => {
+        if (
+          !inlineLinkToolbar.contains(e.target) &&
+          !inlineLinkEditor.contains(e.target) &&
+          !e.target.closest('[contenteditable="true"]')
+        )
+          hideInlineLink();
+      });
+      $("dropzone").addEventListener("input", (e) => {
+        const editable = e.target.closest("[data-edit]"),
+          blockEl = editable?.closest(".block"),
+          b = blocks.find((x) => String(x.id) === blockEl?.dataset.id);
+        if (
+          !editable ||
+          !b ||
+          !inlineLinkBlockTypes.has(b.type) ||
+          editable.dataset.edit !== "text"
+        )
+          return;
+        syncInlineRichText(editable);
+      });
+    </script>
+  </body>
+</html>
